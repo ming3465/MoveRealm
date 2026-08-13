@@ -11,6 +11,7 @@ const testFullSession = process.env.MOVEREALM_FULL_SMOKE === "1";
 const testAdaptation = process.env.MOVEREALM_ADAPT_SMOKE === "1" || testFullSession;
 const testCapture = process.env.MOVEREALM_CAPTURE_SMOKE === "1";
 const expectFallback = process.env.MOVEREALM_EXPECT_FALLBACK === "1";
+const expectCodeBuddy = process.env.MOVEREALM_EXPECT_CODEBUDDY === "1";
 const artifactDirectory = await mkdtemp(join(tmpdir(), "moverealm-browser-smoke-"));
 const profileDirectory = join(artifactDirectory, "profile");
 await mkdir(profileDirectory);
@@ -238,6 +239,9 @@ try {
   if ((!testCapture && !confirmState.badge?.includes("Guided demo")) || confirmState.floorChecked || !confirmState.continueDisabled) {
     throw new Error(`Unsafe confirmation defaults: ${JSON.stringify(confirmState)}`);
   }
+  if (expectCodeBuddy && !confirmState.badge?.includes("CodeBuddy live")) {
+    throw new Error(`Captured-room analysis lost its CodeBuddy provenance: ${JSON.stringify(confirmState)}`);
+  }
   const confirmScreenshot = await screenshot("02-confirm-room");
 
   const checked = await evaluate('document.querySelector(".floor-confirm")?.click(); true');
@@ -293,6 +297,9 @@ try {
     }
     if (testCapture && expectFallback && !adaptation.source?.includes("Safe fallback")) {
       throw new Error(`Captured-room adaptation lost its fallback provenance: ${JSON.stringify(adaptation)}`);
+    }
+    if (expectCodeBuddy && !adaptation.source?.includes("CodeBuddy live")) {
+      throw new Error(`Captured-room adaptation lost its CodeBuddy provenance: ${JSON.stringify(adaptation)}`);
     }
     if (!testCapture && !adaptation.source?.includes("Guided demo")) {
       throw new Error(`Guided adaptation lost its demo provenance: ${JSON.stringify(adaptation)}`);

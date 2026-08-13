@@ -9,13 +9,13 @@ import {
   type PlanRequest,
   type QuestPlan,
   type SceneProfile,
-} from "../shared/contracts";
+} from "../shared/contracts.js";
 import {
   createFallbackAdaptation,
   createFallbackPlan,
   createFallbackSceneProfile,
-} from "../shared/fallbacks";
-import type { CapturedStill } from "./camera";
+} from "../shared/fallbacks.js";
+import type { CapturedStill } from "./camera.js";
 
 // Two schema-validation attempts may each use the adapter's 30 s CodeBuddy
 // deadline. The browser must remain present long enough to receive the repaired
@@ -55,7 +55,7 @@ export async function analyzeScene(still: CapturedStill): Promise<DirectorRespon
       body: form,
       signal: AbortSignal.timeout(DIRECTOR_REQUEST_TIMEOUT_MS),
     });
-    return parseResponse(response, validateSceneSafety);
+    return await parseResponse(response, validateSceneSafety);
   } catch (error) {
     return {
       data: createFallbackSceneProfile({ width: still.width, height: still.height, byteLength: still.blob.size }),
@@ -76,7 +76,7 @@ export async function requestPlan(request: PlanRequest): Promise<DirectorRespons
       body: JSON.stringify(request),
       signal: AbortSignal.timeout(DIRECTOR_REQUEST_TIMEOUT_MS),
     });
-    return parseResponse(response, (value) => validatePlanSafety(value, request));
+    return await parseResponse(response, (value) => validatePlanSafety(value, request));
   } catch (error) {
     return {
       data: validatePlanSafety(createFallbackPlan(request), request),
@@ -99,7 +99,7 @@ export async function requestAdaptation(
       body: JSON.stringify(request),
       signal: AbortSignal.timeout(DIRECTOR_REQUEST_TIMEOUT_MS),
     });
-    return parseResponse(response, (value) => validateAdaptationSafety(value, request));
+    return await parseResponse(response, (value) => validateAdaptationSafety(value, request));
   } catch (error) {
     return {
       data: validateAdaptationSafety(createFallbackAdaptation(request), request),
