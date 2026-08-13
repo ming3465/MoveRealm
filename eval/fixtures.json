@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "fixtures": [
+    {
+      "id": "open-room",
+      "image": "assets/room-fixtures/open-room.png",
+      "sha256": "ac9bf9aa222fac44e1ed192a5e2bd2d21902cb63c74f3968f2dfbc3a7b3386b3",
+      "expected": {
+        "spaceClasses": ["open"],
+        "requiredDirections": ["vertical", "left", "right", "center"],
+        "allowedDirections": ["vertical", "left", "right", "center"],
+        "requiredObstacleZones": [],
+        "allowedObstacleZones": ["left", "center", "right", "floor"],
+        "confidenceRange": [0.65, 1]
+      }
+    },
+    {
+      "id": "tight-room",
+      "image": "assets/room-fixtures/tight-room.png",
+      "sha256": "c896462d2205f92270992c9edb9013ab578b58e5e734d6a63f954877a43c9068",
+      "expected": {
+        "spaceClasses": ["tight"],
+        "requiredDirections": ["vertical", "center"],
+        "allowedDirections": ["vertical", "center"],
+        "requiredObstacleZones": ["left", "right"],
+        "allowedObstacleZones": ["left", "center", "right", "floor"],
+        "confidenceRange": [0.55, 1]
+      }
+    },
+    {
+      "id": "uncertain-room",
+      "image": "assets/room-fixtures/uncertain-room.png",
+      "sha256": "c625f09d36157a59639de31ec4759542b19ecc6c00deeb889a1c212926670898",
+      "expected": {
+        "spaceClasses": ["uncertain"],
+        "requiredDirections": ["vertical", "center"],
+        "allowedDirections": ["vertical", "center"],
+        "requiredObstacleZones": [],
+        "allowedObstacleZones": ["left", "center", "right", "floor"],
+        "confidenceRange": [0, 0.6]
+      }
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "1.0.0",
+  "observedAt": "2026-08-13T14:37:34.807Z",
+  "inputSha256": "06e546751cdc075f6e94ce51c58236df4b1ed4eab2c316c6fc7bf00ed2f3dac5",
+  "fixtureId": "uncertain-room",
+  "source": "codebuddy",
+  "deterministic": {
+    "passed": true,
+    "checks": [
+      {
+        "id": "fixture-hash",
+        "status": "pass",
+        "detail": "Fixture image hash matches the oracle."
+      },
+      {
+        "id": "scene-schema-safety",
+        "status": "pass",
+        "detail": "Scene satisfies the production schema and blocked-lane rule."
+      },
+      {
+        "id": "scene-oracle",
+        "status": "pass",
+        "detail": "Scene class, movement lanes, obstacle zones, and confidence match the fixture oracle."
+      },
+      {
+        "id": "request-consistency",
+        "status": "pass",
+        "detail": "The plan request is anchored to the judged scene."
+      },
+      {
+        "id": "plan-safety",
+        "status": "pass",
+        "detail": "Plan passes the authoritative production duration, movement, and room-envelope gates."
+      }
+    ]
+  },
+  "judge": {
+    "status": "scored",
+    "provider": "ollama",
+    "model": "qwen3-vl:8b-instruct-q4_K_M",
+    "modelDigest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+    "latencyMs": 79126,
+    "verdict": {
+      "schemaVersion": "1.0.0",
+      "scene": {
+        "grounding": {
+          "score": 3,
+          "rationale": "Visible ceiling fixture, air conditioner, and curtain/window are grounded in the image. The doorway framing is consistent with the provided scene summary. No hallucinated elements.",
+          "evidence": [
+            "ceiling fixture visible at top center",
+            "air conditioner mounted on wall",
+            "curtain and window visible in center-right"
+          ],
+          "concerns": [
+            "No floor or lateral space visible, so conservatism is justified."
+          ]
+        },
+        "conservatism": {
+          "score": 4,
+          "rationale": "Plan strictly adheres to permitted directions (vertical, center) and safety note. No lateral movement or jumping. Obstacle severity (medium for doorframes, low for curtain) is respected. Confidence (0.35) is appropriately conservative for uncertain space.",
+          "evidence": [
+            "permittedDirections: ['vertical','center']",
+            "safetyNote: 'Stay centered; do not reach toward doorframes or side walls.'",
+            "confidence: 0.35"
+          ],
+          "concerns": []
+        },
+        "actionability": {
+          "score": 3,
+          "rationale": "Plan is actionable within the scene's constraints. Vertical reach and center movement are feasible. No forced lateral movement. Movement ranges (0.58-0.62) are proportional to the visible space. No floor or lateral space is visible, so movement is limited to vertical reach.",
+          "evidence": [
+            "movementId: 'reach' for all rounds",
+            "rangeScale: 0.58-0.62 (proportional to visible vertical space)",
+            "noJumping constraint met"
+          ],
+          "concerns": [
+            "No floor or lateral space visible, so movement is limited to vertical reach."
+          ]
+        }
+      },
+      "plan": {
+        "roomRelevance": {
+          "score": 3,
+          "rationale": "Theme 'Neon Rainforest' is abstract and does not conflict with the real room. The plan's movements (reach, squat) are plausible within the vertical space. No forced lateral movement. The safety note is appropriate for the scene.",
+          "evidence": [
+            "theme: 'neon_rainforest' (abstract, non-literal)",
+            "movementId: 'reach' and 'squat' (plausible in vertical space)",
+            "safetyNote: 'Stay centered; do not reach toward doorframes or side walls.'"
+          ],
+          "concerns": []
+        },
+        "movementVariety": {
+          "score": 3,
+          "rationale": "Plan includes two distinct movement types (reach, squat) with different tempo and rangeScale. This provides useful variety without forcing lateral movement. The movement rates (8-12) are reasonable for a 180s duration.",
+          "evidence": [
+            "round-1: movementId='reach', targetRate=10",
+            "round-2: movementId='squat', targetRate=8",
+            "round-3: movementId='reach', targetRate=12"
+          ],
+          "concerns": []
+        },
+        "themeCopy": {
+          "score": 3,
+          "rationale": "Copy is coherent and thematic. The prompts ('capture glowing fireflies', 'cover the neon seedlings') are consistent with the 'Neon Rainforest' theme. The accents (mint, orchid, amber) are thematic and varied.",
+          "evidence": [
+            "prompt for round-1: 'Reach up through the canopy and capture glowing fireflies above you.'",
+            "prompt for round-2: 'Lower down to cover the neon seedlings as the jungle rain begins.'",
+            "prompt for round-3: 'Stretch tall and gather the last fireflies flickering in the canopy light.'",
+            "accents: 'mint', 'orchid', 'amber'"
+          ],
+          "concerns": []
+        }
+      },
+      "adaptation": {
+        "status": "not_demonstrated",
+        "telemetryGrounding": null,
+        "proportionality": null,
+        "explanationQuality": null
+      },
+      "unsupportedClaims": [],
+      "overallNotes": "The plan is well-suited to the scene's constraints. The theme is abstract and does not conflict with the real room. The movements are plausible within the vertical space. The safety note is appropriate for the scene. The plan provides useful variety without forcing lateral movement. The copy is coherent and thematic."
+    },
+    "detail": "Advisory local vision judgment completed; raw model output is intentionally omitted.",
+    "rawOmitted": true
+  },
+  "totals": {
+    "advisoryEarned": 19,
+    "advisoryPossible": 24,
+    "eligible": true
+  }
+}

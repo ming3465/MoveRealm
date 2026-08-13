@@ -1,16 +1,103 @@
+const PREFERRED_CAMERA_CONSTRAINTS: MediaStreamConstraints = {
+  video: {
+    facingMode: "user",
+    width: { ideal: 1280 },
+    height: { ideal: 720 },
+    frameRate: { ideal: 30, min: 20 },
+  },
+  audio: false,
+};
+
+const RELAXED_CAMERA_CONSTRAINTS: MediaStreamConstraints = {
+  video: true,
+  audio: false,
+};
+
+const RECOVERABLE_CAMERA_ERROR_NAMES = new Set([
+  "AbortError",
+  "ConstraintNotSatisfiedError",
+  "NotReadableError",
+  "OverconstrainedError",
+  "SourceUnavailableError",
+  "TrackStartError",
+]);
+
+const PERMISSION_ERROR_NAMES = new Set(["NotAllowedError", "PermissionDeniedError", "SecurityError"]);
+const MISSING_DEVICE_ERROR_NAMES = new Set(["DevicesNotFoundError", "NotFoundError"]);
+
+class UnusableCameraStreamError extends Error {
+  override name = "UnusableCameraStreamError";
+}
+
+function errorName(error: unknown): string {
+  if (typeof error !== "object" || error === null || !("name" in error)) return "";
+  return typeof error.name === "string" ? error.name : "";
+}
+
+function errorMessage(error: unknown): string {
+  if (typeof error !== "object" || error === null || !("message" in error)) return "";
+  return typeof error.message === "string" ? error.message : "";
+}
+
+function isRecoverableCameraError(error: unknown): boolean {
+  const name = errorName(error);
+  if (PERMISSION_ERROR_NAMES.has(name) || MISSING_DEVICE_ERROR_NAMES.has(name)) return false;
+  if (error instanceof UnusableCameraStreamError || RECOVERABLE_CAMERA_ERROR_NAMES.has(name)) return true;
+
+  // Some Chromium builds have surfaced this device-start failure as a plain Error.
+  // Match only the known generic wording and never display the browser's raw message.
+  return /(?:timeout|could not|failed to) start(?:ing)? video source/i.test(errorMessage(error));
+}
+
+function cameraError(error: unknown): Error {
+  const name = errorName(error);
+  if (PERMISSION_ERROR_NAMES.has(name)) {
+    return new Error(
+      "Camera access is blocked. Allow camera permission for this site in your browser settings, then try again.",
+    );
+  }
+  if (MISSING_DEVICE_ERROR_NAMES.has(name)) {
+    return new Error("No available camera was found. Connect or enable a camera, then try again.");
+  }
+  if (isRecoverableCameraError(error)) {
+    return new Error(
+      "The camera could not start. Close other apps or browser tabs using it, wait a moment, then try again.",
+    );
+  }
+  return new Error(
+    "Camera access could not start. Check this site's camera permission and use HTTPS or localhost, then try again.",
+  );
+}
+
+function validateCameraStream(stream: MediaStream): MediaStream {
+  const liveVideoTrack = stream.getVideoTracks().some((track) => track.readyState === "live");
+  if (!liveVideoTrack) {
+    stopCamera(stream);
+    throw new UnusableCameraStreamError("Camera returned no live video track.");
+  }
+
+  // `audio: false` is a privacy boundary. Stop any unexpected audio track before
+  // the stream reaches the rest of the application.
+  stream.getAudioTracks().forEach((track) => track.stop());
+  return stream;
+}
+
 export async function requestCamera(): Promise<MediaStream> {
-  if (!navigator.mediaDevices?.getUserMedia) {
+  if (typeof navigator === "undefined" || !navigator.mediaDevices?.getUserMedia) {
     throw new Error("This browser does not provide camera access. Try the keyboard demo instead.");
   }
-  return navigator.mediaDevices.getUserMedia({
-    video: {
-      facingMode: "user",
-      width: { ideal: 1280 },
-      height: { ideal: 720 },
-      frameRate: { ideal: 30, min: 20 },
-    },
-    audio: false,
-  });
+
+  try {
+    return validateCameraStream(await navigator.mediaDevices.getUserMedia(PREFERRED_CAMERA_CONSTRAINTS));
+  } catch (firstError) {
+    if (!isRecoverableCameraError(firstError)) throw cameraError(firstError);
+  }
+
+  try {
+    return validateCameraStream(await navigator.mediaDevices.getUserMedia(RELAXED_CAMERA_CONSTRAINTS));
+  } catch (fallbackError) {
+    throw cameraError(fallbackError);
+  }
 }
 
 export interface CapturedStill {

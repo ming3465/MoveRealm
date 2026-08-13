@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "1.0.0",
+  "observedAt": "2026-08-13T14:36:08.004Z",
+  "inputSha256": "26b94ab7e73b1ff763ee7fccb147d581dbd6b08f41ff24adc03ab5acc44b2caf",
+  "fixtureId": "open-room",
+  "source": "codebuddy",
+  "deterministic": {
+    "passed": true,
+    "checks": [
+      {
+        "id": "fixture-hash",
+        "status": "pass",
+        "detail": "Fixture image hash matches the oracle."
+      },
+      {
+        "id": "scene-schema-safety",
+        "status": "pass",
+        "detail": "Scene satisfies the production schema and blocked-lane rule."
+      },
+      {
+        "id": "scene-oracle",
+        "status": "pass",
+        "detail": "Scene class, movement lanes, obstacle zones, and confidence match the fixture oracle."
+      },
+      {
+        "id": "request-consistency",
+        "status": "pass",
+        "detail": "The plan request is anchored to the judged scene."
+      },
+      {
+        "id": "plan-safety",
+        "status": "pass",
+        "detail": "Plan passes the authoritative production duration, movement, and room-envelope gates."
+      }
+    ]
+  },
+  "judge": {
+    "status": "scored",
+    "provider": "ollama",
+    "model": "qwen3-vl:8b-instruct-q4_K_M",
+    "modelDigest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+    "latencyMs": 82163,
+    "verdict": {
+      "schemaVersion": "1.0.0",
+      "scene": {
+        "grounding": {
+          "score": 4,
+          "rationale": "The scene is fully grounded in the provided image: the open tiled floor, sliding glass doors, curtains, and chair are all visible and correctly identified. The summary accurately describes the spatial layout and obstacle placement.",
+          "evidence": [
+            "scene.spaceClass: 'open'",
+            "scene.obstacles: [{'label':'chair','zone':'right','severity':'low'}, {'label':'sliding door frame','zone':'center','severity':'low'}]",
+            "scene.permanentDirections: ['vertical','left','right','center']",
+            "scene.confidence: 0.88"
+          ],
+          "concerns": []
+        },
+        "conservatism": {
+          "score": 4,
+          "rationale": "The plan strictly adheres to the permitted directions and obstacle zones. The safety note explicitly instructs users to stay in open zones and avoid the chair, which is a conservative approach under the given constraints. No lateral movement is forced beyond the permitted range.",
+          "evidence": [
+            "plan.constraints.permittedDirections: ['vertical','left','right','center']",
+            "plan.safetyNote: 'Stay in open center and left zones; keep side-steps clear of the right chair.'",
+            "adaptations: []"
+          ],
+          "concerns": []
+        },
+        "actionability": {
+          "score": 4,
+          "rationale": "The plan provides clear, actionable movements (reach, squat, side_step) with specific durations, rates, and range scales. The prompts are vivid and contextually appropriate for the 'Neon Rainforest' theme. The safety note provides clear guidance for safe execution.",
+          "evidence": [
+            "plan.rounds[0].movementId: 'reach'",
+            "plan.rounds[1].movementId: 'squat'",
+            "plan.rounds[2].movementId: 'side_step'",
+            "plan.safetyNote: 'Stay in open center and left zones; keep side-steps clear of the right chair. Pause anytime to rebalance.'"
+          ],
+          "concerns": []
+        }
+      },
+      "plan": {
+        "roomRelevance": {
+          "score": 4,
+          "rationale": "The plan is fully relevant to the room's layout. The movements are designed to utilize the open center and left zones, avoiding the right chair and sliding door frame as specified in the constraints and safety note.",
+          "evidence": [
+            "plan.safetyNote: 'Stay in open center and left zones; keep side-steps clear of the right chair.'",
+            "plan.rounds[0].mechanic: 'collect_fireflies' (vertical reach)",
+            "plan.rounds[1].mechanic: 'shelter_seedlings' (squat in center)",
+            "plan.rounds[2].mechanic: 'redirect_river' (side_step in left/right zones)"
+          ],
+          "concerns": []
+        },
+        "movementVariety": {
+          "score": 4,
+          "rationale": "The plan offers three distinct movement types (reach, squat, side_step) with different tempo and range scales, providing useful variety without forcing lateral movement beyond the permitted zones.",
+          "evidence": [
+            "plan.rounds[0].movementId: 'reach'",
+            "plan.rounds[1].movementId: 'squat'",
+            "plan.rounds[2].movementId: 'side_step'",
+            "plan.rounds[0].rangeScale: 0.85, plan.rounds[1].rangeScale: 0.8, plan.rounds[2].rangeScale: 0.9"
+          ],
+          "concerns": []
+        },
+        "themeCopy": {
+          "score": 4,
+          "rationale": "The 'Neon Rainforest' theme is consistently applied across all prompts and mechanics. The prompts are vivid, thematic, and directly relate to the movements (fireflies, seedlings, river currents).",
+          "evidence": [
+            "plan.title: 'Neon Rainforest Quest'",
+            "plan.rounds[0].prompt: 'Stretch to catch glowing fireflies flickering through the canopy overhead!'",
+            "plan.rounds[1].prompt: 'Lower into a steady squat to shield neon seedlings from the jungle rain.'",
+            "plan.rounds[2].prompt: 'Step wide left and right to guide glowing river currents through the trees.'"
+          ],
+          "concerns": []
+        }
+      },
+      "adaptation": {
+        "status": "not_demonstrated",
+        "telemetryGrounding": null,
+        "proportionality": null,
+        "explanationQuality": null
+      },
+      "unsupportedClaims": [],
+      "overallNotes": "The candidate fully satisfies all criteria with excellent grounding, conservatism, and actionability. The plan is thematically consistent and relevant to the room's layout. No adaptations are demonstrated, which is appropriate given the empty adaptations array."
+    },
+    "detail": "Advisory local vision judgment completed; raw model output is intentionally omitted.",
+    "rawOmitted": true
+  },
+  "totals": {
+    "advisoryEarned": 24,
+    "advisoryPossible": 24,
+    "eligible": true
+  }
+}

@@ -115,7 +115,9 @@ export function createFallbackPlan(request: PlanRequest): QuestPlan {
     request.constraints.permittedDirections.some(
       (direction) => direction === "left" || direction === "right",
     );
-  const sequence: QuestRound["movementId"][] = !lateralAllowed
+  const sequence: QuestRound["movementId"][] = request.scene.spaceClass === "uncertain"
+    ? ["reach", "reach", "reach"]
+    : !lateralAllowed
     ? verticalAllowed
       ? ["reach", "squat", "reach"]
       : ["reach", "reach", "reach"]

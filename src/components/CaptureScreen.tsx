@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { PoseFrame } from "../pose/types";
 import { Brand } from "./Brand";
 import { CameraStage } from "./CameraStage";
@@ -27,6 +28,7 @@ export function CaptureScreen({
   capturing,
   error,
 }: CaptureScreenProps) {
+  const [previewReady, setPreviewReady] = useState(false);
   return (
     <main className="flow-screen shell">
       <header className="flow-header">
@@ -42,7 +44,7 @@ export function CaptureScreen({
       </section>
 
       <div className="capture-layout">
-        <CameraStage stream={stream} pose={pose} attachVideo={attachVideo} showGuide className="capture-camera">
+        <CameraStage stream={stream} pose={pose} attachVideo={attachVideo} showGuide className="capture-camera" onPreviewReadyChange={setPreviewReady}>
           <div className="camera-status camera-status--top">
             <span className={`status-dot status-dot--${poseStatus}`} />
             {poseStatus === "ready" ? `${Math.round(pose?.fps ?? 0)} FPS · pose local` : poseStatus === "error" ? "Camera only" : "Preparing local pose…"}
@@ -61,7 +63,7 @@ export function CaptureScreen({
       {error && <div className="inline-error capture-error" role="alert">{error}</div>}
       <div className="flow-actions">
         <button className="secondary-button" type="button" onClick={onDemo}>Use demo room</button>
-        <button className="primary-button" type="button" onClick={onCapture} disabled={capturing || !stream}>
+        <button className="primary-button" type="button" onClick={onCapture} disabled={capturing || !stream || !previewReady}>
           <span className="button-camera" aria-hidden="true" />
           {capturing ? "Capturing…" : "Capture this room"}
         </button>

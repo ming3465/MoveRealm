@@ -1,5 +1,12 @@
 # Release and validation artifacts
 
+## Offline Shadow Judge
+
+[`evaluation/`](evaluation/) contains frozen synthetic candidate bundles and schema-validated
+local Qwen3-VL reports. These are advisory evaluator observations, not runtime output, safety
+certification, official judging, or human-trial evidence. See
+[`docs/EVALUATION.md`](../docs/EVALUATION.md) for reproduction and limitations.
+
 ## Release snapshot — 13 August 2026
 
 - Public guided demo: <https://ming3465.github.io/MoveRealm/>

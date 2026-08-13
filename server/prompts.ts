@@ -56,7 +56,8 @@ range is none, do not use side_step. If it is narrow, side_step rangeScale must 
 side_step out of the plan when neither left nor right is permitted. When neither left nor right is
 permitted, reach rangeScale must be <= 0.70. When vertical is not permitted, do not use squat and
 keep reach rangeScale <= 0.62. Keep all user-facing copy concise enough for the stated character
-limits. If scene.spaceClass is uncertain, every round rangeScale must be <= 0.62.`;
+limits. If scene.spaceClass is uncertain, use reach for all three rounds and keep every rangeScale
+<= 0.62; floor visibility is insufficient for squat or side_step.`;
 }
 
 export function adaptationPrompt(request: AdaptRequest): string {

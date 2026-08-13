@@ -289,6 +289,13 @@ export function validatePlanSafety(input: unknown, request: PlanRequest): QuestP
     throw new Error("An uncertain room requires a conservative movement envelope.");
   }
 
+  if (
+    request.scene.spaceClass === "uncertain" &&
+    plan.rounds.some((round) => round.movementId !== "reach")
+  ) {
+    throw new Error("An uncertain room permits in-place reach rounds only.");
+  }
+
   return plan;
 }
 

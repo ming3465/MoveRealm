@@ -1,0 +1,304 @@
+{
+  "observedAt": "2026-08-13T14:26:14.682Z",
+  "baseUrl": "http://127.0.0.1:4173",
+  "health": {
+    "ok": true,
+    "product": "MoveRealm",
+    "movementDirector": "codebuddy",
+    "codeBuddyConnected": true
+  },
+  "allowFallback": false,
+  "roomMatrix": true,
+  "observations": [
+    {
+      "fixture": "open-room.png",
+      "fixtureSha256": "ac9bf9aa222fac44e1ed192a5e2bd2d21902cb63c74f3968f2dfbc3a7b3386b3",
+      "scene": {
+        "spaceClass": "open",
+        "obstacles": [
+          {
+            "label": "chair",
+            "zone": "right",
+            "severity": "low"
+          },
+          {
+            "label": "sliding door frame",
+            "zone": "center",
+            "severity": "low"
+          }
+        ],
+        "permittedDirections": [
+          "vertical",
+          "left",
+          "right",
+          "center"
+        ],
+        "confidence": 0.88,
+        "summary": "Large open tiled room with clear center and left zones; single chair at right edge is minor. Ample space for reach, squat, and side-step movements."
+      },
+      "sceneSource": "codebuddy",
+      "sceneLatencyMs": 21477,
+      "sceneClientElapsedMs": 21497,
+      "planSource": "codebuddy",
+      "planLatencyMs": 25514,
+      "planClientElapsedMs": 25522,
+      "plan": {
+        "theme": "neon_rainforest",
+        "title": "Neon Rainforest Quest",
+        "requestedDurationSeconds": 180,
+        "restBetweenRoundsSeconds": 12,
+        "rounds": [
+          {
+            "id": "round-1",
+            "movementId": "reach",
+            "durationSeconds": 52,
+            "targetRate": 10,
+            "rangeScale": 0.85,
+            "tempo": 0.9,
+            "mechanic": "collect_fireflies",
+            "prompt": "Stretch to catch glowing fireflies flickering through the canopy overhead!",
+            "accent": "mint"
+          },
+          {
+            "id": "round-2",
+            "movementId": "squat",
+            "durationSeconds": 52,
+            "targetRate": 8,
+            "rangeScale": 0.8,
+            "tempo": 0.8,
+            "mechanic": "shelter_seedlings",
+            "prompt": "Lower into a steady squat to shield neon seedlings from the jungle rain.",
+            "accent": "orchid"
+          },
+          {
+            "id": "round-3",
+            "movementId": "side_step",
+            "durationSeconds": 52,
+            "targetRate": 10,
+            "rangeScale": 0.9,
+            "tempo": 0.95,
+            "mechanic": "redirect_river",
+            "prompt": "Step wide left and right to guide glowing river currents through the trees.",
+            "accent": "amber"
+          }
+        ],
+        "safetyNote": "Stay in open center and left zones; keep side-steps clear of the right chair. Pause anytime to rebalance."
+      },
+      "planSignature": "reach:0.85|squat:0.8|side_step:0.9",
+      "planTotalSeconds": 180
+    },
+    {
+      "fixture": "tight-room.png",
+      "fixtureSha256": "c896462d2205f92270992c9edb9013ab578b58e5e734d6a63f954877a43c9068",
+      "scene": {
+        "spaceClass": "tight",
+        "obstacles": [
+          {
+            "label": "desk",
+            "zone": "left",
+            "severity": "high"
+          },
+          {
+            "label": "filing cabinet",
+            "zone": "center",
+            "severity": "medium"
+          },
+          {
+            "label": "wardrobe/cabinet",
+            "zone": "left",
+            "severity": "medium"
+          },
+          {
+            "label": "armchair",
+            "zone": "right",
+            "severity": "high"
+          }
+        ],
+        "permittedDirections": [
+          "vertical",
+          "center"
+        ],
+        "confidence": 0.82,
+        "summary": "Narrow corridor between desk and chair leaves only a slim center lane. Vertical reaches and small center-facing movements are safest; lateral steps are constrained."
+      },
+      "sceneSource": "codebuddy",
+      "sceneLatencyMs": 19456,
+      "sceneClientElapsedMs": 19463,
+      "planSource": "codebuddy",
+      "planLatencyMs": 27740,
+      "planClientElapsedMs": 27746,
+      "plan": {
+        "theme": "neon_rainforest",
+        "title": "Canopy Glow Quest",
+        "requestedDurationSeconds": 180,
+        "restBetweenRoundsSeconds": 12,
+        "rounds": [
+          {
+            "id": "round-1",
+            "movementId": "reach",
+            "durationSeconds": 52,
+            "targetRate": 8,
+            "rangeScale": 0.65,
+            "tempo": 0.8,
+            "mechanic": "collect_fireflies",
+            "prompt": "Reach straight up and pull glowing fireflies down through the canopy mist.",
+            "accent": "mint"
+          },
+          {
+            "id": "round-2",
+            "movementId": "squat",
+            "durationSeconds": 52,
+            "targetRate": 7,
+            "rangeScale": 0.65,
+            "tempo": 0.75,
+            "mechanic": "shelter_seedlings",
+            "prompt": "Sink slowly to cup neon seedlings and shield them from the jungle downpour.",
+            "accent": "orchid"
+          },
+          {
+            "id": "round-3",
+            "movementId": "reach",
+            "durationSeconds": 52,
+            "targetRate": 9,
+            "rangeScale": 0.68,
+            "tempo": 0.85,
+            "mechanic": "collect_fireflies",
+            "prompt": "Stretch overhead and sweep the last fireflies into your glowing canopy net.",
+            "accent": "amber"
+          }
+        ],
+        "safetyNote": "Center lane only — reach vertically, keep feet still, stay clear of desk on left and armchair on right."
+      },
+      "planSignature": "reach:0.65|squat:0.65|reach:0.68",
+      "planTotalSeconds": 180
+    },
+    {
+      "fixture": "uncertain-room.png",
+      "fixtureSha256": "c625f09d36157a59639de31ec4759542b19ecc6c00deeb889a1c212926670898",
+      "scene": {
+        "spaceClass": "uncertain",
+        "obstacles": [
+          {
+            "label": "door frame left",
+            "zone": "left",
+            "severity": "medium"
+          },
+          {
+            "label": "door/wall right",
+            "zone": "right",
+            "severity": "medium"
+          },
+          {
+            "label": "curtain and window",
+            "zone": "center",
+            "severity": "low"
+          }
+        ],
+        "permittedDirections": [
+          "vertical",
+          "center"
+        ],
+        "confidence": 0.35,
+        "summary": "View through a doorway; floor and lateral space not visible. Only upright reach and forward center movement tentatively permitted. Conservative profile applied."
+      },
+      "sceneSource": "codebuddy",
+      "sceneLatencyMs": 22080,
+      "sceneClientElapsedMs": 22093,
+      "planSource": "codebuddy",
+      "planLatencyMs": 29376,
+      "planClientElapsedMs": 29383,
+      "plan": {
+        "theme": "neon_rainforest",
+        "title": "Canopy Glow: Neon Rainforest Quest",
+        "requestedDurationSeconds": 180,
+        "restBetweenRoundsSeconds": 12,
+        "rounds": [
+          {
+            "id": "round-1",
+            "movementId": "reach",
+            "durationSeconds": 52,
+            "targetRate": 10,
+            "rangeScale": 0.6,
+            "tempo": 0.9,
+            "mechanic": "collect_fireflies",
+            "prompt": "Reach up through the canopy and capture glowing fireflies above you.",
+            "accent": "mint"
+          },
+          {
+            "id": "round-2",
+            "movementId": "squat",
+            "durationSeconds": 52,
+            "targetRate": 8,
+            "rangeScale": 0.58,
+            "tempo": 0.85,
+            "mechanic": "shelter_seedlings",
+            "prompt": "Lower down to cover the neon seedlings as the jungle rain begins.",
+            "accent": "orchid"
+          },
+          {
+            "id": "round-3",
+            "movementId": "reach",
+            "durationSeconds": 52,
+            "targetRate": 12,
+            "rangeScale": 0.62,
+            "tempo": 1,
+            "mechanic": "collect_fireflies",
+            "prompt": "Stretch tall and gather the last fireflies flickering in the canopy light.",
+            "accent": "amber"
+          }
+        ],
+        "safetyNote": "Stay centered; do not reach toward doorframes or side walls. Move only within a comfortable upright vertical range."
+      },
+      "planSignature": "reach:0.6|squat:0.58|reach:0.62",
+      "planTotalSeconds": 180
+    }
+  ],
+  "adaptation": {
+    "source": "codebuddy",
+    "latencyMs": 5806,
+    "clientElapsedMs": 5812,
+    "syntheticTelemetry": {
+      "roundId": "round-1",
+      "movementId": "reach",
+      "completionRate": 0.3333333333333333,
+      "movementRange": 0.54,
+      "poseConfidence": 0,
+      "trackingFps": 0,
+      "trackingMode": "keyboard",
+      "targetsPresented": 12,
+      "targetsCompleted": 4,
+      "feedback": "too_hard"
+    },
+    "before": {
+      "id": "round-2",
+      "movementId": "squat",
+      "durationSeconds": 52,
+      "targetRate": 7,
+      "rangeScale": 0.65,
+      "tempo": 0.75,
+      "mechanic": "shelter_seedlings",
+      "prompt": "Sink slowly to cup neon seedlings and shield them from the jungle downpour.",
+      "accent": "orchid"
+    },
+    "decision": {
+      "nextRound": {
+        "id": "round-2",
+        "movementId": "squat",
+        "durationSeconds": 52,
+        "targetRate": 5,
+        "rangeScale": 0.45,
+        "tempo": 0.55,
+        "mechanic": "shelter_seedlings",
+        "prompt": "Gently lower to cradle glowing seedlings and keep them dry from the soft jungle rain.",
+        "accent": "mint"
+      },
+      "reason": "Only 4 of 12 targets were reached and you chose Too hard, so the next targets are shallower, fewer, and slower.",
+      "adjustments": [
+        "target_envelope",
+        "tempo",
+        "target_rate"
+      ]
+    }
+  },
+  "localUploadDirectoryEmpty": true
+}

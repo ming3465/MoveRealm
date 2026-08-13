@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "1.0.0",
+  "observedAt": "2026-08-13T14:34:40.260Z",
+  "inputSha256": "fcb8fcaa0d829e4fdb6311762f15a3eb0966358bd67615c1d5906e70fd6ee181",
+  "fixtureId": "tight-room",
+  "source": "codebuddy",
+  "deterministic": {
+    "passed": true,
+    "checks": [
+      {
+        "id": "fixture-hash",
+        "status": "pass",
+        "detail": "Fixture image hash matches the oracle."
+      },
+      {
+        "id": "scene-schema-safety",
+        "status": "pass",
+        "detail": "Scene satisfies the production schema and blocked-lane rule."
+      },
+      {
+        "id": "scene-oracle",
+        "status": "pass",
+        "detail": "Scene class, movement lanes, obstacle zones, and confidence match the fixture oracle."
+      },
+      {
+        "id": "request-consistency",
+        "status": "pass",
+        "detail": "The plan request is anchored to the judged scene."
+      },
+      {
+        "id": "plan-safety",
+        "status": "pass",
+        "detail": "Plan passes the authoritative production duration, movement, and room-envelope gates."
+      },
+      {
+        "id": "adaptation-1-safety",
+        "status": "pass",
+        "detail": "Adaptation preserves the validated movement and its declared changes match telemetry."
+      }
+    ]
+  },
+  "judge": {
+    "status": "scored",
+    "provider": "ollama",
+    "model": "qwen3-vl:8b-instruct-q4_K_M",
+    "modelDigest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+    "latencyMs": 118387,
+    "verdict": {
+      "schemaVersion": "1.0.0",
+      "scene": {
+        "grounding": {
+          "score": 4,
+          "rationale": "The scene is fully grounded in the provided image: desk (left), filing cabinet (center), wardrobe (left), armchair (right), and window (center background) are all visually confirmed. The 'tight' space class and obstacle zones are accurately mapped to visible elements.",
+          "evidence": [
+            "desk visible on left side of image",
+            "filing cabinet under desk, center zone",
+            "wardrobe/cabinet on left wall",
+            "armchair on right side, near door"
+          ],
+          "concerns": [
+            "No occlusion or uncertainty in obstacle placement"
+          ]
+        },
+        "conservatism": {
+          "score": 4,
+          "rationale": "The plan strictly adheres to permitted directions ('vertical', 'center') and constraints ('floorClear', 'noJumping', 'sideStepRange:none'). The safety note reinforces center-lane movement, avoiding lateral steps. No risky lateral movement is proposed.",
+          "evidence": [
+            "permittedDirections: ['vertical','center']",
+            "safetyNote: 'Center lane only — reach vertically, keep feet still, stay clear of desk on left and armchair on right.'",
+            "sideStepRange: 'none'"
+          ],
+          "concerns": []
+        },
+        "actionability": {
+          "score": 4,
+          "rationale": "The plan is actionable and directly responsive to the scene. The adaptation adjusts parameters (target_rate, range_scale, tempo) based on telemetry feedback ('too_hard'), making the next round easier without violating constraints. The summary is clear and actionable.",
+          "evidence": [
+            "adaptations[0].reason: 'Only 4 of 12 targets were reached and you chose Too hard, so the next targets are shallower, fewer, and slower.'",
+            "adaptations[0].adjustments: ['target_envelope','tempo','target_rate']",
+            "adaptations[0].decision.nextRound contains modified parameters"
+          ],
+          "concerns": []
+        }
+      },
+      "plan": {
+        "roomRelevance": {
+          "score": 4,
+          "rationale": "The plan's theme ('Neon Rainforest') and movements ('reach', 'squat') are abstract and do not claim to be physically grounded in the room's features. The safety note explicitly avoids lateral movement, which is appropriate for the tight space. The plan is relevant to the room's '",
+          "evidence": [
+            "plan.safetyNote: 'Center lane only — reach vertically, keep feet still, stay clear of desk on left and armchair on right.'",
+            "plan.constraints: 'sideStepRange: none'"
+          ],
+          "concerns": []
+        },
+        "movementVariety": {
+          "score": 4,
+          "rationale": "The plan offers two distinct movement types: 'reach' and 'squat', with different target rates and tempo. This provides useful variety without forcing lateral movement, which is constrained by the scene. The adaptation further diversifies by changing mechanics and parameters.",
+          "evidence": [
+            "rounds[0].movementId: 'reach'",
+            "rounds[1].movementId: 'squat'",
+            "adaptations[0].decision.nextRound.mechanic: 'shelter_seedlings'"
+          ],
+          "concerns": []
+        },
+        "themeCopy": {
+          "score": 4,
+          "rationale": "The theme 'Neon Rainforest' is consistently applied across all prompts and accents. The copy is coherent, immersive, and matches the theme without contradicting the scene's constraints. The prompts are imaginative and do not imply physical actions that would violate the 'center-l",
+          "evidence": [
+            "plan.title: 'Canopy Glow Quest'",
+            "rounds[0].prompt: 'Reach straight up and pull glowing fireflies down through the canopy mist.'",
+            "rounds[1].prompt: 'Sink slowly to cup neon seedlings and shield them from the jungle downpour.'",
+            "rounds[2].prompt: 'Stretch overhead and sweep the last fireflies into your glowing canopy net.'"
+          ],
+          "concerns": []
+        }
+      },
+      "adaptation": {
+        "status": "demonstrated",
+        "telemetryGrounding": {
+          "score": 4,
+          "rationale": "The adaptation is grounded in the provided telemetry: 'completionRate: 0.3333333333333333', 'movementRange: 0.54', 'targetsPresented: 12', 'targetsCompleted: 4', and 'feedback: too_hard'. These are all exact fields from the request.",
+          "evidence": [
+            "adaptations[0].request.telemetry.completionRate: 0.3333333333333333",
+            "adaptations[0].request.telemetry.movementRange: 0.54",
+            "adaptations[0].request.telemetry.targetsPresented: 12",
+            "adaptations[0].request.telemetry.targetsCompleted: 4"
+          ],
+          "concerns": []
+        },
+        "proportionality": {
+          "score": 4,
+          "rationale": "The adaptation proportionally reduces parameters based on performance: target_rate from 7 to 5, range_scale from 0.65 to 0.45, and tempo from 0.75 to 0.55. These changes are proportional to the telemetry feedback ('too_hard') and do not violate constraints.",
+          "evidence": [
+            "adaptations[0].decision.nextRound.targetRate: 5 (from 7)",
+            "adaptations[0].decision.nextRound.rangeScale: 0.45 (from 0.65)",
+            "adaptations[0].decision.nextRound.tempo: 0.55 (from 0.75)"
+          ],
+          "concerns": []
+        },
+        "explanationQuality": {
+          "score": 4,
+          "rationale": "The adaptation's reason is concise, clear, and directly links telemetry to parameter changes: 'Only 4 of 12 targets were reached and you chose Too hard, so the next targets are shallower, fewer, and slower.' This explains the changes without ambiguity.",
+          "evidence": [
+            "adaptations[0].request.telemetry.completionRate: 0.3333333333333333",
+            "adaptations[0].request.telemetry.movementRange: 0.54",
+            "adaptations[0].request.telemetry.targetsPresented: 12",
+            "adaptations[0].request.telemetry.targetsCompleted: 4"
+          ],
+          "concerns": []
+        }
+      },
+      "unsupportedClaims": [],
+      "overallNotes": "The plan is fully grounded in the scene, conservatively adheres to constraints, and is highly actionable. The adaptation is well-grounded, proportional, and clearly explained. The theme is coherent and immersive without contradicting the scene's physical constraints."
+    },
+    "detail": "Advisory local vision judgment completed; raw model output is intentionally omitted.",
+    "rawOmitted": true
+  },
+  "totals": {
+    "advisoryEarned": 36,
+    "advisoryPossible": 36,
+    "eligible": true
+  }
+}

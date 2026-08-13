@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "1.0.0",
+  "observedAt": "2026-08-13T14:41:32.955Z",
+  "inputSha256": "437e086069dde4be73d2828a5961fa8cdb55bfe45d9df99f7491d5b91d61d1ce",
+  "fixtureId": "uncertain-room",
+  "source": "fallback",
+  "deterministic": {
+    "passed": true,
+    "checks": [
+      {
+        "id": "fixture-hash",
+        "status": "pass",
+        "detail": "Fixture image hash matches the oracle."
+      },
+      {
+        "id": "scene-schema-safety",
+        "status": "pass",
+        "detail": "Scene satisfies the production schema and blocked-lane rule."
+      },
+      {
+        "id": "scene-oracle",
+        "status": "pass",
+        "detail": "Scene class, movement lanes, obstacle zones, and confidence match the fixture oracle."
+      },
+      {
+        "id": "request-consistency",
+        "status": "pass",
+        "detail": "The plan request is anchored to the judged scene."
+      },
+      {
+        "id": "plan-safety",
+        "status": "pass",
+        "detail": "Plan passes the authoritative production duration, movement, and room-envelope gates."
+      }
+    ]
+  },
+  "judge": {
+    "status": "scored",
+    "provider": "ollama",
+    "model": "qwen3-vl:8b-instruct-q4_K_M",
+    "modelDigest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+    "latencyMs": 82078,
+    "verdict": {
+      "schemaVersion": "1.0.0",
+      "scene": {
+        "grounding": {
+          "score": 4,
+          "rationale": "The scene is visually grounded in the provided image: ceiling light, air conditioner, curtain, and window are all visible and match the candidate's description. The doorway framing is also accurately represented.",
+          "evidence": [
+            "ceiling light visible at top center",
+            "air conditioner mounted on wall",
+            "curtain and window visible in center-right"
+          ],
+          "concerns": [
+            "No floor or lateral space visible, so conservative movement is justified."
+          ]
+        },
+        "conservatism": {
+          "score": 4,
+          "rationale": "The plan strictly adheres to permitted directions (vertical, center) and avoids lateral movement or jumping, which is appropriate given the low confidence (0.35) and visible obstacles (door frames, curtain). The safety note reinforces conservative behavior.",
+          "evidence": [
+            "permittedDirections: ['vertical','center']",
+            "noJumping: true",
+            "safetyNote: 'Move only inside the clear area you confirmed. Pause whenever you need to.'"
+          ],
+          "concerns": [
+            "No lateral movement is permitted, which is conservative but necessary given the occlusion."
+          ]
+        },
+        "actionability": {
+          "score": 4,
+          "rationale": "The plan is actionable within the confirmed constraints. The 'reach' mechanic is appropriate for the vertical space, and the 'collect_fireflies' prompt is metaphorical and non-invasive. The duration and tempo are reasonable for a 180-second session.",
+          "evidence": [
+            "movementId: 'reach'",
+            "durationSeconds: 52 (per round)",
+            "tempo: 0.9 (moderate pace)",
+            "mechanic: 'collect_fireflies' (non-physical)"
+          ],
+          "concerns": [
+            "The 'Neon Rainforest' theme is metaphorical and does not conflict with the real-world scene."
+          ]
+        }
+      },
+      "plan": {
+        "roomRelevance": {
+          "score": 4,
+          "rationale": "The plan's theme ('Neon Rainforest') is metaphorical and does not require any physical changes to the room. The actions (reach, collect fireflies) are abstract and do not conflict with the room's physical constraints.",
+          "evidence": [
+            "theme: 'neon_rainforest' (metaphorical)",
+            "mechanic: 'collect_fireflies' (non-physical)"
+          ],
+          "concerns": [
+            "The theme is not grounded in the room's physical features, but this is acceptable for a metaphorical plan."
+          ]
+        },
+        "movementVariety": {
+          "score": 4,
+          "rationale": "The plan consists of three identical rounds of 'reach' with the same parameters. While not varied, this is acceptable for a short, focused session. The repetition is intentional and does not violate any constraints.",
+          "evidence": [
+            "three identical rounds of 'reach'",
+            "same targetRate, rangeScale, tempo, mechanic, and prompt"
+          ],
+          "concerns": [
+            "The lack of variety is intentional for a focused, repetitive task."
+          ]
+        },
+        "themeCopy": {
+          "score": 4,
+          "rationale": "The title 'Glowgarden Awakening' and the prompt 'Reach softly to wake the fireflies' are thematically consistent with 'Neon Rainforest'. The accent 'mint' is a color that fits the theme. The language is poetic and non-invasive.",
+          "evidence": [
+            "title: 'Glowgarden Awakening'",
+            "prompt: 'Reach softly to wake the fireflies'",
+            "accent: 'mint' (fits neon theme)"
+          ],
+          "concerns": [
+            "The theme is metaphorical and does not require any physical changes to the room."
+          ]
+        }
+      },
+      "adaptation": {
+        "status": "not_demonstrated",
+        "telemetryGrounding": null,
+        "proportionality": null,
+        "explanationQuality": null
+      },
+      "unsupportedClaims": [],
+      "overallNotes": "The plan is conservative, actionable, and thematically consistent with the provided scene. The adaptation section is empty, so it is marked as not demonstrated. No unsupported claims were found."
+    },
+    "detail": "Advisory local vision judgment completed; raw model output is intentionally omitted.",
+    "rawOmitted": true
+  },
+  "totals": {
+    "advisoryEarned": 24,
+    "advisoryPossible": 24,
+    "eligible": true
+  }
+}

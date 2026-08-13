@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "1.0.0",
+  "fixtureId": "open-room",
+  "source": "codebuddy",
+  "scene": {
+    "spaceClass": "open",
+    "obstacles": [
+      {
+        "label": "chair",
+        "zone": "right",
+        "severity": "low"
+      },
+      {
+        "label": "sliding door frame",
+        "zone": "center",
+        "severity": "low"
+      }
+    ],
+    "permittedDirections": [
+      "vertical",
+      "left",
+      "right",
+      "center"
+    ],
+    "confidence": 0.88,
+    "summary": "Large open tiled room with clear center and left zones; single chair at right edge is minor. Ample space for reach, squat, and side-step movements."
+  },
+  "planRequest": {
+    "scene": {
+      "spaceClass": "open",
+      "obstacles": [
+        {
+          "label": "chair",
+          "zone": "right",
+          "severity": "low"
+        },
+        {
+          "label": "sliding door frame",
+          "zone": "center",
+          "severity": "low"
+        }
+      ],
+      "permittedDirections": [
+        "vertical",
+        "left",
+        "right",
+        "center"
+      ],
+      "confidence": 0.88,
+      "summary": "Large open tiled room with clear center and left zones; single chair at right edge is minor. Ample space for reach, squat, and side-step movements."
+    },
+    "constraints": {
+      "floorClear": true,
+      "noJumping": true,
+      "sideStepRange": "wide",
+      "permittedDirections": [
+        "vertical",
+        "left",
+        "right",
+        "center"
+      ]
+    },
+    "intent": {
+      "durationSeconds": 180,
+      "energy": "balanced",
+      "noJumping": true
+    }
+  },
+  "plan": {
+    "theme": "neon_rainforest",
+    "title": "Neon Rainforest Quest",
+    "requestedDurationSeconds": 180,
+    "restBetweenRoundsSeconds": 12,
+    "rounds": [
+      {
+        "id": "round-1",
+        "movementId": "reach",
+        "durationSeconds": 52,
+        "targetRate": 10,
+        "rangeScale": 0.85,
+        "tempo": 0.9,
+        "mechanic": "collect_fireflies",
+        "prompt": "Stretch to catch glowing fireflies flickering through the canopy overhead!",
+        "accent": "mint"
+      },
+      {
+        "id": "round-2",
+        "movementId": "squat",
+        "durationSeconds": 52,
+        "targetRate": 8,
+        "rangeScale": 0.8,
+        "tempo": 0.8,
+        "mechanic": "shelter_seedlings",
+        "prompt": "Lower into a steady squat to shield neon seedlings from the jungle rain.",
+        "accent": "orchid"
+      },
+      {
+        "id": "round-3",
+        "movementId": "side_step",
+        "durationSeconds": 52,
+        "targetRate": 10,
+        "rangeScale": 0.9,
+        "tempo": 0.95,
+        "mechanic": "redirect_river",
+        "prompt": "Step wide left and right to guide glowing river currents through the trees.",
+        "accent": "amber"
+      }
+    ],
+    "safetyNote": "Stay in open center and left zones; keep side-steps clear of the right chair. Pause anytime to rebalance."
+  },
+  "adaptations": []
+}

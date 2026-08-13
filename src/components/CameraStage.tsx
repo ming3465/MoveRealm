@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { PoseFrame } from "../pose/types";
 import { drawPose } from "../pose/drawPose";
 
@@ -9,6 +9,7 @@ interface CameraStageProps {
   className?: string;
   showGuide?: boolean;
   demo?: boolean;
+  onPreviewReadyChange?: (ready: boolean) => void;
   children?: React.ReactNode;
 }
 
@@ -19,13 +20,30 @@ export function CameraStage({
   className = "",
   showGuide = false,
   demo = false,
+  onPreviewReadyChange,
   children,
 }: CameraStageProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [previewReady, setPreviewReady] = useState(false);
 
   useEffect(() => {
     if (canvasRef.current) drawPose(canvasRef.current, pose);
   }, [pose]);
+
+  useEffect(() => onPreviewReadyChange?.(previewReady), [onPreviewReadyChange, previewReady]);
+
+  useEffect(() => {
+    if (demo) return;
+    const video = videoRef.current;
+    if (!video) return;
+    setPreviewReady(false);
+    if (video.srcObject !== stream) video.srcObject = stream ?? null;
+    if (stream) void video.play().catch(() => undefined);
+    return () => {
+      if (video.srcObject === stream) video.srcObject = null;
+    };
+  }, [demo, stream]);
 
   return (
     <div className={`camera-stage ${demo ? "camera-stage--demo" : ""} ${className}`}>
@@ -39,12 +57,17 @@ export function CameraStage({
         </div>
       ) : (
         <video
-          ref={attachVideo}
+          ref={(node) => {
+            videoRef.current = node;
+            attachVideo(node);
+          }}
           className="camera-stage__video"
           autoPlay
           muted
           playsInline
           aria-label={stream ? "Live camera preview" : "Camera preview unavailable"}
+          onPlaying={() => setPreviewReady(true)}
+          onEmptied={() => setPreviewReady(false)}
         />
       )}
       <canvas ref={canvasRef} className="camera-stage__pose" aria-hidden="true" />
@@ -59,6 +82,11 @@ export function CameraStage({
         </div>
       )}
       {children}
+      {!demo && stream && !previewReady && (
+        <div className="camera-preview-wait" role="status" aria-live="polite">
+          Starting camera preview…
+        </div>
+      )}
     </div>
   );
 }

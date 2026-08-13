@@ -11,6 +11,8 @@
     "test:watch": "vitest",
     "smoke:browser": "node scripts/browser-smoke.mjs",
     "smoke:agent": "tsx scripts/live-agent-smoke.ts",
+    "eval": "tsx scripts/evaluate-agent.ts",
+    "eval:candidates": "tsx scripts/build-eval-candidates.ts",
     "video:backup": "node scripts/build-backup-video.mjs",
     "codebuddy": "codebuddy --serve --port 8080 --session-id moverealm"
   },

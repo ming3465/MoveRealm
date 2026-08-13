@@ -162,7 +162,13 @@ describe("quest safety contract", () => {
     };
     const plan = createFallbackPlan(uncertainRequest);
     expect(plan.rounds.every((round) => round.rangeScale <= 0.62)).toBe(true);
+    expect(plan.rounds.every((round) => round.movementId === "reach")).toBe(true);
     expect(validatePlanSafety(plan, uncertainRequest)).toEqual(plan);
+
+    const floorDependent = structuredClone(plan);
+    floorDependent.rounds[1].movementId = "squat";
+    floorDependent.rounds[1].mechanic = "shelter_seedlings";
+    expect(() => validatePlanSafety(floorDependent, uncertainRequest)).toThrow(/reach rounds only/i);
   });
 
   it("rejects an adaptation whose labels do not match its parameter changes", () => {

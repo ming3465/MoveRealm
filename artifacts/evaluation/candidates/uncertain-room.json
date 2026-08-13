@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "1.0.0",
+  "fixtureId": "uncertain-room",
+  "source": "fallback",
+  "candidateDetail": "The original CodeBuddy plan failed current safety validation; a validated deterministic fallback is recorded.",
+  "scene": {
+    "spaceClass": "uncertain",
+    "obstacles": [
+      {
+        "label": "door frame left",
+        "zone": "left",
+        "severity": "medium"
+      },
+      {
+        "label": "door/wall right",
+        "zone": "right",
+        "severity": "medium"
+      },
+      {
+        "label": "curtain and window",
+        "zone": "center",
+        "severity": "low"
+      }
+    ],
+    "permittedDirections": [
+      "vertical",
+      "center"
+    ],
+    "confidence": 0.35,
+    "summary": "View through a doorway; floor and lateral space not visible. Only upright reach and forward center movement tentatively permitted. Conservative profile applied."
+  },
+  "planRequest": {
+    "scene": {
+      "spaceClass": "uncertain",
+      "obstacles": [
+        {
+          "label": "door frame left",
+          "zone": "left",
+          "severity": "medium"
+        },
+        {
+          "label": "door/wall right",
+          "zone": "right",
+          "severity": "medium"
+        },
+        {
+          "label": "curtain and window",
+          "zone": "center",
+          "severity": "low"
+        }
+      ],
+      "permittedDirections": [
+        "vertical",
+        "center"
+      ],
+      "confidence": 0.35,
+      "summary": "View through a doorway; floor and lateral space not visible. Only upright reach and forward center movement tentatively permitted. Conservative profile applied."
+    },
+    "constraints": {
+      "floorClear": true,
+      "noJumping": true,
+      "sideStepRange": "none",
+      "permittedDirections": [
+        "vertical",
+        "center"
+      ]
+    },
+    "intent": {
+      "durationSeconds": 180,
+      "energy": "balanced",
+      "noJumping": true
+    }
+  },
+  "plan": {
+    "theme": "neon_rainforest",
+    "title": "Glowgarden Awakening",
+    "requestedDurationSeconds": 180,
+    "restBetweenRoundsSeconds": 12,
+    "rounds": [
+      {
+        "id": "round-1",
+        "movementId": "reach",
+        "durationSeconds": 52,
+        "targetRate": 7,
+        "rangeScale": 0.6,
+        "tempo": 0.9,
+        "mechanic": "collect_fireflies",
+        "prompt": "Reach softly to wake the fireflies",
+        "accent": "mint"
+      },
+      {
+        "id": "round-2",
+        "movementId": "reach",
+        "durationSeconds": 52,
+        "targetRate": 7,
+        "rangeScale": 0.6,
+        "tempo": 0.9,
+        "mechanic": "collect_fireflies",
+        "prompt": "Reach softly to wake the fireflies",
+        "accent": "mint"
+      },
+      {
+        "id": "round-3",
+        "movementId": "reach",
+        "durationSeconds": 52,
+        "targetRate": 7,
+        "rangeScale": 0.6,
+        "tempo": 0.9,
+        "mechanic": "collect_fireflies",
+        "prompt": "Reach softly to wake the fireflies",
+        "accent": "mint"
+      }
+    ],
+    "safetyNote": "Move only inside the clear area you confirmed. Pause whenever you need to."
+  },
+  "adaptations": []
+}

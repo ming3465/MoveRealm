@@ -118,6 +118,7 @@ for (const fixturePath of fixturePaths) {
     planDetail: planRun.response.meta.detail,
     planLatencyMs: planRun.response.meta.latencyMs,
     planClientElapsedMs: planRun.elapsedMs,
+    plan: planRun.response.data,
     planSignature: plan.rounds.map((round) => `${round.movementId}:${round.rangeScale}`).join("|"),
     planTotalSeconds:
       plan.rounds.reduce((sum, round) => sum + round.durationSeconds, 0) +
