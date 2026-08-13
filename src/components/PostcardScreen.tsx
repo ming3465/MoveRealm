@@ -1,17 +1,77 @@
-import type { SessionResult } from "./GameScreen";
+import { useState } from "react";
+import {
+  buildSessionEvidence,
+  type SessionResult,
+} from "../lib/sessionEvidence";
+import type { DirectorMeta, SceneProfile } from "../shared/contracts";
 import { Brand } from "./Brand";
 
 interface PostcardScreenProps {
   result: SessionResult;
+  sceneMeta: DirectorMeta | null;
+  roomSpaceClass: SceneProfile["spaceClass"] | null;
   onAgain: () => void;
   onHome: () => void;
 }
 
-export function PostcardScreen({ result, onAgain, onHome }: PostcardScreenProps) {
+export function PostcardScreen({
+  result,
+  sceneMeta,
+  roomSpaceClass,
+  onAgain,
+  onHome,
+}: PostcardScreenProps) {
+  const [trialNumber, setTrialNumber] = useState(1);
+  const [exportStatus, setExportStatus] = useState("");
   const completion = result.totalTargets
     ? Math.round((result.completedTargets / result.totalTargets) * 100)
     : 0;
   const lastAdaptation = result.adaptations.at(-1);
+  const fpsSummary = result.poseMetricSummaries.trackingFps;
+  const inferenceSummary = result.poseMetricSummaries.inferenceMs;
+  const responseSummary = result.poseMetricSummaries.visibleResponseLatencyMs;
+  const trackingModes = new Set(result.telemetry.map((round) => round.trackingMode));
+  const responseUnavailableLabel = trackingModes.size > 1
+    ? "N/A after control switch"
+    : trackingModes.has("pose")
+      ? "N/A: capture metadata unavailable"
+      : "N/A in keyboard mode";
+
+  const downloadEvidence = async () => {
+    const evidence = buildSessionEvidence({
+      trialId: `trial-${trialNumber}`,
+      roomSpaceClass,
+      result,
+      sceneDirector: sceneMeta,
+      build: {
+        buildId: import.meta.env.VITE_BUILD_ID || null,
+        commitSha: import.meta.env.VITE_COMMIT_SHA || null,
+      },
+    });
+    const serialized = `${JSON.stringify(evidence, null, 2)}\n`;
+    const blob = new Blob([serialized], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `moverealm-trial-${trialNumber}-session.json`;
+    link.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+    if (globalThis.crypto?.subtle) {
+      const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(serialized));
+      const checksum = [...new Uint8Array(digest)]
+        .map((byte) => byte.toString(16).padStart(2, "0"))
+        .join("");
+      setExportStatus(
+        `Downloaded anonymous evidence for trial ${trialNumber}. SHA-256 ${checksum}`,
+      );
+    } else {
+      setExportStatus(
+        `Downloaded anonymous evidence for trial ${trialNumber}. SHA-256 is unavailable on this origin.`,
+      );
+    }
+  };
 
   return (
     <main className="postcard-screen">
@@ -34,7 +94,7 @@ export function PostcardScreen({ result, onAgain, onHome }: PostcardScreenProps)
           <div className="result-stats">
             <div><strong>{(result.activeSeconds / 60).toFixed(1)}</strong><small>active minutes</small></div>
             <div><strong>{completion}%</strong><small>targets met</small></div>
-            <div><strong>{result.trackingFps == null ? "N/A" : Math.round(result.trackingFps)}</strong><small>tracking FPS</small></div>
+            <div><strong>{fpsSummary?.p05 == null ? "N/A" : fpsSummary.p05.toFixed(1)}</strong><small>tracking FPS p05</small></div>
           </div>
           {lastAdaptation && (
             <div className="result-trace"><span>✦</span><p><small>Movement Director adapted</small>“{lastAdaptation.reason}”</p></div>
@@ -42,9 +102,33 @@ export function PostcardScreen({ result, onAgain, onHome }: PostcardScreenProps)
           <div className="result-proof">
             <span>Adventure clock <strong>{(result.plan.requestedDurationSeconds / 60).toFixed(1)} min</strong></span>
             <span>Plan + adaptation latency <strong>{Math.round(result.directorLatencyMs)} ms</strong></span>
-            <span>Movement feedback <strong>{result.responseLatencyMs == null ? "N/A in keyboard mode" : `${Math.round(result.responseLatencyMs)} ms`}</strong></span>
+            <span>Visual response p95 <strong>{responseSummary?.p95 == null ? responseUnavailableLabel : `${Math.round(responseSummary.p95)} ms`}</strong></span>
+            <span>Pose inference p95 <strong>{inferenceSummary?.p95 == null ? "N/A" : `${Math.round(inferenceSummary.p95)} ms`}</strong></span>
+            <span>Pose / response samples <strong>{fpsSummary?.sampleCount ?? 0} / {responseSummary?.sampleCount ?? 0}</strong></span>
             <span>First movement <strong>{result.timeToFirstMovementMs == null ? "No completed target" : `${(result.timeToFirstMovementMs / 1_000).toFixed(1)} s`}</strong></span>
-            <span>Live video uploaded <strong>never</strong></span>
+            <span>Live camera handling <strong>browser-only by design</strong></span>
+          </div>
+          <div className="evidence-export">
+            <div>
+              <label htmlFor="trial-number">Anonymous trial number</label>
+              <input
+                id="trial-number"
+                type="number"
+                min={1}
+                max={9999}
+                inputMode="numeric"
+                value={trialNumber}
+                onChange={(event) => {
+                  const value = Number(event.target.value);
+                  setTrialNumber(Number.isInteger(value) ? Math.min(9999, Math.max(1, value)) : 1);
+                }}
+              />
+            </div>
+            <button className="secondary-button" type="button" onClick={() => void downloadEvidence()}>
+              Download local run evidence
+            </button>
+            <p>This JSON stays on this device and contains aggregate metrics only—no image, video, identifiers, or landmarks.</p>
+            <span role="status" aria-live="polite">{exportStatus}</span>
           </div>
           <button className="primary-button primary-button--large" type="button" onClick={onAgain}>Play this room again <span>↻</span></button>
           <button className="text-button" type="button" onClick={onHome}>Scan a different room</button>

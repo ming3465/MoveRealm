@@ -96,21 +96,27 @@ function processFrame(request: Extract<PoseWorkerRequest, { type: "frame" }>): v
   processing = true;
   const sourceWidth = request.bitmap.width;
   const sourceHeight = request.bitmap.height;
-  const startedAt = performance.now();
+  const workerStartedNow = performance.now();
+  const onMainTimeline = (workerNow: number) =>
+    performance.timeOrigin + workerNow - request.mainPerformanceTimeOrigin;
   try {
-    landmarker.detectForVideo(request.bitmap, request.timestamp, (result) => {
+    landmarker.detectForVideo(request.bitmap, request.timing.frameCallbackAt, (result) => {
       try {
+        const inferenceCompletedNow = performance.now();
         const landmarks = (result.landmarks[0] ?? []).map(normalizeLandmark);
         const worldLandmarks = (result.worldLandmarks[0] ?? []).map(normalizeLandmark);
         const mask = copyMask(result);
-        const completedAt = performance.now();
-        processedTimes.push(completedAt);
-        while (processedTimes.length > 1 && completedAt - processedTimes[0] > 1_000) {
+        const workerCompletedNow = performance.now();
+        processedTimes.push(workerCompletedNow);
+        while (
+          processedTimes.length > 1 &&
+          workerCompletedNow - processedTimes[0] > 1_000
+        ) {
           processedTimes.shift();
         }
         const response: PoseWorkerResponse = {
           type: "result",
-          timestamp: request.timestamp,
+          timestamp: request.timing.frameCallbackAt,
           sourceWidth,
           sourceHeight,
           landmarks,
@@ -120,10 +126,16 @@ function processFrame(request: Extract<PoseWorkerRequest, { type: "frame" }>): v
             ? Math.min(
                 120,
                 ((processedTimes.length - 1) * 1_000) /
-                  Math.max(1, completedAt - processedTimes[0]),
+                  Math.max(1, workerCompletedNow - processedTimes[0]),
               )
             : 0,
-          inferenceMs: completedAt - startedAt,
+          inferenceMs: inferenceCompletedNow - workerStartedNow,
+          timing: {
+            ...request.timing,
+            workerStartedAt: onMainTimeline(workerStartedNow),
+            inferenceCompletedAt: onMainTimeline(inferenceCompletedNow),
+            workerCompletedAt: onMainTimeline(workerCompletedNow),
+          },
           ...(mask ? { mask } : {}),
         };
         const transfer = mask ? [mask.alpha.buffer] : [];

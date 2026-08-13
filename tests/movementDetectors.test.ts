@@ -35,6 +35,17 @@ function standingPose(timestamp = 0): PoseFrame {
     confidence: 0.95,
     fps: 28,
     inferenceMs: 26,
+    timing: {
+      frameCallbackSource: "video_frame_callback",
+      frameCallbackAt: timestamp,
+      cameraCaptureAt: Math.max(0, timestamp - 8),
+      videoFramePresentedAt: timestamp - 1,
+      bitmapReadyAt: timestamp + 1,
+      workerStartedAt: timestamp + 2,
+      inferenceCompletedAt: timestamp + 27,
+      workerCompletedAt: timestamp + 28,
+      mainDeliveredAt: timestamp + 29,
+    },
   };
 }
 
@@ -89,7 +100,9 @@ describe("movement state machines", () => {
     const detector = new MovementDetector(calibration);
     const reach = standingPose(1_000);
     reach.landmarks[15] = { x: 0.05, y: 0.1, z: 0, visibility: 0.99 };
-    expect(detector.process(reach, "reach", 0.8)?.movementId).toBe("reach");
+    const first = detector.process(reach, "reach", 0.8);
+    expect(first?.movementId).toBe("reach");
+    expect(first?.poseTiming).toBe(reach.timing);
     expect(detector.process({ ...reach, timestamp: 1_500 }, "reach", 0.8)).toBeUndefined();
     const reset = standingPose(1_900);
     reset.landmarks[15] = { x: 0.4, y: 0.45, z: 0, visibility: 0.99 };

@@ -1,4 +1,9 @@
-import type { PoseFrame, PoseWorkerRequest, PoseWorkerResponse } from "./types";
+import type {
+  PoseFrame,
+  PoseSourceTiming,
+  PoseWorkerRequest,
+  PoseWorkerResponse,
+} from "./types.js";
 
 const WASM_ROOT = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1/wasm";
 const MODEL_URL =
@@ -10,10 +15,31 @@ export interface PoseEngineHandlers {
   onError?: (message: string, recoverable: boolean) => void;
 }
 
+/**
+ * Returns a genuine camera-capture-to-paint duration only when the browser supplied
+ * capture metadata. Presentation callbacks and rAF fallbacks intentionally return null.
+ */
+export function cameraCaptureToVisibleLatencyMs(
+  timing: { cameraCaptureAt?: number } | undefined,
+  visibleAt: number,
+): number | null {
+  const capturedAt = timing?.cameraCaptureAt;
+  if (
+    capturedAt == null ||
+    !Number.isFinite(capturedAt) ||
+    !Number.isFinite(visibleAt) ||
+    visibleAt < capturedAt
+  ) {
+    return null;
+  }
+  return visibleAt - capturedAt;
+}
+
 export class PoseEngine {
   private worker?: Worker;
   private video?: HTMLVideoElement;
-  private frameHandle?: number;
+  private callbackHandle?: number;
+  private callbackKind?: "video" | "animation";
   private ready = false;
   private inFlight = false;
   private stopped = false;
@@ -21,17 +47,17 @@ export class PoseEngine {
   private handlers?: PoseEngineHandlers;
 
   start(video: HTMLVideoElement, handlers: PoseEngineHandlers): void {
+    if (this.video && this.video !== video) this.cancelFrameCallback();
     this.video = video;
     this.handlers = handlers;
     this.stopped = false;
     if (!this.worker) this.createWorker();
-    if (this.frameHandle == null) this.frameHandle = requestAnimationFrame(this.loop);
+    this.scheduleFrameCallback();
   }
 
   unbindVideo(): void {
+    this.cancelFrameCallback();
     this.video = undefined;
-    if (this.frameHandle != null) cancelAnimationFrame(this.frameHandle);
-    this.frameHandle = undefined;
   }
 
   private createWorker(): void {
@@ -49,6 +75,7 @@ export class PoseEngine {
         return;
       }
       this.inFlight = false;
+      const mainDeliveredAt = performance.now();
       this.handlers?.onFrame({
         timestamp: response.timestamp,
         sourceWidth: response.sourceWidth,
@@ -58,6 +85,10 @@ export class PoseEngine {
         confidence: response.confidence,
         fps: response.fps,
         inferenceMs: response.inferenceMs,
+        timing: {
+          ...response.timing,
+          mainDeliveredAt,
+        },
         ...(response.mask ? { mask: response.mask } : {}),
       });
     };
@@ -73,21 +104,72 @@ export class PoseEngine {
     } satisfies PoseWorkerRequest);
   }
 
-  private loop = (now: number): void => {
-    if (this.stopped) return;
-    this.frameHandle = requestAnimationFrame(this.loop);
+  private scheduleFrameCallback(): void {
+    if (this.stopped || !this.video || this.callbackHandle != null) return;
+    if (typeof this.video.requestVideoFrameCallback === "function") {
+      this.callbackKind = "video";
+      this.callbackHandle = this.video.requestVideoFrameCallback(this.onVideoFrame);
+      return;
+    }
+    this.callbackKind = "animation";
+    this.callbackHandle = requestAnimationFrame(this.onAnimationFrame);
+  }
+
+  private cancelFrameCallback(): void {
+    if (this.callbackHandle == null) return;
+    if (this.callbackKind === "video" && this.video) {
+      this.video.cancelVideoFrameCallback(this.callbackHandle);
+    } else {
+      cancelAnimationFrame(this.callbackHandle);
+    }
+    this.callbackHandle = undefined;
+    this.callbackKind = undefined;
+  }
+
+  private onVideoFrame = (
+    frameCallbackAt: DOMHighResTimeStamp,
+    metadata: VideoFrameCallbackMetadata,
+  ): void => {
+    this.callbackHandle = undefined;
+    this.callbackKind = undefined;
+    this.scheduleFrameCallback();
+    this.readFrame({
+      frameCallbackSource: "video_frame_callback",
+      frameCallbackAt,
+      ...(Number.isFinite(metadata.captureTime)
+        ? { cameraCaptureAt: metadata.captureTime }
+        : {}),
+      ...(Number.isFinite(metadata.presentationTime)
+        ? { videoFramePresentedAt: metadata.presentationTime }
+        : {}),
+      bitmapReadyAt: frameCallbackAt,
+    });
+  };
+
+  private onAnimationFrame = (frameCallbackAt: DOMHighResTimeStamp): void => {
+    this.callbackHandle = undefined;
+    this.callbackKind = undefined;
+    this.scheduleFrameCallback();
+    this.readFrame({
+      frameCallbackSource: "animation_frame_fallback",
+      frameCallbackAt,
+      bitmapReadyAt: frameCallbackAt,
+    });
+  };
+
+  private readFrame(sourceTiming: PoseSourceTiming): void {
     if (
       !this.ready ||
       this.inFlight ||
       !this.video ||
       this.video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ||
-      now - this.lastSentAt < 32
+      sourceTiming.frameCallbackAt - this.lastSentAt < 32
     ) {
       return;
     }
 
     this.inFlight = true;
-    this.lastSentAt = now;
+    this.lastSentAt = sourceTiming.frameCallbackAt;
     void createImageBitmap(this.video)
       .then((bitmap) => {
         if (!this.worker || this.stopped) {
@@ -95,8 +177,17 @@ export class PoseEngine {
           this.inFlight = false;
           return;
         }
+        const timing: PoseSourceTiming = {
+          ...sourceTiming,
+          bitmapReadyAt: performance.now(),
+        };
         this.worker.postMessage(
-          { type: "frame", bitmap, timestamp: now } satisfies PoseWorkerRequest,
+          {
+            type: "frame",
+            bitmap,
+            timing,
+            mainPerformanceTimeOrigin: performance.timeOrigin,
+          } satisfies PoseWorkerRequest,
           [bitmap],
         );
       })
@@ -107,7 +198,7 @@ export class PoseEngine {
           true,
         );
       });
-  };
+  }
 
   dispose(): void {
     this.stopped = true;

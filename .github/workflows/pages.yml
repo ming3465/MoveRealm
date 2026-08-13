@@ -3,6 +3,11 @@ name: Deploy public guided demo
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "artifacts/**"
+      - "README.md"
+      - "assets/README.md"
   workflow_dispatch:
 
 permissions:
@@ -31,6 +36,8 @@ jobs:
       - run: npm run build
         env:
           VITE_BASE_PATH: /MoveRealm/
+          VITE_BUILD_ID: build-${{ github.run_id }}
+          VITE_COMMIT_SHA: ${{ github.sha }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

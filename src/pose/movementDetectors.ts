@@ -212,6 +212,7 @@ export class MovementDetector {
       x,
       y,
       ...(side ? { side } : {}),
+      poseTiming: frame.timing,
       detectedAt: performance.now(),
     };
   }

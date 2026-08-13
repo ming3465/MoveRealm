@@ -18,7 +18,7 @@ import { CaptureScreen } from "./components/CaptureScreen";
 import { DirectorThinking } from "./components/DirectorThinking";
 import { ConfirmScreen } from "./components/ConfirmScreen";
 import { CalibrationScreen } from "./components/CalibrationScreen";
-import type { SessionResult } from "./components/GameScreen";
+import type { SessionResult } from "./lib/sessionEvidence";
 import { PostcardScreen } from "./components/PostcardScreen";
 
 type Screen =
@@ -369,7 +369,13 @@ export default function App() {
         </Suspense>
       )}
       {screen === "postcard" && result && (
-        <PostcardScreen result={result} onAgain={playAgain} onHome={reset} />
+        <PostcardScreen
+          result={result}
+          sceneMeta={scene?.meta ?? null}
+          roomSpaceClass={scene?.data.spaceClass ?? null}
+          onAgain={playAgain}
+          onHome={reset}
+        />
       )}
     </div>
   );

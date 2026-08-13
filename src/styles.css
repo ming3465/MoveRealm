@@ -2526,8 +2526,8 @@ button:disabled {
 }
 
 .result-proof {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin-top: 15px;
   color: var(--quiet);
@@ -2537,6 +2537,58 @@ button:disabled {
 .result-proof strong {
   color: #c7ddd3;
   font-weight: 650;
+}
+
+.evidence-export {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.55fr) minmax(190px, 1fr);
+  gap: 9px 12px;
+  align-items: end;
+  margin: 17px 0;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.evidence-export label,
+.evidence-export p,
+.evidence-export > span {
+  color: var(--quiet);
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.evidence-export label {
+  display: block;
+  margin-bottom: 5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.evidence-export input {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 12px;
+  color: var(--ink);
+  background: #081811;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  font: inherit;
+}
+
+.evidence-export .secondary-button {
+  min-height: 42px;
+}
+
+.evidence-export p,
+.evidence-export > span {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.evidence-export > span:empty {
+  display: none;
 }
 
 /* Motion and responsive */
@@ -2806,7 +2858,16 @@ button:disabled {
   }
 
   .result-proof {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+  }
+
+  .evidence-export {
+    grid-template-columns: 1fr;
+  }
+
+  .evidence-export p,
+  .evidence-export > span {
+    grid-column: 1;
   }
 }
 

@@ -1,5 +1,6 @@
 import { spawn } from "node:child_process";
-import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { mkdir, mkdtemp, readFile, readdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -12,6 +13,8 @@ const testAdaptation = process.env.MOVEREALM_ADAPT_SMOKE === "1" || testFullSess
 const testCapture = process.env.MOVEREALM_CAPTURE_SMOKE === "1";
 const expectFallback = process.env.MOVEREALM_EXPECT_FALLBACK === "1";
 const expectCodeBuddy = process.env.MOVEREALM_EXPECT_CODEBUDDY === "1";
+const expectedCommit = process.env.MOVEREALM_EXPECT_COMMIT;
+const expectedBuildId = process.env.MOVEREALM_EXPECT_BUILD_ID;
 const artifactDirectory = await mkdtemp(join(tmpdir(), "moverealm-browser-smoke-"));
 const profileDirectory = join(artifactDirectory, "profile");
 await mkdir(profileDirectory);
@@ -215,6 +218,11 @@ try {
   await page.send("Page.enable");
   await page.send("Log.enable");
   await page.send("Network.enable");
+  await page.send("Browser.setDownloadBehavior", {
+    behavior: "allow",
+    downloadPath: artifactDirectory,
+    eventsEnabled: true,
+  });
 
   await waitFor('document.readyState === "complete" && !!document.querySelector(".landing")');
   const landingTitle = await evaluate('document.querySelector("h1")?.innerText');
@@ -315,6 +323,9 @@ try {
 
   let postcard;
   let postcardScreenshot;
+  let evidenceFile;
+  let evidenceSha256;
+  let evidenceProduct;
   if (testFullSession) {
     await clickButton("Take the forest pause");
     await waitFor('document.querySelector(".game-progress")?.textContent.includes("Round 2 of 3")', 20_000);
@@ -339,6 +350,46 @@ try {
     })`);
     if (!postcard.title || postcard.stats[0] !== "2.6" || postcard.stats[2] !== "N/A" || !postcard.proof?.includes("3.0 min")) {
       throw new Error(`Postcard metrics were not honest and complete: ${JSON.stringify(postcard)}`);
+    }
+    await activateButtonByKeyboard("Download local run evidence");
+    await waitFor('document.body.innerText.includes("Downloaded anonymous evidence for trial 1")');
+    for (let attempt = 0; attempt < 40; attempt += 1) {
+      const files = await readdir(artifactDirectory);
+      evidenceFile = files.find((file) => file === "moverealm-trial-1-session.json");
+      if (evidenceFile) break;
+      await delay(100);
+    }
+    if (!evidenceFile) throw new Error("Local session evidence did not download.");
+    const evidenceBytes = await readFile(join(artifactDirectory, evidenceFile));
+    const evidence = JSON.parse(evidenceBytes.toString("utf8"));
+    evidenceProduct = evidence.product;
+    evidenceSha256 = createHash("sha256").update(evidenceBytes).digest("hex");
+    const visibleExportStatus = await evaluate(
+      '[...document.querySelectorAll("[role=status]")].map((item) => item.textContent).find((text) => text.includes("Downloaded anonymous evidence")) ?? ""',
+    );
+    if (!visibleExportStatus.includes(evidenceSha256)) {
+      throw new Error(`Visible evidence checksum did not match the downloaded file: ${visibleExportStatus}`);
+    }
+    if (
+      evidence.context?.trackingMode !== "keyboard" ||
+      evidence.metrics?.trackingFps !== null ||
+      evidence.metrics?.visibleResponseLatencyMs !== null ||
+      evidence.measurementEvidence?.trackingFps?.threshold?.status !== "not_evaluated" ||
+      evidence.measurementEvidence?.timeToFirstMovementMs?.threshold?.status !== "not_evaluated" ||
+      evidence.privacy?.imagesOrVideoIncluded !== false ||
+      evidence.privacy?.rawPoseLandmarksIncluded !== false
+    ) {
+      throw new Error(`Downloaded evidence was not privacy-safe keyboard evidence: ${JSON.stringify(evidence)}`);
+    }
+    if (expectedCommit && evidence.product?.commitSha !== expectedCommit) {
+      throw new Error(
+        `Evidence commit ${evidence.product?.commitSha ?? "missing"} did not match ${expectedCommit}.`,
+      );
+    }
+    if (expectedBuildId && evidence.product?.buildId !== expectedBuildId) {
+      throw new Error(
+        `Evidence build ${evidence.product?.buildId ?? "missing"} did not match ${expectedBuildId}.`,
+      );
     }
     postcardScreenshot = await screenshot("06-postcard");
     await clickButton("Play this room again");
@@ -386,6 +437,9 @@ try {
         apiPostRequests,
         adaptation,
         postcard,
+        evidenceFile: evidenceFile ? join(artifactDirectory, evidenceFile) : undefined,
+        evidenceSha256,
+        evidenceProduct,
         screenshots: [
           landingScreenshot,
           cameraScreenshot,

@@ -12,10 +12,12 @@ import type {
 import { formatMovementName, validateAdaptationSafety } from "../shared/contracts";
 import { createFallbackAdaptation } from "../shared/fallbacks";
 import type { CalibrationProfile, MovementEvent, PoseFrame } from "../pose/types";
+import { cameraCaptureToVisibleLatencyMs } from "../pose/PoseEngine";
 import { MovementDetector, TrackingGate } from "../pose/movementDetectors";
 import { coverTransform, pointInCover } from "../pose/coverTransform";
 import { NeonGame, type NeonGameHandle } from "../game/NeonGame";
 import { requestAdaptation } from "../lib/directorApi";
+import { summarizeMetricSamples, type SessionResult } from "../lib/sessionEvidence";
 import { Brand } from "./Brand";
 import { CameraStage } from "./CameraStage";
 import { DirectorBadge } from "./DirectorBadge";
@@ -47,18 +49,7 @@ interface MutableRoundMetrics {
   responseLatencies: number[];
 }
 
-export interface SessionResult {
-  plan: QuestPlan;
-  telemetry: RoundTelemetry[];
-  adaptations: AdaptationDecision[];
-  activeSeconds: number;
-  totalTargets: number;
-  completedTargets: number;
-  trackingFps: number | null;
-  responseLatencyMs: number | null;
-  timeToFirstMovementMs: number | null;
-  directorLatencyMs: number;
-}
+export type { SessionResult } from "../lib/sessionEvidence";
 
 const KEYBOARD_HELP: Record<QuestRound["movementId"], string> = {
   reach: "Press ↑ or Space when a firefly glows",
@@ -120,6 +111,12 @@ export function GameScreen({
   const lastPoseAtRef = useRef(performance.now());
   const firstMovementAtRef = useRef<number | undefined>(undefined);
   const responseLatenciesRef = useRef<number[]>([]);
+  const trackingFpsSamplesRef = useRef<number[]>([]);
+  const inferenceSamplesRef = useRef<number[]>([]);
+  const adaptationMetasRef = useRef<DirectorMeta[]>([]);
+  const pendingVisualLatencyRef = useRef<
+    Pick<NonNullable<MovementEvent["poseTiming"]>, "cameraCaptureAt"> | undefined
+  >(undefined);
   const roundStartedAtRef = useRef(performance.now());
   const endedRef = useRef(false);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -146,17 +143,29 @@ export function GameScreen({
       metricsRef.current.completed += 1;
       if (!firstMovementAtRef.current) firstMovementAtRef.current = completedAt;
       if (!demo) {
-        window.requestAnimationFrame(() => {
-          window.requestAnimationFrame(() => {
-            const latency = Math.max(0, performance.now() - event.timestamp);
-            metricsRef.current.responseLatencies.push(latency);
-            responseLatenciesRef.current.push(latency);
-          });
-        });
+        if (event.poseTiming?.cameraCaptureAt != null) {
+          pendingVisualLatencyRef.current = {
+            cameraCaptureAt: event.poseTiming.cameraCaptureAt,
+          };
+        }
       }
       setScore((value) => value + 120 + Math.round(event.amplitude * 30));
     }
   }, [demo, globallyPaused]);
+
+  useEffect(() => {
+    const timing = pendingVisualLatencyRef.current;
+    if (!timing) return;
+    pendingVisualLatencyRef.current = undefined;
+    const frame = window.requestAnimationFrame(() => {
+      const latency = cameraCaptureToVisibleLatencyMs(timing, performance.now());
+      if (latency != null) {
+        metricsRef.current.responseLatencies.push(latency);
+        responseLatenciesRef.current.push(latency);
+      }
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [score]);
 
   useEffect(() => {
     if (!pose || demo) return;
@@ -168,6 +177,8 @@ export function GameScreen({
       if (performance.now() - roundStartedAtRef.current >= 2_000) {
         metricsRef.current.confidences.push(pose.confidence);
         metricsRef.current.fps.push(pose.fps);
+        if (pose.fps > 0) trackingFpsSamplesRef.current.push(pose.fps);
+        if (pose.inferenceMs >= 0) inferenceSamplesRef.current.push(pose.inferenceMs);
       }
       const event = detectorRef.current.process(pose, currentRound.movementId, currentRound.rangeScale);
       if (event) {
@@ -307,14 +318,22 @@ export function GameScreen({
           : 0,
         totalTargets: allTelemetry.reduce((sum, round) => sum + round.targetsPresented, 0),
         completedTargets: allTelemetry.reduce((sum, round) => sum + round.targetsCompleted, 0),
-        trackingFps: demo ? null : average(allTelemetry.map((item) => item.trackingFps), 0),
-        responseLatencyMs: demo || responseLatenciesRef.current.length === 0
-          ? null
-          : average(responseLatenciesRef.current),
         timeToFirstMovementMs: firstMovementAtRef.current == null
           ? null
           : Math.max(0, firstMovementAtRef.current - journeyStartedAt),
         directorLatencyMs: planMeta.latencyMs + adaptationLatencyRef.current,
+        poseMetricSummaries: demo
+          ? {}
+          : {
+              trackingFps: summarizeMetricSamples(trackingFpsSamplesRef.current),
+              inferenceMs: summarizeMetricSamples(inferenceSamplesRef.current),
+              visibleResponseLatencyMs: summarizeMetricSamples(responseLatenciesRef.current),
+            },
+        directorMetas: {
+          plan: planMeta,
+          adaptations: [...adaptationMetasRef.current],
+        },
+        journeyDurationMs: Math.max(0, performance.now() - journeyStartedAt),
       });
     }, 900);
   };
@@ -352,6 +371,7 @@ export function GameScreen({
         }
       : await requestAdaptation(adaptationRequest);
     adaptationLatencyRef.current += response.meta.latencyMs;
+    adaptationMetasRef.current.push(response.meta);
     const decision = response.data;
     const nextRounds = rounds.map((round, index) => (index === roundIndex + 1 ? decision.nextRound : round));
     setRounds(nextRounds);
