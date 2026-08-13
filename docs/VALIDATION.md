@@ -159,7 +159,8 @@ from the finished submission artifact where specified.
 | Real-person visible response latency | under 100 ms | — | **pending human/device measurement** |
 | Real-person time to first accepted movement (TTFF) | under 45 seconds | — | **pending timed human run** |
 | Three-user qualitative trial | three completed observations | — | **pending all 3 user trials** |
-| Final 3–5 minute submission video | accessible YouTube or Google Drive link | — | **pending recording and upload** |
+| Camera-free backup video file | 3–5 minutes; overview, features, reflection, tip | 4:58.834; H.264/AAC; 1440×810 | **recorded local artifact** |
+| Accepted video URL | accessible YouTube or Google Drive link | — | **pending upload and signed-out check** |
 
 Measurement method:
 
@@ -191,3 +192,18 @@ agreed to the demo recording.
 | 3 | — | — | — | — | — | pending human trial |
 
 Report the three observations as a small qualitative sample. Do not extrapolate population results.
+
+## Recorded camera-free backup video
+
+[`moverealm-guided-backup.mp4`](../assets/submission/moverealm-guided-backup.mp4) is a 4:58.834
+consent-free backup assembled from the verified guided UI, controlled fake-camera CodeBuddy
+captures, and a code-rendered architecture slide. It is 1440×810 H.264 with mono AAC synthetic
+narration. Audio analysis observed −16.4 LUFS integrated loudness and −1.0 dBFS true peak. Opening,
+midpoint, architecture, and closing frames were visually inspected. Its SHA-256 is
+`dd4d2ef14e7eed8217f45a520a056e895d098a74755d5e09c0ba9fcbe3951951`.
+
+The opening and closing card explicitly says camera-free backup demo, synthetic narration, guided
+keyboard controls, no person shown, and no human pose measurements claimed. The matching transcript
+is [`moverealm-guided-backup-transcript.txt`](../assets/submission/moverealm-guided-backup-transcript.txt).
+The official requirement still needs this file, or a preferred live-person take, uploaded to
+YouTube or Google Drive and tested while signed out.

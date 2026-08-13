@@ -149,7 +149,24 @@ flow. They are separate from the six guided screenshots and are controlled, non-
 - **Pending:** real-person visible camera-to-game latency.
 - **Pending:** real-person time to first accepted movement (TTFF).
 - **Pending:** all three qualitative user trials.
-- **Pending:** final 3–5 minute demo recording, accessible video URL, and video checksum.
+- **Complete local artifact:** 4:58 camera-free backup video and transcript; see below.
+- **Pending:** upload that video, or a preferred live-person recording, to YouTube or Google Drive
+  and verify its public URL.
 
 Synthetic fixtures, keyboard telemetry, a successful deployment, and a camera-permission smoke do
 not close any of those pending items.
+
+## Camera-free backup video
+
+| Artifact | Observation | SHA-256 |
+|---|---|---|
+| `../assets/submission/moverealm-guided-backup.mp4` | 4:58.834; 1440×810; H.264 + mono AAC; synthetic narration; −16.4 LUFS integrated / −1.0 dBFS true peak | `dd4d2ef14e7eed8217f45a520a056e895d098a74755d5e09c0ba9fcbe3951951` |
+| `../assets/submission/moverealm-guided-backup-transcript.txt` | 784-word disclosure and narration transcript | `3ecedf106de903f9c552a4042a7c1a77e7514338a37d2c2bf3287fc2ffe3c20a` |
+| `../assets/submission/architecture.png` | 1440×810 code-rendered architecture slide | `f0c3f27be72d9635ee194423d48f2f4d05324a83971debc50dc8849c2e32342b` |
+| `../assets/submission/backup-video-title.png` | 1440×810 baked-in camera-free disclosure card | `adc4cca02b0700610530fc690f0680e0c5af430f6fdb433fa84554fa2294c56c` |
+
+The video covers the project overview, core agent loop, architecture/build approach, and a practical
+CodeBuddy structured-output tip. It shows both `CodeBuddy live` controlled evidence and visibly
+labelled guided behavior. It does not close the real-person validation items above. The official
+handbook accepts a YouTube or Google Drive video link, so the local file still needs a user-owned
+upload and signed-out access check.

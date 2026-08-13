@@ -1,7 +1,8 @@
-# Synthetic visual assets
+# Submission and synthetic visual assets
 
-Every image in this directory is AI-generated and contains no real participant, personal room, or
-retained webcam frame.
+This directory separates AI-generated fixtures/key art, code-rendered submission graphics, and
+controlled browser captures. No asset contains a real participant, personal room, or retained live
+webcam frame.
 
 ## Room-analysis fixtures
 
@@ -25,3 +26,16 @@ logos, jumping, equipment, children, medical imagery, and additional worlds.
 
 `submission/moverealm-cover-380x216.png` is the portal-sized derivative. It is marketing art, not a
 runtime screenshot; use labelled product screenshots in the demo for implementation evidence.
+
+## Code-rendered and captured submission assets
+
+- `submission/architecture.svg` and `.png` are code-rendered architecture graphics.
+- `submission/backup-video-title.svg` and `.png` are code-rendered disclosure/title cards that reuse
+  the generated cover art.
+- `submission/screenshots/01` through `06` are controlled guided-demo browser captures.
+- `submission/screenshots/07` and `08` are controlled fake-camera live-CodeBuddy browser captures.
+- `submission/moverealm-guided-backup.mp4` is a reproducible camera-free backup video assembled from
+  those consent-free visuals with macOS synthetic narration. Its transcript is stored beside it.
+
+The backup video explicitly labels its synthetic narration and keyboard controls and makes no human
+pose-performance claim. Build it with `npm run video:backup`.

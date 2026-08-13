@@ -131,6 +131,15 @@ See [docs/DEMO.md](docs/DEMO.md) for the judging script and [docs/VALIDATION.md]
 for the evidence matrix and explicitly pending live-device, three-user, and video checklist. Do not
 fill pending results from estimates.
 
+## Camera-free backup video
+
+`npm run video:backup` reproducibly builds the disclosed camera-free submission backup at
+[`assets/submission/moverealm-guided-backup.mp4`](assets/submission/moverealm-guided-backup.mp4).
+The current artifact is 4:58, 1440×810 H.264/AAC with synthetic narration, guided keyboard controls,
+controlled CodeBuddy provenance captures, an architecture explanation, build reflection, and a
+development tip. A YouTube or Google Drive upload is still required by the official portal; this
+local artifact is not itself an accepted video URL.
+
 ## Main source map
 
 - `src/shared/contracts.ts` — Zod wire schemas and deterministic safety checks

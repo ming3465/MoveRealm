@@ -115,7 +115,24 @@ keyboard telemetry, not a human measurement.
 - real-person time to first accepted movement target below 45 seconds;
 - browser network inspection during a real-person camera session;
 - three consenting user trials;
-- final 3–5 minute video and accessible upload URL;
+- accepted YouTube or Google Drive upload URL for the completed 4:58.834 local backup (or a
+  preferred live-person recording);
 - participant consent for any retained real-person media.
 
 Do not replace these pending fields with fake-camera, keyboard, fixture, target, or estimated values.
+
+## Camera-free backup video
+
+- File: `assets/submission/moverealm-guided-backup.mp4`
+- Duration: 298.833696 seconds (4:58.834), inside the official 3–5 minute range
+- Video: H.264, 1440×810
+- Audio: mono AAC at 22,050 Hz; synthetic Samantha narration
+- Loudness: −16.4 LUFS integrated; −1.0 dBFS true peak
+- SHA-256: `dd4d2ef14e7eed8217f45a520a056e895d098a74755d5e09c0ba9fcbe3951951`
+- Transcript SHA-256: `3ecedf106de903f9c552a4042a7c1a77e7514338a37d2c2bf3287fc2ffe3c20a`
+
+Opening, live-scene, live-adaptation, architecture, and closing frames were visually inspected. The
+opening/closing card bakes in the camera-free, synthetic-narration, keyboard-control, and no-human-
+measurement disclosures. The narration covers overview, core features, build approach, and one
+CodeBuddy structured-output development tip. The official portal still requires a user-owned
+YouTube or Google Drive link and a signed-out accessibility check.

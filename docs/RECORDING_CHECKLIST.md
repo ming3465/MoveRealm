@@ -36,15 +36,19 @@ CodeBuddy development tip.
 - [ ] Remember that GitHub Pages is the static guided demo; use the local/production Node adapter for
   any segment presented as live CodeBuddy.
 - [ ] Verify the demo video destination is **[PENDING YOUTUBE OR GOOGLE DRIVE URL]**.
+- [x] Keep the 4:58.834 camera-free backup at
+  `assets/submission/moverealm-guided-backup.mp4`; it includes the required overview, agent
+  features, build reflection, development tip, and explicit synthetic/keyboard disclosure.
 - [x] Prepare the 16:9 cover image at `assets/submission/moverealm-cover-380x216.png`.
 - [x] Confirm six consent-free guided screenshots exist at `assets/submission/screenshots/*.png`.
 - [x] Confirm two additional synthetic fake-camera CodeBuddy UI captures show health connectivity,
   visible `CodeBuddy live` scene/adaptation provenance, and empty temporary-upload cleanup. Treat
   them as controlled evidence, not as a real-person run or final-video proof.
 
-Still explicitly pending before a final evidence-complete submission: the 3–5 minute video, all
-three user trials, real-person pose FPS, real-person visible response latency, and real-person time
-to first accepted movement (TTFF). Do not substitute synthetic-camera or keyboard values.
+Still explicitly pending before a final evidence-complete submission: a public YouTube or Google
+Drive URL for the backup or a preferred live-person take, all three user trials, real-person pose
+FPS, real-person visible response latency, and real-person time to first accepted movement (TTFF).
+Do not substitute synthetic-camera or keyboard values.
 
 ### Live path
 
@@ -201,20 +205,20 @@ Use one of these lines immediately when its condition occurs.
 
 ## After recording
 
-- [ ] Final duration is between 3:00 and 5:00; target is 3:40.
-- [ ] Opening establishes the problem and target user within 15 seconds.
-- [ ] `CodeBuddy live`, `Guided demo`, or `Safe fallback` is readable whenever agent provenance matters.
-- [ ] One still versus local live video is clearly explained.
+- [x] Final backup duration is between 3:00 and 5:00: 4:58.834.
+- [x] Opening establishes the problem and target user within 15 seconds.
+- [x] `CodeBuddy live`, `Guided demo`, or `Safe fallback` is readable whenever agent provenance matters.
+- [x] One still versus local live video is clearly explained.
 - [ ] Floor confirmation, low-confidence pause, and visible adaptation are shown rather than asserted.
-- [ ] Health scope and stop guidance are audible.
-- [ ] Build reflection and one CodeBuddy development tip are included.
-- [ ] The result distinguishes 2.6 active minutes from the complete 3.0-minute adventure.
-- [ ] No pending measurement is spoken as an observed value.
-- [ ] No secret, personal notification, participant image without consent, or private CodeBuddy
+- [x] Health scope and stop guidance are audible.
+- [x] Build reflection and one CodeBuddy development tip are included.
+- [x] The result distinguishes 2.6 active minutes from the complete 3.0-minute adventure.
+- [x] No pending measurement is spoken as an observed value.
+- [x] No secret, personal notification, participant image without consent, or private CodeBuddy
   history is visible.
 - [ ] Captions match the spoken disclosures and do not overstate live-agent behavior.
 - [ ] Upload privacy is set so judges can open the link without requesting access.
 - [ ] Test the video and public app URLs in a signed-out browser.
-- [ ] Compute the final video checksum and update [SUBMISSION.md](SUBMISSION.md).
-- [ ] Keep real-person FPS, visible latency, TTFF, and all three user trials pending unless the raw
+- [x] Compute the final video checksum and update [SUBMISSION.md](SUBMISSION.md).
+- [x] Keep real-person FPS, visible latency, TTFF, and all three user trials pending unless the raw
   observations are captured and linked.

@@ -30,6 +30,12 @@ assuming either timing.
 
 The short blurb is eight words, below the handbook's hard limit of ten words.
 
+A compliant-duration camera-free backup file is complete at
+[`assets/submission/moverealm-guided-backup.mp4`](../assets/submission/moverealm-guided-backup.mp4).
+It is 4:58.834 and visibly discloses synthetic narration, guided keyboard controls, and the absence
+of human pose measurements. The portal field remains pending until this file, or a preferred
+live-person take, is uploaded to YouTube or Google Drive and tested while signed out.
+
 The public URL is a static GitHub Pages deployment of the complete guided-demo path. It visibly
 labels guided and deterministic decisions and does not claim to host the live CodeBuddy server
 adapter. Release-application
@@ -113,9 +119,10 @@ Required proof before submission:
   scene/adaptation provenance, the bounded adaptation, and empty temporary-upload cleanup. They are
   controlled evidence, not a real-person run or final-video proof.
 - [ ] Screenshot or recording of `/api/health` showing `codeBuddyConnected: true` in the final video.
-- [ ] Visible `CodeBuddy live` badge in the demo.
+- [x] Visible `CodeBuddy live` badge appears in the controlled evidence segment of the backup video.
 - [ ] Redacted CodeBuddy task/history or usage screenshot proving product use.
-- [ ] No password, bearer token, redemption code, email, or private prompt content visible.
+- [x] No password, bearer token, redemption code, email, or private prompt content is visible in the
+  camera-free backup.
 - [ ] Development-use sentence above is supported by the captured evidence.
 
 ## Official rubric map
@@ -127,7 +134,7 @@ items are disclosure and evidence tasks, not claims that the criterion has alrea
 |---|---:|---|---|---|
 | AI innovation — scenario insight and depth of AI utilization | 30% | One approved still becomes a constrained plan; missed targets plus explicit feedback produce a visible next-round change | [`server/codebuddy.ts`](../server/codebuddy.ts), [`server/prompts.ts`](../server/prompts.ts), [`src/components/GameScreen.tsx`](../src/components/GameScreen.tsx), and the [live room matrix](../artifacts/README.md) | Show live CodeBuddy provenance in the video and do not describe deterministic fallback as live AI |
 | Technical excellence — implementation, AI-tool mastery, completeness, stability | 20% | Show source badge, safety rejection boundary, local pose Worker, low-confidence pause, and fallback recovery | [`src/shared/contracts.ts`](../src/shared/contracts.ts), [`server/app.ts`](../server/app.ts), [`src/pose/pose.worker.ts`](../src/pose/pose.worker.ts), 55/55 current tests across 7 files, 0 audit vulnerabilities, and successful Pages run 31675892852 | Cite [`release-checks.md`](../artifacts/validation/release-checks.md) and complete remaining real-person measurements |
-| User experience and demo — smoothness, interaction thoughtfulness, friendliness | 25% | Three-minute setup, room confirmation, calibration, visible adaptation trace, pause/resume, result postcard, guided backup | [`docs/DEMO.md`](DEMO.md), [`src/App.tsx`](../src/App.tsx), [`src/components/`](../src/components) | Record a clean 3–5 minute take; user trials remain pending |
+| User experience and demo — smoothness, interaction thoughtfulness, friendliness | 25% | Three-minute setup, room confirmation, calibration, visible adaptation trace, pause/resume, result postcard, guided backup | [`docs/DEMO.md`](DEMO.md), [`src/App.tsx`](../src/App.tsx), [`src/components/`](../src/components), and the 4:58 camera-free backup | Upload the backup or record a preferred live-person take; user trials remain pending |
 | Business value and viability — real problem and commercial rollout potential | 25% | Explain the time/space/motivation problem, target user, short-session value, and licensing hypothesis | Project description above and [`README.md`](../README.md) | Keep commercial statements as hypotheses until user and market evidence exists |
 
 ## Required disclosures
@@ -192,7 +199,8 @@ results in [`artifacts/validation/release-checks.md`](../artifacts/validation/re
 | Live CodeBuddy open/tight/uncertain fixture matrix | **PASS — controlled evidence** | [`artifacts/README.md`](../artifacts/README.md) |
 | Real-person FPS / visible latency / TTFF | **[PENDING ALL MEASUREMENTS]** | [`VALIDATION.md`](VALIDATION.md) |
 | Three-user trial | **[PENDING ALL 3 USERS]** | [`VALIDATION.md`](VALIDATION.md) |
-| Final 3–5 minute video | **[PENDING RECORDING AND UPLOAD]** | **[PENDING VIDEO URL]** |
+| Camera-free 3–5 minute backup video | **PASS — local 4:58 artifact** | [`moverealm-guided-backup.mp4`](../assets/submission/moverealm-guided-backup.mp4) |
+| Accepted video link | **[PENDING YOUTUBE OR GOOGLE DRIVE UPLOAD]** | **[PENDING VIDEO URL]** |
 
 ## Submission artifact manifest
 
@@ -202,7 +210,9 @@ Finalize artifacts first, then compute checksums. Any subsequent edit invalidate
 |---|---|---|---|
 | Public application | Optional bonus link | <https://ming3465.github.io/MoveRealm/> | n/a |
 | Source repository | Submission/review source | <https://github.com/ming3465/MoveRealm> | n/a |
-| 3–5 minute demo video | Required | **[PENDING YOUTUBE OR GOOGLE DRIVE URL]** | `<SHA256-PENDING>` |
+| 3–5 minute camera-free backup video | Required local artifact; upload still pending | [`assets/submission/moverealm-guided-backup.mp4`](../assets/submission/moverealm-guided-backup.mp4) | `dd4d2ef14e7eed8217f45a520a056e895d098a74755d5e09c0ba9fcbe3951951` |
+| Demo video URL | Required portal field | **[PENDING YOUTUBE OR GOOGLE DRIVE URL]** | n/a |
+| Backup narration transcript | Supporting accessibility/disclosure artifact | [`assets/submission/moverealm-guided-backup-transcript.txt`](../assets/submission/moverealm-guided-backup-transcript.txt) | `3ecedf106de903f9c552a4042a7c1a77e7514338a37d2c2bf3287fc2ffe3c20a` |
 | 16:9 cover image, 380×216 px | Required | [`assets/submission/moverealm-cover-380x216.png`](../assets/submission/moverealm-cover-380x216.png) | `38637377111cffc7dce5c45ab3e9c0c3591fc55ce692f9af811940880b1dcf2c` |
 | Project description export | Required portal copy | [`docs/SUBMISSION.md`](SUBMISSION.md) | `<SHA256-PENDING-AFTER-FREEZE>` |
 | CodeBuddy usage proof | Required for scoring eligibility | **[PENDING REDACTED FILE]** | `<SHA256-PENDING>` |
@@ -227,7 +237,9 @@ shasum -a 256 path/to/moverealm-cover.png
 - [ ] Project image is 16:9 and readable at the recommended 380×216 px display size.
 - [ ] Project description covers scenario, users, pain point, solution architecture, prompts, and
   defined or measured impact without converting targets into results.
-- [ ] Demo URL opens in a signed-out browser and is 3–5 minutes long.
+- [x] Local backup video is 4:58.834 and contains the required overview, features, build reflection,
+  and development tip.
+- [ ] YouTube or Google Drive demo URL opens in a signed-out browser.
 - [x] Public URL is populated and the HTTPS endpoint returns HTTP 200.
 - [x] Release-application Pages run 31675892852 for commit `d640de4` passed 55/55 tests across 7
   files, the build, and deployment.
@@ -236,7 +248,7 @@ shasum -a 256 path/to/moverealm-cover.png
   `assets/submission/screenshots/`; they are not real-person evidence.
 - [ ] Product-sharing paragraph includes truthful CodeBuddy development-use proof.
 - [ ] All secrets and participant-identifying material are redacted or consented.
-- [ ] Artifact hashes match the uploaded final files.
+- [x] Local artifact hashes match the frozen files; recheck the uploaded video after transfer.
 - [ ] Every pending validation value remains visibly pending unless a raw observation exists.
-- [ ] Real-person FPS, visible latency, TTFF, all three user trials, and the demo video remain marked
-  pending unless their raw evidence is captured.
+- [x] Real-person FPS, visible latency, TTFF, and all three user trials remain marked pending unless
+  their raw evidence is captured; the accepted video URL remains pending upload.

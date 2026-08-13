@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 810" role="img" aria-labelledby="title description">
+  <title id="title">MoveRealm closed-loop architecture</title>
+  <desc id="description">A room still is analyzed by CodeBuddy while live frames remain in the browser for MediaPipe pose tracking. Validated plans drive Phaser, and telemetry is validated before adapting the next round.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#061b15"/>
+      <stop offset="1" stop-color="#020a08"/>
+    </linearGradient>
+    <linearGradient id="mint" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#9bffd2"/>
+      <stop offset="1" stop-color="#54e8a4"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10Z" fill="#74f6bc"/>
+    </marker>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1440" height="810" fill="url(#bg)"/>
+  <circle cx="1320" cy="100" r="210" fill="#0d4634" opacity=".25"/>
+  <circle cx="110" cy="770" r="260" fill="#0d4634" opacity=".22"/>
+
+  <g font-family="Arial, Helvetica, sans-serif" fill="#effff7">
+    <text x="74" y="82" font-size="22" font-weight="700" fill="#75f6bd" letter-spacing="5">MOVEREALM</text>
+    <text x="74" y="133" font-size="44" font-weight="700">Observe → constrain → play → adapt</text>
+    <text x="74" y="170" font-size="18" fill="#a9c9ba">One approved still leaves the browser. Live camera frames do not.</text>
+
+    <g transform="translate(74 232)">
+      <rect width="270" height="168" rx="24" fill="#0b2b21" stroke="#2c6f55" stroke-width="2"/>
+      <text x="28" y="42" font-size="14" font-weight="700" fill="#74f6bc" letter-spacing="2">1 · OBSERVE</text>
+      <text x="28" y="82" font-size="28" font-weight="700">Room still</text>
+      <text x="28" y="116" font-size="17" fill="#bfd7cb">Explicit capture</text>
+      <text x="28" y="143" font-size="17" fill="#bfd7cb">Deleted after planning</text>
+    </g>
+
+    <g transform="translate(420 232)">
+      <rect width="270" height="168" rx="24" fill="#0b2b21" stroke="#2c6f55" stroke-width="2"/>
+      <text x="28" y="42" font-size="14" font-weight="700" fill="#74f6bc" letter-spacing="2">2 · REASON</text>
+      <text x="28" y="82" font-size="28" font-weight="700">CodeBuddy</text>
+      <text x="28" y="116" font-size="17" fill="#bfd7cb">Scene → quest plan</text>
+      <text x="28" y="143" font-size="17" fill="#bfd7cb">Async adapter + repair</text>
+    </g>
+
+    <g transform="translate(766 232)">
+      <rect width="270" height="168" rx="24" fill="#0b2b21" stroke="#2c6f55" stroke-width="2"/>
+      <text x="28" y="42" font-size="14" font-weight="700" fill="#74f6bc" letter-spacing="2">3 · ENFORCE</text>
+      <text x="28" y="82" font-size="28" font-weight="700">Safety contract</text>
+      <text x="28" y="116" font-size="17" fill="#bfd7cb">3 known movements</text>
+      <text x="28" y="143" font-size="17" fill="#bfd7cb">Duration + room limits</text>
+    </g>
+
+    <g transform="translate(1112 232)">
+      <rect width="254" height="168" rx="24" fill="#0b2b21" stroke="#2c6f55" stroke-width="2"/>
+      <text x="28" y="42" font-size="14" font-weight="700" fill="#74f6bc" letter-spacing="2">4 · PLAY</text>
+      <text x="28" y="82" font-size="28" font-weight="700">Phaser world</text>
+      <text x="28" y="116" font-size="17" fill="#bfd7cb">Neon Rainforest</text>
+      <text x="28" y="143" font-size="17" fill="#bfd7cb">Body as controller</text>
+    </g>
+
+    <g stroke="#74f6bc" stroke-width="3" fill="none" marker-end="url(#arrow)" filter="url(#glow)">
+      <path d="M344 316H410"/>
+      <path d="M690 316H756"/>
+      <path d="M1036 316H1102"/>
+    </g>
+
+    <g transform="translate(74 492)">
+      <rect width="438" height="188" rx="26" fill="#081f18" stroke="#397a60" stroke-width="2"/>
+      <text x="30" y="44" font-size="14" font-weight="700" fill="#74f6bc" letter-spacing="2">ON-DEVICE LIVE LOOP</text>
+      <text x="30" y="87" font-size="28" font-weight="700">MediaPipe Pose Worker</text>
+      <text x="30" y="122" font-size="17" fill="#bfd7cb">33 landmarks → reach / squat / side-step</text>
+      <text x="30" y="153" font-size="17" fill="#bfd7cb">Low confidence pauses instead of guessing</text>
+    </g>
+
+    <g transform="translate(590 492)">
+      <rect width="776" height="188" rx="26" fill="#0e3025" stroke="#74f6bc" stroke-width="2"/>
+      <text x="30" y="44" font-size="14" font-weight="700" fill="#74f6bc" letter-spacing="2">CLOSED-LOOP ADAPTATION</text>
+      <text x="30" y="87" font-size="28" font-weight="700">Completion + range + confidence + explicit feedback</text>
+      <text x="30" y="122" font-size="17" fill="#d5e9df">CodeBuddy tunes only range, tempo, and target rate.</text>
+      <text x="30" y="153" font-size="17" fill="#d5e9df">Every response is validated; malformed output falls back safely.</text>
+    </g>
+
+    <path d="M1260 492V444H1220" stroke="#74f6bc" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+    <path d="M512 586H580" stroke="#74f6bc" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+
+    <rect x="74" y="727" width="1292" height="2" fill="url(#mint)" opacity=".55"/>
+    <text x="74" y="770" font-size="18" fill="#b9d6c8">Live frames stay local</text>
+    <text x="328" y="770" font-size="18" fill="#b9d6c8">One approved still</text>
+    <text x="586" y="770" font-size="18" fill="#b9d6c8">Schema validation</text>
+    <text x="836" y="770" font-size="18" fill="#b9d6c8">Visible provenance</text>
+    <text x="1092" y="770" font-size="18" fill="#b9d6c8">Deterministic fallback</text>
+  </g>
+</svg>
