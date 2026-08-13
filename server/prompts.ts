@@ -51,7 +51,11 @@ Return this exact shape:
 }
 Use ids round-1, round-2, and round-3 exactly once in that order. Use durationSeconds 52 for every
 round and restBetweenRoundsSeconds 12, which totals exactly 180 seconds. The movement/mechanic
-mapping is reach/collect_fireflies, squat/shelter_seedlings, side_step/redirect_river. If lateral
+mapping is reach/collect_fireflies, squat/shelter_seedlings, side_step/redirect_river. Use these
+curated presentation values exactly: reach = prompt "Reach softly to wake the fireflies" and accent
+"mint"; squat = prompt "Lower gently to shelter the seedlings" and accent "orchid"; side_step =
+prompt "Step side to side and guide the river" and accent "amber". Use safetyNote exactly
+"Move only inside the clear area you confirmed. Pause whenever you need to." If lateral
 range is none, do not use side_step. If it is narrow, side_step rangeScale must be <= 0.62. Keep
 side_step out of the plan when neither left nor right is permitted. When neither left nor right is
 permitted, reach rangeScale must be <= 0.70. When vertical is not permitted, do not use squat and
@@ -72,9 +76,11 @@ Return this exact shape:
   "reason": string under 150 characters,
   "adjustments": [("target_envelope" | "tempo" | "target_rate" | "none")]
 }
-You may change only rangeScale, tempo, targetRate, prompt, and accent. Preserve id, movementId,
-durationSeconds, and mechanic. Accent must remain one of mint, orchid, or amber. The reason is
-user-facing: explain one observable input and one resulting change in plain language. Do not use
+You may change only rangeScale, tempo, and targetRate. Preserve id, movementId, durationSeconds,
+mechanic, prompt, and accent exactly as supplied. Make every numeric change visible at the UI's
+precision: whole percentage points for rangeScale and hundredths for tempo. The reason is
+user-facing: explain one observable input and one resulting change in plain language. The runtime
+will replace it with a deterministic trace derived from telemetry and actual changes. Do not use
 JSON field names, underscores, telemetry jargon, or raw decimals. Do not infer fatigue,
 engagement, intent, or diagnose form. Example: "Only 4 of 12 targets were reached and you chose
 Too hard, so the next targets are closer and slower."`;

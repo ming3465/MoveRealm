@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import request from "supertest";
-import { createApp } from "../server/app.js";
+import { createApp, resolveCodeBuddyTimeoutMs } from "../server/app.js";
 import { CodeBuddyError } from "../server/codebuddy.js";
 import { createFallbackPlan, DEMO_SCENES } from "../src/shared/fallbacks.js";
 import type { PlanRequest } from "../src/shared/contracts.js";
@@ -20,6 +20,12 @@ const planRequest: PlanRequest = {
 };
 
 describe("MoveRealm API", () => {
+  it("keeps adapter overrides inside the end-to-end browser deadline", () => {
+    expect(resolveCodeBuddyTimeoutMs("120000")).toBe(45_000);
+    expect(resolveCodeBuddyTimeoutMs("12000")).toBe(12_000);
+    expect(resolveCodeBuddyTimeoutMs("not-a-number")).toBe(45_000);
+  });
+
   it("reports the fallback mode honestly", async () => {
     const app = createApp({ forceFallback: true });
     const response = await request(app).get("/api/health").expect(200);
@@ -51,7 +57,7 @@ describe("MoveRealm API", () => {
         telemetry: {
           roundId: "round-1",
           movementId: planResponse.body.data.rounds[0].movementId,
-          completionRate: 0.35,
+          completionRate: 4 / 12,
           movementRange: 0.54,
           poseConfidence: 0.88,
           trackingFps: 27,
@@ -65,7 +71,9 @@ describe("MoveRealm API", () => {
         intent: planRequest.intent,
       })
       .expect(200);
-    expect(adaptResponse.body.data.reason).toMatch(/missed|closer|slow/i);
+    expect(adaptResponse.body.data.reason).toBe(
+      "4/12 targets; range 54%; pose confidence 88%; you chose Too hard. Next: closer, slower, fewer targets.",
+    );
     expect(adaptResponse.body.data.nextRound.rangeScale).toBeLessThan(planResponse.body.data.rounds[1].rangeScale);
   });
 
@@ -104,6 +112,66 @@ describe("MoveRealm API", () => {
     const response = await request(app).post("/api/quest/plan").send(planRequest).expect(200);
     expect(response.body.meta.source).toBe("codebuddy");
     expect(codeBuddy.runStructured).toHaveBeenCalledTimes(2);
+  });
+
+  it("makes exactly one plan repair attempt before returning a labelled fallback", async () => {
+    const codeBuddy = {
+      isHealthy: vi.fn(async () => true),
+      runStructured: vi.fn().mockRejectedValue(
+        new CodeBuddyError("CodeBuddy output failed validation: duration mismatch"),
+      ),
+    };
+    const app = createApp({ forceFallback: false, codeBuddy });
+    const response = await request(app).post("/api/quest/plan").send(planRequest).expect(200);
+
+    expect(response.body.meta.source).toBe("fallback");
+    expect(response.body.meta.label).toBe("Deterministic fallback");
+    expect(codeBuddy.runStructured).toHaveBeenCalledTimes(2);
+  });
+
+  it("replaces untrusted adaptation prose with a telemetry-grounded trace", async () => {
+    const plan = createFallbackPlan(planRequest);
+    const adaptationRequest = {
+      telemetry: {
+        roundId: "round-1",
+        movementId: plan.rounds[0].movementId,
+        completionRate: 4 / 12,
+        movementRange: 0.54,
+        poseConfidence: 0.88,
+        trackingFps: 27,
+        trackingMode: "pose" as const,
+        targetsPresented: 12,
+        targetsCompleted: 4,
+        feedback: "too_hard" as const,
+      },
+      nextRoundSeed: plan.rounds[1],
+      constraints: planRequest.constraints,
+      intent: planRequest.intent,
+    };
+    const candidate = createFallbackPlan(planRequest).rounds[1];
+    const codeBuddy = {
+      isHealthy: vi.fn(async () => true),
+      runStructured: vi.fn().mockResolvedValue({
+        nextRound: {
+          ...candidate,
+          rangeScale: candidate.rangeScale - 0.1,
+          tempo: candidate.tempo - 0.1,
+        },
+        reason: "Your posture shows fatigue and poor form.",
+        adjustments: ["target_envelope", "tempo"],
+      }),
+    };
+    const app = createApp({ forceFallback: false, codeBuddy });
+    const response = await request(app)
+      .post("/api/quest/adapt")
+      .send(adaptationRequest)
+      .expect(200);
+
+    expect(response.body.meta.source).toBe("codebuddy");
+    expect(response.body.data.reason).toBe(
+      "4/12 targets; range 54%; pose confidence 88%; you chose Too hard. Next: closer, slower.",
+    );
+    expect(response.body.data.reason).not.toMatch(/fatigue|form/i);
   });
 
   it("uses the labelled fallback immediately on a transport timeout", async () => {

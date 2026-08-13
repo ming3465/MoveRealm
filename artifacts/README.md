@@ -11,6 +11,12 @@ Deterministic fixture, contract, consistency, and movement-feasibility gates run
 authoritative. In the recorded uncertain-room case, they rejected an occluded-floor squat even
 though the advisory model scored that plan positively; the reach-only validated fallback passed.
 
+[`evaluation/python-agent-qwen3-vl-4b.json`](evaluation/python-agent-qwen3-vl-4b.json) is the
+privacy-bounded output of the optional Python recovery agent using local Qwen3-VL 4B. The model
+preferred the unsafe original 18/24 over the safe fallback 15/24; deterministic gates rejected the
+original and the agent selected the labelled fallback. Its SHA-256 is
+`585949ce0a97084cdd27fc0113a514fea6c60670e748b999625d798fe199566f`.
+
 ## Release snapshot — 13 August 2026
 
 - Public guided demo: <https://ming3465.github.io/MoveRealm/>

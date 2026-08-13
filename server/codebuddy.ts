@@ -24,6 +24,14 @@ interface RunEnvelope {
   };
 }
 
+// Current CodeBuddy vision/planning runs on the target M1 Pro commonly finish in
+// 26-35 seconds. Keep one bounded deadline across submit, stream, and status,
+// while leaving enough headroom for a valid local run to complete.
+export const DEFAULT_CODEBUDDY_RUN_TIMEOUT_MS = 45_000;
+// Browser and smoke deadlines budget for at most two structured attempts at
+// this ceiling. Environment overrides may shorten a run, but never extend it.
+export const MAX_CODEBUDDY_RUN_TIMEOUT_MS = 45_000;
+
 export class CodeBuddyError extends Error {
   constructor(message: string) {
     super(message);
@@ -138,7 +146,7 @@ export class CodeBuddyClient {
   constructor(options: CodeBuddyOptions = {}) {
     this.baseUrl = (options.baseUrl ?? "http://127.0.0.1:8080").replace(/\/$/, "");
     this.password = options.password;
-    this.timeoutMs = options.timeoutMs ?? 30_000;
+    this.timeoutMs = options.timeoutMs ?? DEFAULT_CODEBUDDY_RUN_TIMEOUT_MS;
     this.fetchImpl = options.fetchImpl ?? fetch;
   }
 

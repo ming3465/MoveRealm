@@ -2,10 +2,11 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import {
-  validateAdaptationSafety,
+  validateAndGroundAdaptation,
   validatePlanSafety,
   validateSceneSafety,
 } from "../src/shared/contracts.js";
+import { createFallbackPlan } from "../src/shared/fallbacks.js";
 import type { DeterministicCheck, EvalCandidate, FixtureOracle } from "./schemas.js";
 
 function check(id: string, action: () => string): DeterministicCheck {
@@ -90,8 +91,26 @@ export async function evaluateHardGates(
       return "The plan request and confirmed constraints stay inside the judged scene envelope.";
     }),
     check("plan-safety", () => {
-      validatePlanSafety(candidate.plan, candidate.planRequest);
-      return "Plan passes the authoritative production duration, movement, and room-envelope gates.";
+      const runtimePlan = validatePlanSafety(candidate.plan, candidate.planRequest);
+      assert(
+        JSON.stringify(runtimePlan) === JSON.stringify(candidate.plan),
+        "Plan movement instructions or safety copy are not the canonical runtime presentation.",
+      );
+      return "Plan passes the production gates and contains canonical movement instructions.";
+    }),
+    check("fallback-provenance", () => {
+      if (candidate.source !== "fallback") {
+        return "Candidate is not presented as the deterministic fallback.";
+      }
+      const expected = validatePlanSafety(
+        createFallbackPlan(candidate.planRequest),
+        candidate.planRequest,
+      );
+      assert(
+        JSON.stringify(candidate.plan) === JSON.stringify(expected),
+        "A fallback-labelled candidate must exactly match the production fallback plan.",
+      );
+      return "Fallback-labelled plan exactly matches the production fallback for this request.";
     }),
     ...candidate.adaptations.map((adaptation, index) =>
       check(`adaptation-${index + 1}-safety`, () => {
@@ -126,7 +145,14 @@ export async function evaluateHardGates(
           seedRoundNumber === telemetryRoundNumber + 1,
           "Adaptation seed must be the round immediately after its telemetry.",
         );
-        validateAdaptationSafety(adaptation.decision, adaptation.request);
+        const runtimeDecision = validateAndGroundAdaptation(
+          adaptation.decision,
+          adaptation.request,
+        );
+        assert(
+          JSON.stringify(runtimeDecision) === JSON.stringify(adaptation.decision),
+          "Adaptation does not match the canonical runtime presentation and grounded trace.",
+        );
         const telemetry = adaptation.request.telemetry;
         const expectedRate = telemetry.targetsPresented
           ? telemetry.targetsCompleted / telemetry.targetsPresented
@@ -135,7 +161,7 @@ export async function evaluateHardGates(
           Math.abs(telemetry.completionRate - expectedRate) < 0.000001,
           "Telemetry completion rate contradicts target counts.",
         );
-        return "Adaptation preserves the validated movement and its declared changes match telemetry.";
+        return "Adaptation preserves the validated movement, matches telemetry, and uses the grounded runtime trace.";
       }),
     ),
   ];

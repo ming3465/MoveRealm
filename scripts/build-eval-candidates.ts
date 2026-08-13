@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { basename, resolve } from "node:path";
 import {
-  validateAdaptationSafety,
+  validateAndGroundAdaptation,
   validatePlanSafety,
   validateSceneSafety,
   type AdaptRequest,
@@ -88,15 +88,36 @@ for (const observation of matrix.observations) {
     if (matrix.adaptation.source !== "codebuddy") {
       throw new Error("The tight-room adaptation must preserve CodeBuddy provenance for this evaluation set.");
     }
+    const observedBefore = matrix.adaptation.before as AdaptRequest["nextRoundSeed"];
+    const nextRoundSeed = plan.rounds.find((round) => round.id === observedBefore?.id);
+    if (!nextRoundSeed) {
+      throw new Error("The observed adaptation seed is not present in the validated plan.");
+    }
+    const rawDecision = matrix.adaptation.decision as {
+      nextRound?: Partial<AdaptRequest["nextRoundSeed"]>;
+      reason?: unknown;
+      adjustments?: unknown;
+    };
     const request: AdaptRequest = {
       telemetry: matrix.adaptation.syntheticTelemetry as AdaptRequest["telemetry"],
-      nextRoundSeed: matrix.adaptation.before as AdaptRequest["nextRoundSeed"],
+      nextRoundSeed,
       constraints: planRequest.constraints,
       intent: planRequest.intent,
     };
     adaptations.push({
       request,
-      decision: validateAdaptationSafety(matrix.adaptation.decision, request),
+      decision: validateAndGroundAdaptation(
+        {
+          ...rawDecision,
+          nextRound: {
+            ...nextRoundSeed,
+            rangeScale: rawDecision.nextRound?.rangeScale,
+            tempo: rawDecision.nextRound?.tempo,
+            targetRate: rawDecision.nextRound?.targetRate,
+          },
+        },
+        request,
+      ),
     });
   }
   const candidate = EvalCandidateSchema.parse({

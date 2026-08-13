@@ -10,6 +10,7 @@ interface CameraStageProps {
   showGuide?: boolean;
   demo?: boolean;
   onPreviewReadyChange?: (ready: boolean) => void;
+  onPreviewError?: (message: string) => void;
   children?: React.ReactNode;
 }
 
@@ -21,6 +22,7 @@ export function CameraStage({
   showGuide = false,
   demo = false,
   onPreviewReadyChange,
+  onPreviewError,
   children,
 }: CameraStageProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -44,11 +46,30 @@ export function CameraStage({
     if (!video) return;
     setPreviewReady(false);
     if (video.srcObject !== stream) video.srcObject = stream ?? null;
-    if (stream) void video.play().catch(() => undefined);
+    const unavailable = () => {
+      setPreviewReady(false);
+      onPreviewError?.(
+        "The camera preview stopped. Try the camera again or use the guided demo.",
+      );
+    };
+    const tracks = stream?.getVideoTracks() ?? [];
+    tracks.forEach((track) => track.addEventListener("ended", unavailable));
+    if (stream) {
+      // A retry replaces the stream without remounting this video. Rebind the
+      // local pose engine as well as srcObject so tracking follows stream 2.
+      attachVideo(video);
+      void video.play().catch(() => {
+        setPreviewReady(false);
+        onPreviewError?.(
+          "The camera preview could not start. Try the camera again or use the guided demo.",
+        );
+      });
+    }
     return () => {
+      tracks.forEach((track) => track.removeEventListener("ended", unavailable));
       if (video.srcObject === stream) video.srcObject = null;
     };
-  }, [demo, stream]);
+  }, [attachVideo, demo, onPreviewError, stream]);
 
   return (
     <div className={`camera-stage ${demo ? "camera-stage--demo" : ""} ${className}`}>

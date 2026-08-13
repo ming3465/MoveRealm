@@ -38,7 +38,9 @@ async function jsonResponse<T>(
   const startedAt = performance.now();
   const httpResponse = await fetch(`${baseUrl}${path}`, {
     ...init,
-    signal: AbortSignal.timeout(70_000),
+    // One malformed response may be repaired once; each CodeBuddy attempt has a
+    // 45 s adapter deadline, so this end-to-end observer must outlive both.
+    signal: AbortSignal.timeout(105_000),
   });
   const body = (await httpResponse.json()) as { data?: unknown; meta?: unknown; error?: string };
   if (!httpResponse.ok) throw new Error(`${path}: ${body.error ?? `HTTP ${httpResponse.status}`}`);

@@ -78,11 +78,14 @@ export default function App() {
   const stillRef = useRef<CapturedStill | undefined>(undefined);
   const journeyStartedAtRef = useRef(performance.now());
   const planningRequestRef = useRef(0);
+  const cameraRequestRef = useRef(0);
   streamRef.current = stream;
   stillRef.current = still;
 
   useEffect(() => {
     return () => {
+      cameraRequestRef.current += 1;
+      planningRequestRef.current += 1;
       stopCamera(streamRef.current);
       poseEngineRef.current?.dispose();
       if (stillRef.current?.previewUrl) URL.revokeObjectURL(stillRef.current.previewUrl);
@@ -115,10 +118,6 @@ export default function App() {
       return;
     }
     videoRef.current = node;
-    if (streamRef.current && node.srcObject !== streamRef.current) {
-      node.srcObject = streamRef.current;
-      void node.play().catch(() => undefined);
-    }
     poseEngineRef.current ??= new PoseEngine();
     poseEngineRef.current.start(node, {
       onReady: () => {
@@ -135,7 +134,9 @@ export default function App() {
 
   const reset = useCallback(() => {
     planningRequestRef.current += 1;
+    cameraRequestRef.current += 1;
     stopCamera(streamRef.current);
+    streamRef.current = undefined;
     setStream(undefined);
     poseEngineRef.current?.dispose();
     poseEngineRef.current = undefined;
@@ -159,29 +160,37 @@ export default function App() {
   }, []);
 
   const openCamera = async () => {
+    const requestId = cameraRequestRef.current + 1;
+    cameraRequestRef.current = requestId;
     journeyStartedAtRef.current = performance.now();
+    stopLocalTracking();
+    setPoseStatus("loading");
+    setPoseError(undefined);
     setBusy(true);
     setError(undefined);
     try {
       const nextStream = await requestCamera();
-      stopCamera(streamRef.current);
+      if (cameraRequestRef.current !== requestId) {
+        stopCamera(nextStream);
+        return;
+      }
       streamRef.current = nextStream;
       setStream(nextStream);
       setDemo(false);
       setGuidedDemo(false);
       setScreen("capture");
     } catch (caught) {
+      if (cameraRequestRef.current !== requestId) return;
       setError(caught instanceof Error ? caught.message : "Camera permission was not granted.");
     } finally {
-      setBusy(false);
+      if (cameraRequestRef.current === requestId) setBusy(false);
     }
   };
 
   const useDemoRoom = () => {
+    cameraRequestRef.current += 1;
     journeyStartedAtRef.current = performance.now();
-    stopCamera(streamRef.current);
-    setStream(undefined);
-    setPose(undefined);
+    stopLocalTracking();
     setDemo(true);
     setGuidedDemo(true);
     const demoScene: DirectorResponse<SceneProfile> = {
@@ -304,6 +313,8 @@ export default function App() {
           poseError={poseError}
           attachVideo={attachVideo}
           onCapture={() => void takeRoomStill()}
+          onRetryCamera={() => void openCamera()}
+          onPreviewError={setError}
           onBack={reset}
           onDemo={useDemoRoom}
           capturing={busy}

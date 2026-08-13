@@ -7,6 +7,7 @@ import type {
   QuestRound,
   SceneProfile,
 } from "./contracts.js";
+import { groundedAdaptationReason } from "./contracts.js";
 
 export const DEMO_SCENES: Record<"open" | "tight" | "uncertain", SceneProfile> = {
   open: {
@@ -207,13 +208,12 @@ export function createFallbackAdaptation(request: AdaptRequest): AdaptationDecis
       tempo: clamp(nextRoundSeed.tempo - 0.13, 0.55, 1.25),
       targetRate: clamp(nextRoundSeed.targetRate - (trackingWasWeak ? 2 : 1), 3, 16),
     };
-    return {
+    const decision: AdaptationDecision = {
       nextRound,
-      reason: trackingWasWeak
-        ? "Tracking was uncertain, so targets are closer and arrive more slowly."
-        : "Wide targets were frequently missed; reducing reach distance and slowing the storm.",
+      reason: "Validated adaptation pending grounded trace.",
       adjustments: adjustmentsFor(nextRoundSeed, nextRound),
     };
+    return { ...decision, reason: groundedAdaptationReason(request, decision) };
   }
 
   if (wasEasy) {
@@ -223,16 +223,18 @@ export function createFallbackAdaptation(request: AdaptRequest): AdaptationDecis
       tempo: clamp(nextRoundSeed.tempo + 0.08, 0.55, 1.25),
       targetRate: clamp(nextRoundSeed.targetRate + 1, 3, 16),
     };
-    return {
+    const decision: AdaptationDecision = {
       nextRound,
-      reason: "Movement looked comfortable; opening the next target lane just a little.",
+      reason: "Validated adaptation pending grounded trace.",
       adjustments: adjustmentsFor(nextRoundSeed, nextRound),
     };
+    return { ...decision, reason: groundedAdaptationReason(request, decision) };
   }
 
-  return {
+  const decision: AdaptationDecision = {
     nextRound: { ...nextRoundSeed },
-    reason: "Your movement range was steady, so the next round keeps the same rhythm.",
+    reason: "Validated adaptation pending grounded trace.",
     adjustments: ["none"],
   };
+  return { ...decision, reason: groundedAdaptationReason(request, decision) };
 }

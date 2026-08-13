@@ -87,4 +87,39 @@ describe("browser Movement Director boundary", () => {
     expect(response.data.nextRound.movementId).toBe(request.nextRoundSeed.movementId);
     expect(response.data.nextRound.rangeScale).toBeLessThanOrEqual(request.nextRoundSeed.rangeScale);
   });
+
+  it("does not display untrusted live-agent adaptation prose", async () => {
+    const plan = createFallbackPlan(horizontalOnlyRequest);
+    const request: AdaptRequest = {
+      telemetry: {
+        roundId: "round-1",
+        movementId: plan.rounds[0].movementId,
+        completionRate: 0.5,
+        movementRange: 0.5,
+        poseConfidence: 0,
+        trackingFps: 0,
+        trackingMode: "keyboard",
+        targetsPresented: 12,
+        targetsCompleted: 6,
+        feedback: "too_hard",
+      },
+      nextRoundSeed: plan.rounds[1],
+      constraints: horizontalOnlyRequest.constraints,
+      intent: horizontalOnlyRequest.intent,
+    };
+    const safeButUnsupported = {
+      nextRound: { ...request.nextRoundSeed, tempo: request.nextRoundSeed.tempo - 0.1 },
+      reason: "You look tired, so I corrected your form.",
+      adjustments: ["tempo"],
+    };
+    vi.stubGlobal("fetch", vi.fn(async () => jsonResponse(safeButUnsupported)));
+
+    const response = await requestAdaptation(request);
+
+    expect(response.meta.source).toBe("codebuddy");
+    expect(response.data.reason).toBe(
+      "6/12 targets; keyboard range 50%; you chose Too hard. Next: slower.",
+    );
+    expect(response.data.reason).not.toMatch(/tired|form/i);
+  });
 });

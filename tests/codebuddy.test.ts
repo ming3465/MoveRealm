@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { CodeBuddyClient, extractJsonValues } from "../server/codebuddy.js";
+import {
+  CodeBuddyClient,
+  DEFAULT_CODEBUDDY_RUN_TIMEOUT_MS,
+  extractJsonValues,
+} from "../server/codebuddy.js";
 
 function rejectOnAbort(signal: AbortSignal | null | undefined): Promise<Response> {
   return new Promise((_resolve, reject) => {
@@ -64,6 +68,32 @@ describe("CodeBuddy structured response extraction", () => {
     expect(result).toEqual({ ok: true });
     expect(signals).toHaveLength(3);
     expect(new Set(signals).size).toBe(1);
+  });
+
+  it("advertises the measured M1-safe default deadline to CodeBuddy", async () => {
+    let submittedBody: { timeoutMs?: number } | undefined;
+    const responses = [
+      new Response(JSON.stringify({ data: { runId: "run-default-timeout" } }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }),
+      new Response(
+        'event: message\ndata: {"content":{"markdown":"{\\"ok\\":true}"}}\n\n',
+        { status: 200, headers: { "Content-Type": "text/event-stream" } },
+      ),
+      new Response(JSON.stringify({ data: { status: "completed" } }), { status: 200 }),
+    ];
+    const client = new CodeBuddyClient({
+      fetchImpl: async (_input, init) => {
+        if (init?.body) submittedBody = JSON.parse(String(init.body)) as { timeoutMs?: number };
+        return responses.shift() ?? new Response(null, { status: 500 });
+      },
+    });
+
+    await client.runStructured("return JSON", (value) => value);
+
+    expect(DEFAULT_CODEBUDDY_RUN_TIMEOUT_MS).toBe(45_000);
+    expect(submittedBody?.timeoutMs).toBe(DEFAULT_CODEBUDDY_RUN_TIMEOUT_MS);
   });
 
   it("times out a hanging run submission within the structured-run deadline", async () => {

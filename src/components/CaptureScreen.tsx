@@ -10,6 +10,8 @@ interface CaptureScreenProps {
   poseError?: string;
   attachVideo: (node: HTMLVideoElement | null) => void;
   onCapture: () => void;
+  onRetryCamera: () => void;
+  onPreviewError: (message: string) => void;
   onBack: () => void;
   onDemo: () => void;
   capturing: boolean;
@@ -23,6 +25,8 @@ export function CaptureScreen({
   poseError,
   attachVideo,
   onCapture,
+  onRetryCamera,
+  onPreviewError,
   onBack,
   onDemo,
   capturing,
@@ -44,7 +48,15 @@ export function CaptureScreen({
       </section>
 
       <div className="capture-layout">
-        <CameraStage stream={stream} pose={pose} attachVideo={attachVideo} showGuide className="capture-camera" onPreviewReadyChange={setPreviewReady}>
+        <CameraStage
+          stream={stream}
+          pose={pose}
+          attachVideo={attachVideo}
+          showGuide
+          className="capture-camera"
+          onPreviewReadyChange={setPreviewReady}
+          onPreviewError={onPreviewError}
+        >
           <div className="camera-status camera-status--top">
             <span className={`status-dot status-dot--${poseStatus}`} />
             {poseStatus === "ready" ? `${Math.round(pose?.fps ?? 0)} FPS · pose local` : poseStatus === "error" ? "Camera only" : "Preparing local pose…"}
@@ -63,6 +75,11 @@ export function CaptureScreen({
       {error && <div className="inline-error capture-error" role="alert">{error}</div>}
       <div className="flow-actions">
         <button className="secondary-button" type="button" onClick={onDemo}>Use demo room</button>
+        {error && (
+          <button className="secondary-button" type="button" onClick={onRetryCamera} disabled={capturing}>
+            Try camera again
+          </button>
+        )}
         <button className="primary-button" type="button" onClick={onCapture} disabled={capturing || !stream || !previewReady}>
           <span className="button-camera" aria-hidden="true" />
           {capturing ? "Capturing…" : "Capture this room"}

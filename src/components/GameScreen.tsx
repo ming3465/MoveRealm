@@ -267,6 +267,15 @@ export function GameScreen({
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (!demo || globallyPaused || event.repeat) return;
+      const target = event.target;
+      if (
+        [" ", "Enter"].includes(event.key) &&
+        target instanceof HTMLElement &&
+        (target.isContentEditable ||
+          target.closest("button, a, input, select, textarea, [role='button']"))
+      ) {
+        return;
+      }
       const matches =
         (currentRound.movementId === "reach" && ["ArrowUp", " "].includes(event.key)) ||
         (currentRound.movementId === "squat" && event.key === "ArrowDown") ||

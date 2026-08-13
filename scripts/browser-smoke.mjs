@@ -7,7 +7,10 @@ import { join } from "node:path";
 const chromePath =
   process.env.CHROME_PATH ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const targetUrl = process.env.MOVEREALM_URL ?? "http://127.0.0.1:4173";
-const testCamera = process.env.MOVEREALM_CAMERA_SMOKE === "1";
+const testCameraFailure = process.env.MOVEREALM_CAMERA_FAILURE_SMOKE === "1";
+const testCameraRetry = process.env.MOVEREALM_CAMERA_RETRY_SMOKE === "1";
+const testCamera =
+  process.env.MOVEREALM_CAMERA_SMOKE === "1" || testCameraFailure || testCameraRetry;
 const testFullSession = process.env.MOVEREALM_FULL_SMOKE === "1";
 const testAdaptation = process.env.MOVEREALM_ADAPT_SMOKE === "1" || testFullSession;
 const testCapture = process.env.MOVEREALM_CAPTURE_SMOKE === "1";
@@ -132,32 +135,55 @@ async function waitFor(expression, timeoutMs = 12_000) {
   throw new Error(`Timed out waiting for: ${expression}`);
 }
 
-async function clickButton(text) {
-  const clicked = await evaluate(`(() => {
-    const button = [...document.querySelectorAll("button")].find((item) => item.textContent.includes(${JSON.stringify(text)}));
-    if (!button) return false;
-    button.click();
-    return true;
-  })()`);
-  if (!clicked) throw new Error(`Button not found: ${text}`);
-}
-
 async function pressKey(key, code, windowsVirtualKeyCode) {
   await page.send("Input.dispatchKeyEvent", { type: "keyDown", key, code, windowsVirtualKeyCode });
   await page.send("Input.dispatchKeyEvent", { type: "keyUp", key, code, windowsVirtualKeyCode });
 }
 
-async function activateButtonByKeyboard(text) {
-  await evaluate("document.body.focus() || true");
-  for (let index = 0; index < 18; index += 1) {
+async function activateButtonByKeyboard(text, { scope = "body", exact = false } = {}) {
+  const matchExpression = exact ? "name === wanted" : "name.includes(wanted)";
+  const prepared = await evaluate(`(() => {
+    const root = document.querySelector(${JSON.stringify(scope)});
+    if (!(root instanceof HTMLElement)) return { ready: false, names: [] };
+    const normalize = (value) => value.replace(/\s+/g, " ").trim();
+    const controls = [...root.querySelectorAll("button, input, [role=button]")]
+      .filter((item) => item instanceof HTMLElement && !item.hidden);
+    const withNames = controls.map((item) => {
+      const labels = item instanceof HTMLInputElement
+        ? [...(item.labels ?? [])].map((label) => label.textContent ?? "").join(" ")
+        : "";
+      return {
+        item,
+        name: normalize(item.getAttribute("aria-label") || labels || item.textContent || ""),
+      };
+    });
+    const wanted = normalize(${JSON.stringify(text)});
+    const target = withNames.find(({ name }) => ${matchExpression});
+    if (!target) return { ready: false, names: withNames.map(({ name }) => name) };
+    document.querySelectorAll("[data-smoke-keyboard-target]").forEach((item) => {
+      item.removeAttribute("data-smoke-keyboard-target");
+    });
+    target.item.setAttribute("data-smoke-keyboard-target", "true");
+    root.tabIndex = -1;
+    root.focus();
+    return { ready: true, names: withNames.map(({ name }) => name) };
+  })()`);
+  if (!prepared.ready) {
+    throw new Error(`Keyboard target ${text} was not found in ${scope}: ${JSON.stringify(prepared.names)}`);
+  }
+  for (let index = 0; index < 40; index += 1) {
     await pressKey("Tab", "Tab", 9);
-    const focused = await evaluate("document.activeElement?.textContent?.trim() ?? ''");
-    if (focused.includes(text)) {
+    const focused = await evaluate(`(() => {
+      const active = document.activeElement;
+      return active instanceof HTMLElement && active.dataset.smokeKeyboardTarget === "true";
+    })()`);
+    if (focused) {
       await pressKey(" ", "Space", 32);
+      await evaluate('document.querySelector("[data-smoke-keyboard-target]")?.removeAttribute("data-smoke-keyboard-target"); true');
       return;
     }
   }
-  throw new Error(`Keyboard could not reach button: ${text}`);
+  throw new Error(`Keyboard could not reach ${text} inside ${scope}.`);
 }
 
 async function scoreCurrentMovement() {
@@ -167,7 +193,7 @@ async function scoreCurrentMovement() {
   } else if (movement.includes("side-step") || movement.includes("River")) {
     await pressKey("ArrowRight", "ArrowRight", 39);
   } else {
-    await pressKey(" ", "Space", 32);
+    await pressKey("ArrowUp", "ArrowUp", 38);
   }
   return movement;
 }
@@ -218,6 +244,27 @@ try {
   await page.send("Page.enable");
   await page.send("Log.enable");
   await page.send("Network.enable");
+  if (testCameraFailure || testCameraRetry) {
+    await page.send("Page.addScriptToEvaluateOnNewDocument", {
+      source: `(() => {
+        window.__moverealmGumCalls = 0;
+        const mediaDevices = navigator.mediaDevices;
+        if (!mediaDevices) return;
+        const originalGetUserMedia = mediaDevices.getUserMedia.bind(mediaDevices);
+        mediaDevices.getUserMedia = async (constraints) => {
+          window.__moverealmGumCalls += 1;
+          if (${testCameraFailure ? "true" : "false"}) {
+            throw new DOMException("TOP_SECRET_CAMERA_DRIVER", "NotAllowedError");
+          }
+          if (window.__moverealmGumCalls === 1) {
+            throw new DOMException("Timeout starting video source", "AbortError");
+          }
+          return originalGetUserMedia(constraints);
+        };
+      })();`,
+    });
+    await page.send("Page.reload", { ignoreCache: true });
+  }
   await page.send("Browser.setDownloadBehavior", {
     behavior: "allow",
     downloadPath: artifactDirectory,
@@ -232,14 +279,44 @@ try {
   let cameraScreenshot;
   if (testCamera) {
     await activateButtonByKeyboard("Scan my room");
-    await waitFor('!!document.querySelector(".capture-layout") && document.querySelector("video")?.videoWidth > 0', 15_000);
-    await waitFor('!!document.querySelector(".camera-status .status-dot--ready")', 25_000);
-    cameraScreenshot = await screenshot("01b-camera");
-    if (testCapture) {
-      await clickButton("Capture this room");
-      await waitFor('!!document.querySelector(".confirm-layout")', 70_000);
+    if (testCameraFailure) {
+      await waitFor('!!document.querySelector(".inline-error[role=alert]")', 10_000);
+      const cameraFailure = await evaluate(`({
+        message: document.querySelector(".inline-error[role=alert]")?.textContent.trim(),
+        calls: window.__moverealmGumCalls,
+        scanEnabled: ![...document.querySelectorAll("button")].find((button) => button.textContent.includes("Scan my room"))?.disabled,
+        rawLeaked: document.body.innerText.includes("TOP_SECRET_CAMERA_DRIVER")
+      })`);
+      if (
+        !cameraFailure.message?.includes("Camera access is blocked") ||
+        cameraFailure.calls !== 1 ||
+        !cameraFailure.scanEnabled ||
+        cameraFailure.rawLeaked
+      ) {
+        throw new Error(`Camera failure was not actionable and sanitized: ${JSON.stringify(cameraFailure)}`);
+      }
+      cameraScreenshot = await screenshot("01b-camera-error");
+      await activateButtonByKeyboard("Try the guided demo");
     } else {
-      await clickButton("Use demo room");
+      await waitFor('!!document.querySelector(".capture-layout") && document.querySelector("video")?.videoWidth > 0', 15_000);
+      await waitFor('!!document.querySelector(".camera-status .status-dot--ready")', 25_000);
+      if (testCameraRetry) {
+        const cameraRetry = await evaluate(`({
+          calls: window.__moverealmGumCalls,
+          playable: document.querySelector("video")?.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA,
+          rawErrorVisible: document.body.innerText.includes("Timeout starting video source")
+        })`);
+        if (cameraRetry.calls !== 2 || !cameraRetry.playable || cameraRetry.rawErrorVisible) {
+          throw new Error(`Recoverable camera start did not retry cleanly: ${JSON.stringify(cameraRetry)}`);
+        }
+      }
+      cameraScreenshot = await screenshot("01b-camera");
+      if (testCapture) {
+        await activateButtonByKeyboard("Capture this room");
+        await waitFor('!!document.querySelector(".confirm-layout")', 70_000);
+      } else {
+        await activateButtonByKeyboard("Use demo room");
+      }
     }
   } else {
     await activateButtonByKeyboard("Try the guided demo");
@@ -258,12 +335,11 @@ try {
   }
   const confirmScreenshot = await screenshot("02-confirm-room");
 
-  const checked = await evaluate('document.querySelector(".floor-confirm")?.click(); true');
-  if (!checked) throw new Error("Floor confirmation control was unavailable.");
+  await activateButtonByKeyboard("I checked the floor is clear");
   await waitFor('[...document.querySelectorAll("button")].some((button) => button.textContent.includes("Grow my adventure") && !button.disabled)');
-  await clickButton("Grow my adventure");
+  await activateButtonByKeyboard("Grow my adventure");
   await waitFor('!!document.querySelector(".calibration-layout")', 38_000);
-  if (testCapture) await clickButton("Use keyboard controls for this run");
+  if (testCapture) await activateButtonByKeyboard("Use keyboard controls for this run");
   const calibrationScreenshot = await screenshot("03-calibration");
 
   await waitFor('!!document.querySelector(".game-screen") && !!document.querySelector(".neon-game canvas")', 75_000);
@@ -276,27 +352,26 @@ try {
   const afterScore = roundScores[0].after;
   const gameScreenshot = await screenshot("04-game");
 
-  const paused = await evaluate(`(() => {
-    const button = document.querySelector('button[aria-label="Pause adventure"]');
-    if (!button) return false;
-    button.click();
-    return true;
-  })()`);
-  if (!paused) throw new Error("Pause control was unavailable.");
+  const scoreBeforePauseActivation = Number((await evaluate('document.querySelector(".game-score strong")?.textContent.replace(/,/g, "")')) ?? 0);
+  await activateButtonByKeyboard("Pause adventure", { exact: true });
   await waitFor('!!document.querySelector(".pause-overlay")');
   const pausedAt = await evaluate('document.querySelector(".game-progress")?.textContent');
   await delay(1_500);
   const pausedAfter = await evaluate('document.querySelector(".game-progress")?.textContent');
   if (pausedAfter !== pausedAt) throw new Error(`Round timer advanced while paused (${pausedAt} -> ${pausedAfter}).`);
-  await clickButton("Resume");
+  const scoreAfterPauseActivation = Number((await evaluate('document.querySelector(".game-score strong")?.textContent.replace(/,/g, "")')) ?? 0);
+  if (scoreAfterPauseActivation !== scoreBeforePauseActivation) {
+    throw new Error(`Space on Pause leaked into gameplay (${scoreBeforePauseActivation} -> ${scoreAfterPauseActivation}).`);
+  }
+  await activateButtonByKeyboard("Resume", { scope: ".pause-overlay", exact: true });
   await waitFor('!document.querySelector(".pause-overlay")');
 
   let adaptation;
   let adaptationScreenshot;
   if (testAdaptation) {
     await waitFor('!!document.querySelector(".round-dialog")', 60_000);
-    await clickButton("Too hard");
-    await clickButton("Let the world adapt");
+    await activateButtonByKeyboard("Too hard", { scope: ".round-dialog", exact: true });
+    await activateButtonByKeyboard("Let the world adapt", { scope: ".round-dialog" });
     await waitFor('!!document.querySelector(".round-dialog--trace")', 15_000);
     adaptation = await evaluate(`({
       reason: document.querySelector(".round-dialog--trace h2")?.textContent.trim(),
@@ -327,21 +402,21 @@ try {
   let evidenceSha256;
   let evidenceProduct;
   if (testFullSession) {
-    await clickButton("Take the forest pause");
+    await activateButtonByKeyboard("Take the forest pause", { scope: ".round-dialog--trace" });
     await waitFor('document.querySelector(".game-progress")?.textContent.includes("Round 2 of 3")', 20_000);
     await delay(900);
     roundScores.push(await scoreAndAssert("round 2"));
     await waitFor('!!document.querySelector(".round-dialog")', 60_000);
-    await clickButton("Just right");
-    await clickButton("Let the world adapt");
+    await activateButtonByKeyboard("Just right", { scope: ".round-dialog", exact: true });
+    await activateButtonByKeyboard("Let the world adapt", { scope: ".round-dialog" });
     await waitFor('!!document.querySelector(".round-dialog--trace")', 15_000);
-    await clickButton("Take the forest pause");
+    await activateButtonByKeyboard("Take the forest pause", { scope: ".round-dialog--trace" });
     await waitFor('document.querySelector(".game-progress")?.textContent.includes("Round 3 of 3")', 20_000);
     await delay(900);
     roundScores.push(await scoreAndAssert("round 3"));
     await waitFor('!!document.querySelector(".round-dialog")', 60_000);
-    await clickButton("Just right");
-    await clickButton("Reveal my garden");
+    await activateButtonByKeyboard("Just right", { scope: ".round-dialog", exact: true });
+    await activateButtonByKeyboard("Reveal my garden", { scope: ".round-dialog" });
     await waitFor('!!document.querySelector(".postcard-screen")', 8_000);
     postcard = await evaluate(`({
       title: document.querySelector(".postcard__title h1")?.textContent.trim(),
@@ -392,15 +467,9 @@ try {
       );
     }
     postcardScreenshot = await screenshot("06-postcard");
-    await clickButton("Play this room again");
+    await activateButtonByKeyboard("Play this room again");
     await waitFor('!!document.querySelector(".game-screen")', 8_000);
-    const stopped = await evaluate(`(() => {
-      const button = document.querySelector('button[aria-label="Stop adventure"]');
-      if (!button) return false;
-      button.click();
-      return true;
-    })()`);
-    if (!stopped) throw new Error("Stop control was unavailable after replay.");
+    await activateButtonByKeyboard("Stop adventure");
     await waitFor('!!document.querySelector(".landing")', 8_000);
   }
 
@@ -433,7 +502,10 @@ try {
         confirmation: confirmState,
         score: { before: beforeScore, after: afterScore },
         roundScores,
-        cameraReady: testCamera,
+        cameraReady: testCamera && !testCameraFailure,
+        cameraStartAttempts: testCameraFailure || testCameraRetry
+          ? await evaluate("window.__moverealmGumCalls")
+          : undefined,
         apiPostRequests,
         adaptation,
         postcard,

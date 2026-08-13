@@ -9,7 +9,7 @@ import {
   AdaptRequestSchema,
   PlanRequestSchema,
   validateSceneSafety,
-  validateAdaptationSafety,
+  validateAndGroundAdaptation,
   validatePlanSafety,
   type DirectorMeta,
 } from "../src/shared/contracts.js";
@@ -18,7 +18,12 @@ import {
   createFallbackPlan,
   createFallbackSceneProfile,
 } from "../src/shared/fallbacks.js";
-import { CodeBuddyClient, CodeBuddyError } from "./codebuddy.js";
+import {
+  CodeBuddyClient,
+  CodeBuddyError,
+  DEFAULT_CODEBUDDY_RUN_TIMEOUT_MS,
+  MAX_CODEBUDDY_RUN_TIMEOUT_MS,
+} from "./codebuddy.js";
 import { adaptationPrompt, planPrompt, repairPrompt, scenePrompt } from "./prompts.js";
 
 interface AppOptions {
@@ -106,10 +111,12 @@ async function runWithRepair<T>(
   attachments: Parameters<CodeBuddyClient["runStructured"]>[2] = [],
 ): Promise<T> {
   try {
-    return await codeBuddy.runStructured(prompt, validate, attachments);
+    return validate(await codeBuddy.runStructured(prompt, validate, attachments));
   } catch (error) {
     if (!(error instanceof CodeBuddyError) || !error.message.includes("failed validation")) throw error;
-    return codeBuddy.runStructured(repairPrompt(prompt, error.message), validate, attachments);
+    return validate(
+      await codeBuddy.runStructured(repairPrompt(prompt, error.message), validate, attachments),
+    );
   }
 }
 
@@ -118,7 +125,15 @@ function fallbackPlan(request: Parameters<typeof createFallbackPlan>[0]) {
 }
 
 function fallbackAdaptation(request: Parameters<typeof createFallbackAdaptation>[0]) {
-  return validateAdaptationSafety(createFallbackAdaptation(request), request);
+  return validateAndGroundAdaptation(createFallbackAdaptation(request), request);
+}
+
+export function resolveCodeBuddyTimeoutMs(configuredValue: string | undefined): number {
+  const configured = Number(configuredValue);
+  if (!Number.isFinite(configured) || configured <= 0) {
+    return DEFAULT_CODEBUDDY_RUN_TIMEOUT_MS;
+  }
+  return Math.min(configured, MAX_CODEBUDDY_RUN_TIMEOUT_MS);
 }
 
 export function createApp(options: AppOptions = {}): Express {
@@ -136,12 +151,13 @@ export function createApp(options: AppOptions = {}): Express {
   const upload = createUpload(uploadDirectory);
   const forceFallback =
     options.forceFallback ?? process.env.MOVEREALM_FORCE_FALLBACK === "1";
+  const codeBuddyTimeoutMs = resolveCodeBuddyTimeoutMs(process.env.CODEBUDDY_TIMEOUT_MS);
   const codeBuddy =
     options.codeBuddy ??
     new CodeBuddyClient({
       baseUrl: process.env.CODEBUDDY_BASE_URL,
       password: process.env.CODEBUDDY_PASSWORD,
-      timeoutMs: Number(process.env.CODEBUDDY_TIMEOUT_MS) || 30_000,
+      timeoutMs: codeBuddyTimeoutMs,
     });
 
   app.disable("x-powered-by");
@@ -253,7 +269,7 @@ export function createApp(options: AppOptions = {}): Express {
     if (!forceFallback) {
       try {
         const data = await runWithRepair(codeBuddy, adaptationPrompt(parsed.data), (value) =>
-          validateAdaptationSafety(value, parsed.data),
+          validateAndGroundAdaptation(value, parsed.data),
         );
         response.json({ data, meta: meta("codebuddy", startedAt, now) });
         return;

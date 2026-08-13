@@ -173,11 +173,48 @@ reach-only fallback passed. The judge never approves, rewrites, blocks, or execu
 scores are not accuracy, safety, official-judge, human-trial, or runtime evidence. See
 [`docs/EVALUATION.md`](docs/EVALUATION.md) for the fixed setup, observations, and limitations.
 
+The dependency-free [`python_agent/`](python_agent/) wrapper turns that evaluator into a small
+`observe → evaluate → recover → verify` agent. It defaults to the free local 3.3 GB Qwen3-VL 4B
+Ollama model and can select a labelled fallback only after the production gates accept it. In the
+frozen run, the cheap model preferred the unsafe original (18/24) over the safe fallback (15/24),
+but deterministic eligibility still forced the correct recovery. CodeBuddy remains the runtime
+Movement Director; this Python loop is offline evaluation evidence.
+
+```bash
+npm run test:python
+npm run agent:python -- --candidate <candidate.json> --fallback-candidate <fallback.json>
+```
+
 Use the [three-person trial protocol](docs/TRIAL_PROTOCOL.md) before collecting any human evidence.
 Real-person FPS, visible latency, TTFF, and all three trials remain pending until three consenting M1
 Pro webcam runs are observed and privacy-reviewed. See [docs/DEMO.md](docs/DEMO.md) for the judging
 script and [docs/VALIDATION.md](docs/VALIDATION.md) for the evidence matrix. Do not fill pending
 results from targets, keyboard runs, fake-camera runs, or estimates.
+
+## Adversarial Safety Probe
+
+The Shadow Judge scores quality after the fact; nothing was attacking the safety gate itself. The
+Python **Safety Probe** in [`agent/`](agent/README.md) does. It invents quests a careless or
+adversarial director might emit, asks the *real* production contracts to rule on them, and compares
+each verdict against an independently written restatement of the documented movement rules. Only two
+outcomes count as findings: an unsafe candidate the gate accepted, or a compliant candidate it
+refused.
+
+```bash
+npm run probe                     # attack the production contracts
+npm run probe -- --mode live      # audit a running adapter
+npm run probe:tests               # 78 tests, standard library only
+```
+
+Against commit `a14c7e5` with `MOVEREALM_FORCE_FALLBACK=1`, it ran 332 candidates over 6 adaptive
+rounds and terminated on its own when nothing new appeared: 302 refusals, 30 compliant acceptances,
+**0 breaches and 0 over-rejections**, with all 20 compliant baselines accepted. Bisection measured
+seven envelope frontiers, each agreeing with the documented threshold — the narrow-room side-step
+cap, for example, was observed accepted up to 0.6156 and refused from 0.6203 against a documented
+0.62. The live audit passed 42/42 checks across all five synthetic rooms. The stub gates in its test
+suite prove a breach *would* be reported. This is contract-behaviour evidence over synthetic rooms:
+not a human trial, pose or latency measurement, security audit, or certification. The tool never
+approves, rewrites, blocks, or executes a quest, and reads no participant data.
 
 ## Camera-free backup video
 
@@ -198,6 +235,9 @@ local artifact is not itself an accepted video URL.
 - `src/lib/sessionEvidence.ts` — privacy-safe aggregate session evidence and threshold semantics
 - `src/game/NeonRainforestScene.ts` — procedural Phaser world and mechanics
 - `src/components/GameScreen.tsx` — telemetry, visible adaptation, pause/stop, result handoff
+- `python_agent/moverealm_agent.py` — cheap local-VLM evaluation and fail-closed recovery loop
+- `agent/moverealm_probe/oracle.py` — independent restatement of the documented movement rules
+- `agent/bridge/contract_bridge.ts` — stdio bridge that runs the real gates for the Python probe
 
 References: [MediaPipe Pose Landmarker for Web](https://developers.google.com/edge/mediapipe/solutions/vision/pose_landmarker/web_js),
 [CodeBuddy HTTP API](https://www.workbuddy.ai/docs/cli/http-api).

@@ -107,6 +107,12 @@ quest; CodeBuddy remains the only runtime Movement Director and deterministic co
 sole automated safety authority. The recorded model/hard-gate disagreement and limitations are in
 [`EVALUATION.md`](EVALUATION.md).
 
+A small standard-library Python agent wraps the same evaluator with an explicit
+`observe → evaluate → recover → verify` loop and the free local Qwen3-VL 4B model. Its recorded run
+is deliberately fail-closed: even though the cheap model scored an unsafe candidate above the safe
+fallback, the agent selected only the fallback accepted by production gates. This is offline
+synthetic evaluation evidence, not a second runtime authority or a participant result.
+
 ### Defined impact and commercial hypothesis
 
 The intended product outcomes are a first accepted movement within 45 seconds, at least 20 pose FPS

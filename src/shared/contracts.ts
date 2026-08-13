@@ -73,6 +73,30 @@ export const MechanicSchema = z.enum([
 ]);
 export type Mechanic = z.infer<typeof MechanicSchema>;
 
+const ROUND_PRESENTATION: Record<
+  MovementId,
+  { mechanic: Mechanic; prompt: string; accent: "mint" | "orchid" | "amber" }
+> = {
+  reach: {
+    mechanic: "collect_fireflies",
+    prompt: "Reach softly to wake the fireflies",
+    accent: "mint",
+  },
+  squat: {
+    mechanic: "shelter_seedlings",
+    prompt: "Lower gently to shelter the seedlings",
+    accent: "orchid",
+  },
+  side_step: {
+    mechanic: "redirect_river",
+    prompt: "Step side to side and guide the river",
+    accent: "amber",
+  },
+};
+
+export const CANONICAL_SAFETY_NOTE =
+  "Move only inside the clear area you confirmed. Pause whenever you need to.";
+
 export const QuestRoundSchema = z
   .object({
     id: z.string().regex(/^round-[1-3]$/),
@@ -87,12 +111,7 @@ export const QuestRoundSchema = z
   })
   .strict()
   .superRefine((round, context) => {
-    const expectedMechanic: Record<MovementId, Mechanic> = {
-      reach: "collect_fireflies",
-      squat: "shelter_seedlings",
-      side_step: "redirect_river",
-    };
-    if (round.mechanic !== expectedMechanic[round.movementId]) {
+    if (round.mechanic !== ROUND_PRESENTATION[round.movementId].mechanic) {
       context.addIssue({
         code: "custom",
         path: ["mechanic"],
@@ -101,6 +120,19 @@ export const QuestRoundSchema = z
     }
   });
 export type QuestRound = z.infer<typeof QuestRoundSchema>;
+
+/**
+ * Movement instructions are curated product copy, never agent instructions.
+ * The agent may tune only the three numeric parameters validated below.
+ */
+export function canonicalizeRoundPresentation(round: QuestRound): QuestRound {
+  return {
+    ...round,
+    rangeScale: Math.round(round.rangeScale * 100) / 100,
+    tempo: Number(round.tempo.toFixed(2)),
+    ...ROUND_PRESENTATION[round.movementId],
+  };
+}
 
 export const QuestPlanSchema = z
   .object({
@@ -160,6 +192,16 @@ export const RoundTelemetrySchema = z
         message: "Completed targets cannot exceed presented targets.",
       });
     }
+    const measuredCompletion = telemetry.targetsPresented === 0
+      ? 0
+      : telemetry.targetsCompleted / telemetry.targetsPresented;
+    if (Math.abs(telemetry.completionRate - measuredCompletion) > 0.001) {
+      context.addIssue({
+        code: "custom",
+        path: ["completionRate"],
+        message: "Completion rate must match the presented and completed target counts.",
+      });
+    }
   });
 export type RoundTelemetry = z.infer<typeof RoundTelemetrySchema>;
 
@@ -198,7 +240,18 @@ export const AdaptRequestSchema = z
     constraints: ConfirmedConstraintsSchema,
     intent: UserIntentSchema,
   })
-  .strict();
+  .strict()
+  .superRefine((request, context) => {
+    const telemetryRound = Number(request.telemetry.roundId.slice(-1));
+    const nextRound = Number(request.nextRoundSeed.id.slice(-1));
+    if (nextRound !== telemetryRound + 1) {
+      context.addIssue({
+        code: "custom",
+        path: ["nextRoundSeed", "id"],
+        message: "The adaptation seed must be the round immediately after the telemetry round.",
+      });
+    }
+  });
 export type AdaptRequest = z.infer<typeof AdaptRequestSchema>;
 
 export const DirectorSourceSchema = z.enum(["codebuddy", "fallback", "demo"]);
@@ -296,7 +349,19 @@ export function validatePlanSafety(input: unknown, request: PlanRequest): QuestP
     throw new Error("An uncertain room permits in-place reach rounds only.");
   }
 
-  return plan;
+  return {
+    ...plan,
+    rounds: plan.rounds.map(canonicalizeRoundPresentation),
+    safetyNote: CANONICAL_SAFETY_NOTE,
+  };
+}
+
+function displayedRange(value: number): number {
+  return Math.round(value * 100);
+}
+
+function displayedTempo(value: number): string {
+  return value.toFixed(2);
 }
 
 export function validateAdaptationSafety(
@@ -313,9 +378,13 @@ export function validateAdaptationSafety(
     nextRound.id !== nextRoundSeed.id ||
     nextRound.movementId !== nextRoundSeed.movementId ||
     nextRound.durationSeconds !== nextRoundSeed.durationSeconds ||
-    nextRound.mechanic !== nextRoundSeed.mechanic
+    nextRound.mechanic !== nextRoundSeed.mechanic ||
+    nextRound.prompt !== nextRoundSeed.prompt ||
+    nextRound.accent !== nextRoundSeed.accent
   ) {
-    throw new Error("An adaptation may tune a validated round, but may not replace its movement.");
+    throw new Error(
+      "An adaptation may tune validated numeric parameters, but may not replace its movement or presentation.",
+    );
   }
 
   if (
@@ -367,19 +436,30 @@ export function validateAdaptationSafety(
     throw new Error("A too-hard response may not increase the next round difficulty.");
   }
 
-  const changed = {
+  const rawChanged = {
     target_envelope: nextRound.rangeScale !== nextRoundSeed.rangeScale,
     tempo: nextRound.tempo !== nextRoundSeed.tempo,
     target_rate: nextRound.targetRate !== nextRoundSeed.targetRate,
   } as const;
+  const changed = {
+    target_envelope: displayedRange(nextRound.rangeScale) !== displayedRange(nextRoundSeed.rangeScale),
+    tempo: displayedTempo(nextRound.tempo) !== displayedTempo(nextRoundSeed.tempo),
+    target_rate: rawChanged.target_rate,
+  } as const;
+  if (
+    (rawChanged.target_envelope && !changed.target_envelope) ||
+    (rawChanged.tempo && !changed.tempo)
+  ) {
+    throw new Error("Adaptation changes must be visible at the displayed parameter precision.");
+  }
   const actualAdjustments = (Object.keys(changed) as Array<keyof typeof changed>).filter(
     (adjustment) => changed[adjustment],
   );
   const declaredAdjustments = new Set(decision.adjustments);
 
   const canReduceDifficulty =
-    nextRoundSeed.rangeScale > 0.4 ||
-    nextRoundSeed.tempo > 0.55 ||
+    displayedRange(nextRoundSeed.rangeScale) > displayedRange(0.4) ||
+    displayedTempo(nextRoundSeed.tempo) > displayedTempo(0.55) ||
     nextRoundSeed.targetRate > 3;
   if (
     request.telemetry.feedback === "too_hard" &&
@@ -407,7 +487,52 @@ export function validateAdaptationSafety(
     }
   }
 
-  return decision;
+  return {
+    ...decision,
+    nextRound: canonicalizeRoundPresentation(decision.nextRound),
+  };
+}
+
+/**
+ * Render the public adaptation trace exclusively from validated telemetry and
+ * actual parameter differences. Agent prose is never trusted as evidence of
+ * fatigue, form, or any other unobserved state.
+ */
+export function groundedAdaptationReason(
+  request: AdaptRequest,
+  decision: AdaptationDecision,
+): string {
+  const { telemetry, nextRoundSeed } = request;
+  const observation = `${telemetry.targetsCompleted}/${telemetry.targetsPresented} targets`;
+  const measuredContext = telemetry.trackingMode === "pose"
+    ? `range ${Math.round(telemetry.movementRange * 100)}%; pose confidence ${Math.round(telemetry.poseConfidence * 100)}%`
+    : `keyboard range ${Math.round(telemetry.movementRange * 100)}%`;
+  const feedback = {
+    too_hard: "Too hard",
+    just_right: "Just right",
+    too_easy: "Too easy",
+  }[telemetry.feedback];
+  const changes: string[] = [];
+  if (displayedRange(decision.nextRound.rangeScale) < displayedRange(nextRoundSeed.rangeScale)) changes.push("closer");
+  if (displayedRange(decision.nextRound.rangeScale) > displayedRange(nextRoundSeed.rangeScale)) changes.push("farther");
+  if (displayedTempo(decision.nextRound.tempo) < displayedTempo(nextRoundSeed.tempo)) changes.push("slower");
+  if (displayedTempo(decision.nextRound.tempo) > displayedTempo(nextRoundSeed.tempo)) changes.push("quicker");
+  if (decision.nextRound.targetRate < nextRoundSeed.targetRate) changes.push("fewer targets");
+  if (decision.nextRound.targetRate > nextRoundSeed.targetRate) changes.push("more targets");
+
+  const changeSummary = changes.length ? changes.join(", ") : "settings stay the same";
+  return `${observation}; ${measuredContext}; you chose ${feedback}. Next: ${changeSummary}.`;
+}
+
+export function validateAndGroundAdaptation(
+  input: unknown,
+  request: AdaptRequest,
+): AdaptationDecision {
+  const decision = validateAdaptationSafety(input, request);
+  return {
+    ...decision,
+    reason: groundedAdaptationReason(request, decision),
+  };
 }
 
 export function formatMovementName(movementId: MovementId): string {

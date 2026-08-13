@@ -70,13 +70,6 @@ function candidateFor(id: "open-room" | "tight-room" | "uncertain-room"): EvalCa
     intent: { durationSeconds: 180, energy: "balanced", noJumping: true },
   };
   const plan = validatePlanSafety(createFallbackPlan(planRequest), planRequest);
-  if (id === "uncertain-room") {
-    for (const round of plan.rounds) {
-      round.movementId = "reach";
-      round.mechanic = "collect_fireflies";
-      round.prompt = "Reach gently within the visible central lane";
-    }
-  }
   const adaptations = id === "tight-room"
     ? (() => {
         const request: AdaptRequest = {
@@ -176,6 +169,18 @@ describe("offline agent evaluation", () => {
     );
   });
 
+  it("rejects a custom plan relabelled as the deterministic fallback", async () => {
+    const candidate = candidateFor("open-room");
+    candidate.plan.rounds[0].targetRate += 1;
+
+    const result = await evaluateHardGates(candidate, fixture("open-room"));
+
+    expect(result.passed).toBe(false);
+    expect(result.checks.find((item) => item.id === "fallback-provenance")?.detail).toMatch(
+      /exactly match/i,
+    );
+  });
+
   it("rejects adaptation inputs that are detached from the validated plan", async () => {
     const candidate = candidateFor("tight-room");
     candidate.adaptations[0].request.constraints.permittedDirections = [
@@ -249,6 +254,31 @@ describe("offline agent evaluation", () => {
     expect(result.status).toBe("not_run");
     expect(result.verdict).toBeNull();
     expect(fetchMock).toHaveBeenCalledOnce();
+  });
+
+  it("refuses remote judge URLs before reading or sending a room image", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch");
+    const result = await runOllamaJudge(candidateFor("open-room"), fixture("open-room"), {
+      baseUrl: "https://example.com",
+      model: "qwen3-vl:8b-instruct-q4_K_M",
+    });
+
+    expect(result.status).toBe("invalid");
+    expect(result.detail).toMatch(/loopback/i);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("does not call Ollama when the room fixture fails its integrity check", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch");
+    const badOracle = { ...fixture("open-room"), sha256: "0".repeat(64) };
+    const result = await runOllamaJudge(candidateFor("open-room"), badOracle, {
+      baseUrl: "http://127.0.0.1:11434",
+      model: "qwen3-vl:8b-instruct-q4_K_M",
+    });
+
+    expect(result.status).toBe("invalid");
+    expect(result.detail).toMatch(/integrity/i);
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it("parses schema-constrained Ollama output and records only the validated verdict", async () => {

@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import type { EvalCandidate, FixtureOracle, JudgeVerdict } from "./schemas.js";
@@ -32,6 +33,53 @@ export async function runOllamaJudge(
   options: { baseUrl: string; model: string; timeoutMs?: number },
 ): Promise<JudgeResult> {
   const baseUrl = options.baseUrl.replace(/\/$/, "");
+  let hostname: string;
+  try {
+    hostname = new URL(baseUrl).hostname;
+  } catch {
+    hostname = "";
+  }
+  if (!["127.0.0.1", "localhost", "[::1]", "::1"].includes(hostname)) {
+    return {
+      status: "invalid",
+      provider: "ollama",
+      model: options.model,
+      modelDigest: null,
+      latencyMs: null,
+      verdict: null,
+      detail: "The Ollama judge URL must use a loopback host so room images remain local.",
+      rawOmitted: true,
+    };
+  }
+
+  let imageBytes: Buffer;
+  try {
+    imageBytes = await readFile(resolve(oracle.image));
+  } catch {
+    return {
+      status: "invalid",
+      provider: "ollama",
+      model: options.model,
+      modelDigest: null,
+      latencyMs: null,
+      verdict: null,
+      detail: "The fixture image could not be verified; no model request was made.",
+      rawOmitted: true,
+    };
+  }
+  if (createHash("sha256").update(imageBytes).digest("hex") !== oracle.sha256) {
+    return {
+      status: "invalid",
+      provider: "ollama",
+      model: options.model,
+      modelDigest: null,
+      latencyMs: null,
+      verdict: null,
+      detail: "The fixture image failed its integrity check; no model request was made.",
+      rawOmitted: true,
+    };
+  }
+
   let tags: OllamaTags;
   try {
     const response = await fetch(`${baseUrl}/api/tags`, { signal: AbortSignal.timeout(3_000) });
@@ -66,7 +114,7 @@ export async function runOllamaJudge(
     };
   }
 
-  const image = (await readFile(resolve(oracle.image))).toString("base64");
+  const image = imageBytes.toString("base64");
   const rubric = `You are MoveRealm's independent offline Shadow Judge. Score subjective quality only.
 You cannot certify safety, approve runtime actions, or rewrite the candidate. Deterministic contracts are authoritative.
 Score every criterion from 0 (unsupported/harmful) to 4 (excellent). Cite exact candidate fields or visible image regions.

@@ -1,7 +1,7 @@
 import {
   DirectorMetaSchema,
   validateSceneSafety,
-  validateAdaptationSafety,
+  validateAndGroundAdaptation,
   validatePlanSafety,
   type AdaptRequest,
   type AdaptationDecision,
@@ -17,10 +17,10 @@ import {
 } from "../shared/fallbacks.js";
 import type { CapturedStill } from "./camera.js";
 
-// Two schema-validation attempts may each use the adapter's 30 s CodeBuddy
+// Two schema-validation attempts may each use the adapter's 45 s CodeBuddy
 // deadline. The browser must remain present long enough to receive the repaired
 // response or the adapter's labelled fallback.
-const DIRECTOR_REQUEST_TIMEOUT_MS = 66_000;
+const DIRECTOR_REQUEST_TIMEOUT_MS = 96_000;
 
 function fallbackMeta(startedAt: number, detail: string): DirectorResponse<never>["meta"] {
   return {
@@ -99,10 +99,10 @@ export async function requestAdaptation(
       body: JSON.stringify(request),
       signal: AbortSignal.timeout(DIRECTOR_REQUEST_TIMEOUT_MS),
     });
-    return await parseResponse(response, (value) => validateAdaptationSafety(value, request));
+    return await parseResponse(response, (value) => validateAndGroundAdaptation(value, request));
   } catch (error) {
     return {
-      data: validateAdaptationSafety(createFallbackAdaptation(request), request),
+      data: validateAndGroundAdaptation(createFallbackAdaptation(request), request),
       meta: fallbackMeta(
         startedAt,
         error instanceof Error ? `Static/offline mode: ${error.message}` : "Static/offline mode.",

@@ -89,8 +89,39 @@ The recorded files under
 [`artifacts/evaluation/`](../artifacts/evaluation/) contain synthetic fixture evidence only—no
 participant media, webcam stream, landmarks, identity, or health inference.
 
+## Python recovery agent — Qwen3-VL 4B
+
+[`python_agent/`](../python_agent/) adds a standard-library Python agent around the same evaluator.
+Its bounded loop is `observe → evaluate → recover → verify`: it evaluates a frozen primary
+candidate, fails closed on any production hard-gate violation, optionally evaluates a labelled
+fallback, and verifies eligibility before selecting anything. The local vision model is advisory;
+it cannot change a deterministic result. CodeBuddy remains the only runtime Movement Director.
+
+The default optional judge is the smaller Apache-2.0
+[`qwen3-vl:4b-instruct-q4_K_M`](https://ollama.com/library/qwen3-vl%3A4b-instruct-q4_K_M)
+package (3.3 GB). The agent never downloads it, retains no raw model response or image bytes, and
+also runs with `--judge none` when only the authoritative gates are needed.
+
+One strict local run on 14 August 2026 is frozen at
+[`python-agent-qwen3-vl-4b.json`](../artifacts/evaluation/python-agent-qwen3-vl-4b.json), SHA-256
+`585949ce0a97084cdd27fc0113a514fea6c60670e748b999625d798fe199566f`. The model scored the unsafe
+original **18/24** in 58.093 seconds and the validated fallback only **15/24** in 41.404 seconds.
+The agent nevertheless rejected the higher-scored original, selected the eligible fallback, and
+completed its recovery loop. This is controlled synthetic evaluation, not runtime, participant, or
+model-accuracy evidence.
+
+```bash
+npm run test:python
+npm run agent:python -- \
+  --candidate artifacts/evaluation/candidates/uncertain-room-original.json \
+  --fallback-candidate artifacts/evaluation/candidates/uncertain-room.json \
+  --judge ollama --strict-judge \
+  --out artifacts/evaluation/python-agent-qwen3-vl-4b.json
+```
+
 ## References
 
 - [Qwen3-VL 8B Instruct GGUF model card and Apache-2.0 license](https://huggingface.co/Qwen/Qwen3-VL-8B-Instruct-GGUF)
 - [Ollama Qwen3-VL 8B Q4 package](https://ollama.com/library/qwen3-vl%3A8b-instruct-q4_K_M)
+- [Ollama Qwen3-VL 4B Q4 package](https://ollama.com/library/qwen3-vl%3A4b-instruct-q4_K_M)
 - [Ollama vision structured-output documentation](https://docs.ollama.com/capabilities/structured-outputs)

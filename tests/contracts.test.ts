@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
   QuestPlanSchema,
+  AdaptRequestSchema,
+  RoundTelemetrySchema,
+  groundedAdaptationReason,
   validateAdaptationSafety,
   validatePlanSafety,
   validateSceneSafety,
@@ -42,6 +45,23 @@ describe("quest safety contract", () => {
         plan.restBetweenRoundsSeconds * 2,
     ).toBe(180);
     expect(plan.rounds.find((round) => round.movementId === "side_step")?.rangeScale).toBeLessThanOrEqual(0.62);
+  });
+
+  it("replaces agent-authored movement instructions with curated safe copy", () => {
+    const unsafeCopy = structuredClone(createFallbackPlan(request));
+    unsafeCopy.rounds[0].prompt = "Jump onto the chair as high as you can";
+    unsafeCopy.rounds[0].accent = "amber";
+    unsafeCopy.safetyNote = "Move through the obstacle if it is in the way.";
+
+    const safe = validatePlanSafety(unsafeCopy, request);
+
+    expect(safe.rounds[0]).toMatchObject({
+      prompt: "Reach softly to wake the fireflies",
+      accent: "mint",
+    });
+    expect(safe.safetyNote).toBe(
+      "Move only inside the clear area you confirmed. Pause whenever you need to.",
+    );
   });
 
   it.each(["jump", "burpee", "lunge"])("rejects unknown movement %s", (movementId) => {
@@ -136,6 +156,40 @@ describe("quest safety contract", () => {
     expect(() => validateAdaptationSafety(replacement, adaptationRequest)).toThrow(/may not replace/i);
   });
 
+  it("does not allow adaptation to replace curated movement instructions", () => {
+    const plan = createFallbackPlan(request);
+    const adaptationRequest: AdaptRequest = {
+      telemetry: {
+        roundId: "round-1",
+        movementId: plan.rounds[0].movementId,
+        completionRate: 0.4,
+        movementRange: 0.6,
+        poseConfidence: 0.9,
+        trackingFps: 27,
+        trackingMode: "pose",
+        targetsPresented: 10,
+        targetsCompleted: 4,
+        feedback: "too_hard",
+      },
+      nextRoundSeed: plan.rounds[1],
+      constraints: request.constraints,
+      intent: request.intent,
+    };
+    const unsafeCopy = {
+      nextRound: {
+        ...plan.rounds[1],
+        prompt: "Jump onto the chair as high as you can",
+        tempo: plan.rounds[1].tempo - 0.1,
+      },
+      reason: "Unsafe movement copy.",
+      adjustments: ["tempo"],
+    };
+
+    expect(() => validateAdaptationSafety(unsafeCopy, adaptationRequest)).toThrow(
+      /movement or presentation/i,
+    );
+  });
+
   it("rejects a wide reach plan when only the central vertical lane is permitted", () => {
     const centralRequest: PlanRequest = {
       ...request,
@@ -205,7 +259,7 @@ describe("quest safety contract", () => {
       telemetry: {
         roundId: "round-1",
         movementId: "reach",
-        completionRate: 0.95,
+        completionRate: 1,
         movementRange: 0.9,
         poseConfidence: 0.95,
         trackingFps: 28,
@@ -255,6 +309,129 @@ describe("quest safety contract", () => {
       adjustments: ["none"],
     };
     expect(() => validateAdaptationSafety(noOp, adaptationRequest)).toThrow(/visibly reduce/i);
+  });
+
+  it("rejects a numeric adaptation that is invisible at the displayed precision", () => {
+    const plan = createFallbackPlan(request);
+    const adaptationRequest: AdaptRequest = {
+      telemetry: {
+        roundId: "round-1",
+        movementId: plan.rounds[0].movementId,
+        completionRate: 0.4,
+        movementRange: 0.5,
+        poseConfidence: 0.9,
+        trackingFps: 27,
+        trackingMode: "pose",
+        targetsPresented: 10,
+        targetsCompleted: 4,
+        feedback: "too_hard",
+      },
+      nextRoundSeed: plan.rounds[1],
+      constraints: request.constraints,
+      intent: request.intent,
+    };
+    const invisible = {
+      nextRound: { ...plan.rounds[1], rangeScale: plan.rounds[1].rangeScale - 0.0001 },
+      reason: "A tiny invisible change.",
+      adjustments: ["target_envelope"],
+    };
+
+    expect(() => validateAdaptationSafety(invisible, adaptationRequest)).toThrow(
+      /displayed parameter precision/i,
+    );
+  });
+
+  it("rejects telemetry whose completion rate contradicts its target counts", () => {
+    expect(() =>
+      RoundTelemetrySchema.parse({
+        roundId: "round-1",
+        movementId: "reach",
+        completionRate: 0.9,
+        movementRange: 0.7,
+        poseConfidence: 0.9,
+        trackingFps: 27,
+        trackingMode: "pose",
+        targetsPresented: 10,
+        targetsCompleted: 4,
+        feedback: "just_right",
+      }),
+    ).toThrow(/must match/i);
+  });
+
+  it("requires the adaptation seed to immediately follow its telemetry round", () => {
+    const plan = createFallbackPlan(request);
+    expect(() =>
+      AdaptRequestSchema.parse({
+        telemetry: {
+          roundId: "round-1",
+          movementId: plan.rounds[0].movementId,
+          completionRate: 0.5,
+          movementRange: 0.6,
+          poseConfidence: 0.9,
+          trackingFps: 27,
+          trackingMode: "pose",
+          targetsPresented: 10,
+          targetsCompleted: 5,
+          feedback: "just_right",
+        },
+        nextRoundSeed: plan.rounds[2],
+        constraints: request.constraints,
+        intent: request.intent,
+      }),
+    ).toThrow(/immediately after/i);
+  });
+
+  it("renders the trace only from counts, explicit feedback, and actual changes", () => {
+    const plan = createFallbackPlan(request);
+    const adaptationRequest: AdaptRequest = {
+      telemetry: {
+        roundId: "round-1",
+        movementId: plan.rounds[0].movementId,
+        completionRate: 0.4,
+        movementRange: 0.5,
+        poseConfidence: 0.9,
+        trackingFps: 27,
+        trackingMode: "pose",
+        targetsPresented: 10,
+        targetsCompleted: 4,
+        feedback: "too_hard",
+      },
+      nextRoundSeed: plan.rounds[1],
+      constraints: request.constraints,
+      intent: request.intent,
+    };
+    const decision = createFallbackAdaptation(adaptationRequest);
+
+    expect(groundedAdaptationReason(adaptationRequest, decision)).toBe(
+      "4/10 targets; range 50%; pose confidence 90%; you chose Too hard. Next: closer, slower, fewer targets.",
+    );
+  });
+
+  it("makes low pose confidence explicit when it overrides easy feedback", () => {
+    const plan = createFallbackPlan(request);
+    const adaptationRequest: AdaptRequest = {
+      telemetry: {
+        roundId: "round-1",
+        movementId: plan.rounds[0].movementId,
+        completionRate: 1,
+        movementRange: 0.95,
+        poseConfidence: 0.2,
+        trackingFps: 8,
+        trackingMode: "pose",
+        targetsPresented: 10,
+        targetsCompleted: 10,
+        feedback: "too_easy",
+      },
+      nextRoundSeed: plan.rounds[1],
+      constraints: request.constraints,
+      intent: request.intent,
+    };
+    const decision = createFallbackAdaptation(adaptationRequest);
+    const reason = groundedAdaptationReason(adaptationRequest, decision);
+
+    expect(reason).toContain("pose confidence 20%");
+    expect(reason).toContain("you chose Too easy");
+    expect(reason).toContain("Next: closer, slower, fewer targets");
   });
 });
 
