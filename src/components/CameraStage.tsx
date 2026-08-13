@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { PoseFrame } from "../pose/types";
 import { drawPose } from "../pose/drawPose";
 
@@ -26,6 +26,11 @@ export function CameraStage({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [previewReady, setPreviewReady] = useState(false);
+
+  const bindVideo = useCallback((node: HTMLVideoElement | null) => {
+    videoRef.current = node;
+    attachVideo(node);
+  }, [attachVideo]);
 
   useEffect(() => {
     if (canvasRef.current) drawPose(canvasRef.current, pose);
@@ -57,10 +62,7 @@ export function CameraStage({
         </div>
       ) : (
         <video
-          ref={(node) => {
-            videoRef.current = node;
-            attachVideo(node);
-          }}
+          ref={bindVideo}
           className="camera-stage__video"
           autoPlay
           muted
