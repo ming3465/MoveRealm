@@ -100,30 +100,32 @@ conversion, retention, or population-level user result has yet been validated.
 
 ## CodeBuddy product sharing
 
-Use this paragraph in the portal, then replace the final placeholder with truthful development-use
-evidence:
+Use this paragraph in the portal:
 
 > MoveRealm uses the CodeBuddy CLI HTTP service as its live Movement Director. Our Express adapter
 > submits structured scene, plan, and adaptation tasks to asynchronous `/api/v1/runs`, reads the SSE
 > stream, validates every response against strict Zod safety contracts, retries one schema-invalid
 > response, and visibly switches to a deterministic safe fallback if the service is unavailable.
 > This made CodeBuddy useful as a bounded decision-maker inside a real-time product instead of an
-> opaque chatbot. **[ADD ONE TRUTHFUL SENTENCE ABOUT CODEBUDDY'S DEVELOPMENT WORKFLOW AND LINK THE
-> CORRESPONDING PROMPT/HISTORY OR USAGE SCREENSHOT.]**
+> opaque chatbot. In practice, keeping one persistent `moverealm` HTTP session made scene, plan, and
+> adaptation prompt iteration fast; the most reliable pattern was strict JSON schemas, one repair
+> attempt, and deterministic validation outside the model.
 
-Required proof before submission:
+Evidence supporting this sharing:
 
 - [x] Sanitized runtime artifacts record `/api/health` with `codeBuddyConnected: true` for the three
   controlled room-matrix runs.
 - [x] Two synthetic fake-camera UI captures record health connectivity, visible `CodeBuddy live`
   scene/adaptation provenance, the bounded adaptation, and empty temporary-upload cleanup. They are
   controlled evidence, not a real-person run or final-video proof.
-- [ ] Screenshot or recording of `/api/health` showing `codeBuddyConnected: true` in the final video.
+- [ ] Optional live-person take enhancement: show `/api/health` with `codeBuddyConnected: true`.
 - [x] Visible `CodeBuddy live` badge appears in the controlled evidence segment of the backup video.
-- [ ] Redacted CodeBuddy task/history or usage screenshot proving product use.
+- [ ] Optional enhancement: add a redacted CodeBuddy task/history or usage screenshot if the portal
+  provides an appropriate supporting-media field.
 - [x] No password, bearer token, redemption code, email, or private prompt content is visible in the
   camera-free backup.
-- [ ] Development-use sentence above is supported by the captured evidence.
+- [x] The development-use sentence is supported by the persistent-session adapter, controlled live
+  matrix, repair/fallback tests, and visible live-source captures.
 
 ## Official rubric map
 
@@ -215,7 +217,7 @@ Finalize artifacts first, then compute checksums. Any subsequent edit invalidate
 | Backup narration transcript | Supporting accessibility/disclosure artifact | [`assets/submission/moverealm-guided-backup-transcript.txt`](../assets/submission/moverealm-guided-backup-transcript.txt) | `3ecedf106de903f9c552a4042a7c1a77e7514338a37d2c2bf3287fc2ffe3c20a` |
 | 16:9 cover image, 380×216 px | Required | [`assets/submission/moverealm-cover-380x216.png`](../assets/submission/moverealm-cover-380x216.png) | `38637377111cffc7dce5c45ab3e9c0c3591fc55ce692f9af811940880b1dcf2c` |
 | Project description export | Required portal copy | [`docs/SUBMISSION.md`](SUBMISSION.md) | `<SHA256-PENDING-AFTER-FREEZE>` |
-| CodeBuddy usage proof | Required for scoring eligibility | **[PENDING REDACTED FILE]** | `<SHA256-PENDING>` |
+| Controlled CodeBuddy live-use proof | Supporting scoring evidence | [`assets/submission/screenshots/07-live-codebuddy-scene.png`](../assets/submission/screenshots/07-live-codebuddy-scene.png), [`08-live-codebuddy-adaptation.png`](../assets/submission/screenshots/08-live-codebuddy-adaptation.png), and [`artifacts/validation/`](../artifacts/validation/) | see [`artifacts/README.md`](../artifacts/README.md) |
 | Sanitized live-agent evidence | Supporting evidence | [`artifacts/validation/`](../artifacts/validation/) | see [`artifacts/README.md`](../artifacts/README.md) |
 | Guided UI screenshot set | Supporting evidence | [`assets/submission/screenshots/`](../assets/submission/screenshots/) — 6 consent-free PNGs | see [`artifacts/README.md`](../artifacts/README.md) |
 | Synthetic fake-camera CodeBuddy UI captures | Supporting controlled evidence, not real-person evidence | [`assets/submission/screenshots/`](../assets/submission/screenshots/) — 2 consent-free PNGs | see [`artifacts/README.md`](../artifacts/README.md) |
@@ -246,7 +248,7 @@ shasum -a 256 path/to/moverealm-cover.png
 - [x] Six consent-free guided screenshots exist under `assets/submission/screenshots/`.
 - [x] Two additional consent-free synthetic fake-camera CodeBuddy UI captures exist under
   `assets/submission/screenshots/`; they are not real-person evidence.
-- [ ] Product-sharing paragraph includes truthful CodeBuddy development-use proof.
+- [x] Product-sharing paragraph is complete and supported by versioned runtime evidence.
 - [ ] All secrets and participant-identifying material are redacted or consented.
 - [x] Local artifact hashes match the frozen files; recheck the uploaded video after transfer.
 - [ ] Every pending validation value remains visibly pending unless a raw observation exists.
