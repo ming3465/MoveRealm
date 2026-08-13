@@ -7,6 +7,7 @@ import type {
   SceneProfile,
   UserIntent,
 } from "./shared/contracts";
+import { validatePlanSafety } from "./shared/contracts";
 import { createFallbackPlan, DEMO_SCENES } from "./shared/fallbacks";
 import type { CalibrationProfile, PoseFrame } from "./pose/types";
 import { PoseEngine } from "./pose/PoseEngine";
@@ -67,6 +68,7 @@ export default function App() {
   const [poseStatus, setPoseStatus] = useState<"loading" | "ready" | "error">("loading");
   const [poseError, setPoseError] = useState<string>();
   const [demo, setDemo] = useState(false);
+  const [guidedDemo, setGuidedDemo] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string>();
   const [result, setResult] = useState<SessionResult>();
@@ -150,6 +152,7 @@ export default function App() {
     setCalibrationReady(false);
     setResult(undefined);
     setDemo(false);
+    setGuidedDemo(false);
     setBusy(false);
     setError(undefined);
     setScreen("landing");
@@ -165,6 +168,7 @@ export default function App() {
       streamRef.current = nextStream;
       setStream(nextStream);
       setDemo(false);
+      setGuidedDemo(false);
       setScreen("capture");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Camera permission was not granted.");
@@ -179,6 +183,7 @@ export default function App() {
     setStream(undefined);
     setPose(undefined);
     setDemo(true);
+    setGuidedDemo(true);
     const demoScene: DirectorResponse<SceneProfile> = {
       data: DEMO_SCENES.tight,
       meta: {
@@ -226,12 +231,12 @@ export default function App() {
     const requestId = planningRequestRef.current + 1;
     planningRequestRef.current = requestId;
     setPlan({
-      data: createFallbackPlan(request),
+      data: validatePlanSafety(createFallbackPlan(request), request),
       meta: {
-        source: demo ? "demo" : "fallback",
+        source: guidedDemo ? "demo" : "fallback",
         latencyMs: 0,
-        label: demo ? "Guided demo" : "Planning preview",
-        detail: demo
+        label: guidedDemo ? "Guided demo" : "Planning preview",
+        detail: guidedDemo
           ? "A pre-validated deterministic plan keeps the camera-free demo independent of network services."
           : "A conservative preview is shown while the Movement Director finalizes the quest.",
       },
@@ -239,7 +244,7 @@ export default function App() {
     setCalibrationReady(false);
     setScreen("calibrate");
     setError(undefined);
-    if (demo) {
+    if (guidedDemo) {
       setPlanPending(false);
       releaseStill();
       return;
@@ -253,7 +258,7 @@ export default function App() {
   };
 
   const returnToCapture = () => {
-    if (demo) {
+    if (guidedDemo) {
       reset();
       return;
     }
@@ -310,7 +315,7 @@ export default function App() {
         <ConfirmScreen
           scene={scene}
           still={still}
-          demo={demo}
+          demo={guidedDemo}
           constraints={constraints}
           onConstraintsChange={setConstraints}
           onContinue={() => void buildQuest()}
@@ -348,6 +353,7 @@ export default function App() {
             pose={pose}
             poseError={poseError}
             demo={demo}
+            guidedDemo={guidedDemo}
             journeyStartedAt={journeyStartedAtRef.current}
             attachVideo={attachVideo}
             onUseKeyboard={switchToKeyboard}

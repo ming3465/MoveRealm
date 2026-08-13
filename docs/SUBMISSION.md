@@ -22,13 +22,19 @@ assuming either timing.
 | Direction | Life Agent |
 | Product used | CodeBuddy |
 | Short blurb | Your room becomes a safe adaptive movement adventure. |
-| Public app URL | **[PENDING DEPLOYMENT]** |
+| Public app URL | <https://ming3465.github.io/MoveRealm/> |
 | Demo video URL | **[PENDING UPLOAD]** |
-| Source/repository URL | **[PENDING — CONFIRM VISIBILITY]** |
+| Source/repository URL | <https://github.com/ming3465/MoveRealm> |
 | Team members | **[PENDING]** |
 | Contact email | **[PENDING — USE REGISTERED HACKATHON EMAIL]** |
 
 The short blurb is eight words, below the handbook's hard limit of ten words.
+
+The public URL is a static GitHub Pages deployment of the complete guided-demo path. It visibly
+labels guided and deterministic decisions and does not claim to host the live CodeBuddy server
+adapter. Baseline [Pages run 31673855670](https://github.com/ming3465/MoveRealm/actions/runs/31673855670)
+passed all 53 tests, the production build, artifact upload, and deployment. The final
+favicon-inclusive deployment run ID is **[PENDING FROM RELEASE OWNER]**.
 
 ## Project description
 
@@ -37,7 +43,10 @@ The short blurb is eight words, below the handbook's hard limit of ten words.
 MoveRealm is a three-minute, zero-equipment movement game for healthy adults who want a short,
 approachable activity in the room they already have. The user approves one room still, confirms the
 clear floor and side-step envelope, and enters a single Neon Rainforest world. Reaches collect
-fireflies, squats shelter seedlings, and permitted side-steps redirect a glowing river.
+fireflies, squats shelter seedlings, and permitted side-steps redirect a glowing river. In the
+current guided plan, three 52-second rounds provide **2.6 active minutes** and two 12-second rests
+bring the complete adventure to **3.0 minutes**. The product does not call 2.6 active minutes three
+active minutes.
 
 ### Scenario insight and problem
 
@@ -97,7 +106,9 @@ evidence:
 
 Required proof before submission:
 
-- [ ] Screenshot or recording of `/api/health` showing `codeBuddyConnected: true` during the live run.
+- [x] Sanitized runtime artifacts record `/api/health` with `codeBuddyConnected: true` for the three
+  controlled room-matrix runs.
+- [ ] Screenshot or recording of `/api/health` showing `codeBuddyConnected: true` in the final video.
 - [ ] Visible `CodeBuddy live` badge in the demo.
 - [ ] Redacted CodeBuddy task/history or usage screenshot proving product use.
 - [ ] No password, bearer token, redemption code, email, or private prompt content visible.
@@ -110,8 +121,8 @@ items are disclosure and evidence tasks, not claims that the criterion has alrea
 
 | Official dimension | Weight | MoveRealm evidence to put on screen | Repository evidence | Gap before submit |
 |---|---:|---|---|---|
-| AI innovation — scenario insight and depth of AI utilization | 30% | One approved still becomes a constrained plan; missed targets plus explicit feedback produce a visible next-round change | [`server/codebuddy.ts`](../server/codebuddy.ts), [`server/prompts.ts`](../server/prompts.ts), [`src/components/GameScreen.tsx`](../src/components/GameScreen.tsx) | Capture live CodeBuddy proof and do not describe deterministic fallback as live AI |
-| Technical excellence — implementation, AI-tool mastery, completeness, stability | 20% | Show source badge, safety rejection boundary, local pose Worker, low-confidence pause, and fallback recovery | [`src/shared/contracts.ts`](../src/shared/contracts.ts), [`server/app.ts`](../server/app.ts), [`src/pose/pose.worker.ts`](../src/pose/pose.worker.ts), [`tests/`](../tests) | Save fresh test/build/audit logs and complete remaining real-device measurements |
+| AI innovation — scenario insight and depth of AI utilization | 30% | One approved still becomes a constrained plan; missed targets plus explicit feedback produce a visible next-round change | [`server/codebuddy.ts`](../server/codebuddy.ts), [`server/prompts.ts`](../server/prompts.ts), [`src/components/GameScreen.tsx`](../src/components/GameScreen.tsx), and the [live room matrix](../artifacts/README.md) | Show live CodeBuddy provenance in the video and do not describe deterministic fallback as live AI |
+| Technical excellence — implementation, AI-tool mastery, completeness, stability | 20% | Show source badge, safety rejection boundary, local pose Worker, low-confidence pause, and fallback recovery | [`src/shared/contracts.ts`](../src/shared/contracts.ts), [`server/app.ts`](../server/app.ts), [`src/pose/pose.worker.ts`](../src/pose/pose.worker.ts), 53/53 current tests, and successful Pages build/deploy run 31673855670 | Save the final audit/smoke logs and complete remaining real-person measurements |
 | User experience and demo — smoothness, interaction thoughtfulness, friendliness | 25% | Three-minute setup, room confirmation, calibration, visible adaptation trace, pause/resume, result postcard, guided backup | [`docs/DEMO.md`](DEMO.md), [`src/App.tsx`](../src/App.tsx), [`src/components/`](../src/components) | Record a clean 3–5 minute take; user trials remain pending |
 | Business value and viability — real problem and commercial rollout potential | 25% | Explain the time/space/motivation problem, target user, short-session value, and licensing hypothesis | Project description above and [`README.md`](../README.md) | Keep commercial statements as hypotheses until user and market evidence exists |
 
@@ -146,22 +157,36 @@ With the local server running:
 
 ```bash
 npm run smoke:browser
+MOVEREALM_FULL_SMOKE=1 npm run smoke:browser
 MOVEREALM_CAMERA_SMOKE=1 npm run smoke:browser
+MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
 MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
 ```
+
+`MOVEREALM_FULL_SMOKE=1` completes all three guided rounds and asserts that the postcard reports 2.6
+active minutes inside the 3.0-minute adventure. `MOVEREALM_CAMERA_SMOKE=1` checks camera permission
+and MediaPipe Worker readiness with Chrome's fake stream; it is not a real-person FPS, visible
+latency, or TTFF measurement.
 
 Do not mark a gate passed from an earlier estimate. Record the date, environment, exit code, and log
 path after the final artifact build.
 
 | Gate | Result | Evidence path |
 |---|---|---|
-| Unit/contracts/adapter tests | **[PENDING FINAL RUN]** | **[PENDING]** |
-| Strict client/server build | **[PENDING FINAL RUN]** | **[PENDING]** |
+| Unit/contracts/adapter tests | **PASS — 53/53 tests** | [Pages run 31673855670](https://github.com/ming3465/MoveRealm/actions/runs/31673855670); current local run on 13 August 2026 |
+| Strict client/server build | **PASS** | [Pages run 31673855670](https://github.com/ming3465/MoveRealm/actions/runs/31673855670) |
+| Baseline GitHub Pages deployment | **PASS** | [run 31673855670](https://github.com/ming3465/MoveRealm/actions/runs/31673855670), <https://ming3465.github.io/MoveRealm/> |
+| Final favicon-inclusive Pages deployment | **[PENDING FINAL RUN ID]** | **[PENDING FROM RELEASE OWNER]** |
 | Dependency audit | **[PENDING FINAL RUN]** | **[PENDING]** |
-| Guided browser smoke | **[PENDING FINAL RUN]** | **[PENDING]** |
-| Camera/Worker smoke | **[PENDING FINAL RUN]** | **[PENDING]** |
+| Guided browser smoke | recorded automated evidence on 13 August; **final log pending** | [`VALIDATION.md`](VALIDATION.md) |
+| Full three-round browser smoke | **[PENDING FINAL LOG]** | command above; asserts 2.6 active / 3.0 adventure |
+| Camera/Worker smoke | recorded synthetic-camera evidence on 13 August; **final log pending** | [`VALIDATION.md`](VALIDATION.md) |
 | Timed adaptation smoke | **[PENDING FINAL RUN]** | **[PENDING]** |
-| Public HTTPS camera flow | **[PENDING DEPLOYMENT AND DEVICE RUN]** | **[PENDING]** |
+| Public HTTPS real-person camera flow | **[PENDING DEVICE RUN]** | **[PENDING]** |
+| Live CodeBuddy open/tight/uncertain fixture matrix | **PASS — controlled evidence** | [`artifacts/README.md`](../artifacts/README.md) |
+| Real-person FPS / visible latency / TTFF | **[PENDING ALL MEASUREMENTS]** | [`VALIDATION.md`](VALIDATION.md) |
+| Three-user trial | **[PENDING ALL 3 USERS]** | [`VALIDATION.md`](VALIDATION.md) |
+| Final 3–5 minute video | **[PENDING RECORDING AND UPLOAD]** | **[PENDING VIDEO URL]** |
 
 ## Submission artifact manifest
 
@@ -169,12 +194,13 @@ Finalize artifacts first, then compute checksums. Any subsequent edit invalidate
 
 | Artifact | Requirement | Final location | SHA-256 |
 |---|---|---|---|
-| Public application | Optional bonus link | **[PENDING DEPLOYMENT]** | n/a |
-| Source archive | Submission/review copy | **[PENDING FILE OR URL]** | `<SHA256-PENDING>` |
+| Public application | Optional bonus link | <https://ming3465.github.io/MoveRealm/> | n/a |
+| Source repository | Submission/review source | <https://github.com/ming3465/MoveRealm> | n/a |
 | 3–5 minute demo video | Required | **[PENDING YOUTUBE OR GOOGLE DRIVE URL]** | `<SHA256-PENDING>` |
-| 16:9 cover image, recommended 380×216 px | Required | **[PENDING FILE]** | `<SHA256-PENDING>` |
-| Project description export | Required portal copy | **[PENDING FILE]** | `<SHA256-PENDING>` |
+| 16:9 cover image, 380×216 px | Required | [`assets/submission/moverealm-cover-380x216.png`](../assets/submission/moverealm-cover-380x216.png) | `38637377111cffc7dce5c45ab3e9c0c3591fc55ce692f9af811940880b1dcf2c` |
+| Project description export | Required portal copy | [`docs/SUBMISSION.md`](SUBMISSION.md) | `<SHA256-PENDING-AFTER-FREEZE>` |
 | CodeBuddy usage proof | Required for scoring eligibility | **[PENDING REDACTED FILE]** | `<SHA256-PENDING>` |
+| Sanitized live-agent evidence | Supporting evidence | [`artifacts/validation/`](../artifacts/validation/) | see [`artifacts/README.md`](../artifacts/README.md) |
 | Final validation record | Supporting evidence | `docs/VALIDATION.md` | `<SHA256-PENDING>` |
 | Test/build/audit log bundle | Supporting evidence | **[PENDING FILE]** | `<SHA256-PENDING>` |
 | Consented screenshots | Supporting evidence | **[PENDING FILES]** | `<SHA256-PENDING>` |
@@ -195,8 +221,11 @@ shasum -a 256 path/to/moverealm-cover.png
 - [ ] Project description covers scenario, users, pain point, solution architecture, prompts, and
   defined or measured impact without converting targets into results.
 - [ ] Demo URL opens in a signed-out browser and is 3–5 minutes long.
-- [ ] Public URL is replaced only after deployment and opens in a signed-out HTTPS browser.
+- [x] Public URL is populated and the HTTPS endpoint returns HTTP 200.
+- [ ] Final favicon-inclusive Pages run ID replaces its pending placeholder.
 - [ ] Product-sharing paragraph includes truthful CodeBuddy development-use proof.
 - [ ] All secrets and participant-identifying material are redacted or consented.
 - [ ] Artifact hashes match the uploaded final files.
 - [ ] Every pending validation value remains visibly pending unless a raw observation exists.
+- [ ] Real-person FPS, visible latency, TTFF, all three user trials, and the demo video remain marked
+  pending unless their raw evidence is captured.

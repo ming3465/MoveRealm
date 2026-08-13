@@ -7,6 +7,19 @@ still, builds a quest constrained to the confirmed floor space, watches only loc
 and visibly tunes the next round. The single world is **Neon Rainforest**: reaches collect
 fireflies, squats shelter seedlings, and side-steps redirect a glowing river.
 
+## Release links
+
+- **Public guided demo:** [ming3465.github.io/MoveRealm](https://ming3465.github.io/MoveRealm/)
+- **Source:** [github.com/ming3465/MoveRealm](https://github.com/ming3465/MoveRealm)
+
+GitHub Pages hosts the static client, so the public link is the complete guided-demo path and uses
+visibly labelled deterministic decisions. The live CodeBuddy Movement Director requires the local or
+production Node adapter described below; the public demo does not impersonate that integration.
+
+The baseline Pages deployment [run 31673855670](https://github.com/ming3465/MoveRealm/actions/runs/31673855670)
+passed all 53 tests, the production build, artifact upload, and deployment. A newer
+favicon-inclusive deployment is awaiting its final release run ID.
+
 ## Run it
 
 Requirements: Node 22.12+ and a modern Chromium/Safari browser. Camera access requires localhost
@@ -77,17 +90,28 @@ deterministic path. A production Node deployment serves both the Vite bundle and
 ## Verification
 
 ```bash
-npm test             # contracts, movement fixtures, adapter, retry/fallback behavior
+npm test             # current release: 53/53 tests pass
 npm run build        # strict client/server typecheck and production bundle
 npm audit --audit-level=low
 ```
 
-With a local server running, `npm run smoke:browser` exercises the guided flow. Add
-`MOVEREALM_CAMERA_SMOKE=1` to verify camera permission and MediaPipe Worker readiness, or
-`MOVEREALM_ADAPT_SMOKE=1` for the timed round-one adaptation trace.
+Start `npm run dev` in one terminal, then use a second terminal for the browser checks:
+
+```bash
+npm run smoke:browser
+MOVEREALM_FULL_SMOKE=1 npm run smoke:browser
+MOVEREALM_CAMERA_SMOKE=1 npm run smoke:browser
+MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
+MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
+```
+
+The full guided smoke checks the honest result accounting: three 52-second movement rounds are
+**2.6 active minutes**, and two 12-second rests bring the complete adventure to **3.0 minutes**.
+Keyboard-mode tracking FPS remains `N/A`; it is not presented as a real-person pose measurement.
 
 See [docs/DEMO.md](docs/DEMO.md) for the judging script and [docs/VALIDATION.md](docs/VALIDATION.md)
-for the live-device/user-trial checklist. Do not fill trial results from estimates.
+for the evidence matrix and explicitly pending live-device, three-user, and video checklist. Do not
+fill pending results from estimates.
 
 ## Main source map
 

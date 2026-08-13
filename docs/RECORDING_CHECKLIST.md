@@ -19,13 +19,21 @@ CodeBuddy development tip.
 
 ### Release and evidence
 
-- [ ] Complete the final release gates in [SUBMISSION.md](SUBMISSION.md) and save their logs.
+- [x] Confirm baseline [Pages run 31673855670](https://github.com/ming3465/MoveRealm/actions/runs/31673855670)
+  passed all 53 tests, the production build, and deployment.
+- [ ] Replace the pending final favicon-inclusive Pages run ID in [SUBMISSION.md](SUBMISSION.md).
+- [ ] Complete the remaining release gates in [SUBMISSION.md](SUBMISSION.md) and save their logs.
 - [ ] Keep [VALIDATION.md](VALIDATION.md) open; do not quote pending human/device values as results.
-- [ ] Open the deployed HTTPS app at **[PENDING PUBLIC URL]** in a signed-out browser.
-- [ ] If deployment is not ready, record the production-shaped local build and leave the public URL
-  as pending in the submission package.
+- [ ] Open <https://ming3465.github.io/MoveRealm/> in a signed-out browser and verify the guided flow.
+- [ ] Keep <https://github.com/ming3465/MoveRealm> ready as the source link.
+- [ ] Remember that GitHub Pages is the static guided demo; use the local/production Node adapter for
+  any segment presented as live CodeBuddy.
 - [ ] Verify the demo video destination is **[PENDING YOUTUBE OR GOOGLE DRIVE URL]**.
-- [ ] Prepare the 16:9 cover image at **[PENDING FILE]**.
+- [x] Prepare the 16:9 cover image at `assets/submission/moverealm-cover-380x216.png`.
+
+Still explicitly pending before a final evidence-complete submission: the 3–5 minute video, all
+three user trials, real-person pose FPS, real-person visible response latency, and real-person time
+to first accepted movement (TTFF). Do not substitute synthetic-camera or keyboard values.
 
 ### Live path
 
@@ -135,10 +143,12 @@ fallback disclosure and do not imply this decision came from CodeBuddy.
 On screen: final garden postcard, active time, completion, and any measured runtime statistic.
 
 > The session ends with a garden postcard, active time, completion, and measured runtime telemetry.
-> This is intentionally light movement for healthy adults, not medical or rehabilitation guidance.
-> Stop if you feel pain, dizziness, or unwell.
+> This run reports 2.6 active minutes inside the complete 3.0-minute adventure: three 52-second
+> movement rounds plus two 12-second rests. This is light movement for healthy adults, not medical
+> or rehabilitation guidance. Stop if you feel pain, dizziness, or unwell.
 
-Evidence gate: do not convert a target or pending measurement into a result.
+Evidence gate: show both `2.6 active minutes` and `Adventure clock 3.0 min`. Do not call 2.6 active
+minutes three active minutes, and do not convert any pending human measurement into a result.
 
 ### 3:15–3:40 — Architecture, build reflection, and value
 
@@ -175,7 +185,8 @@ Use one of these lines immediately when its condition occurs.
 ### Live tracking measurement still pending
 
 > This run demonstrates the interaction path. Live-person pose FPS and camera-to-visual latency are
-> still pending measured device validation, so I am not presenting target values as results.
+> still pending measured device validation, as is time to first movement, so I am not presenting
+> target or keyboard values as real-person results.
 
 ## After recording
 
@@ -186,6 +197,7 @@ Use one of these lines immediately when its condition occurs.
 - [ ] Floor confirmation, low-confidence pause, and visible adaptation are shown rather than asserted.
 - [ ] Health scope and stop guidance are audible.
 - [ ] Build reflection and one CodeBuddy development tip are included.
+- [ ] The result distinguishes 2.6 active minutes from the complete 3.0-minute adventure.
 - [ ] No pending measurement is spoken as an observed value.
 - [ ] No secret, personal notification, participant image without consent, or private CodeBuddy
   history is visible.
@@ -193,3 +205,5 @@ Use one of these lines immediately when its condition occurs.
 - [ ] Upload privacy is set so judges can open the link without requesting access.
 - [ ] Test the video and public app URLs in a signed-out browser.
 - [ ] Compute the final video checksum and update [SUBMISSION.md](SUBMISSION.md).
+- [ ] Keep real-person FPS, visible latency, TTFF, and all three user trials pending unless the raw
+  observations are captured and linked.

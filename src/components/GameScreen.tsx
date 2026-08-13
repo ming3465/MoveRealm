@@ -30,6 +30,7 @@ interface GameScreenProps {
   pose?: PoseFrame;
   poseError?: string;
   demo: boolean;
+  guidedDemo: boolean;
   journeyStartedAt: number;
   attachVideo: (node: HTMLVideoElement | null) => void;
   onUseKeyboard: () => void;
@@ -90,6 +91,7 @@ export function GameScreen({
   pose,
   poseError,
   demo,
+  guidedDemo,
   journeyStartedAt,
   attachVideo,
   onUseKeyboard,
@@ -335,7 +337,7 @@ export function GameScreen({
     };
     setTraceSeed(rounds[roundIndex + 1]);
     setPhase("adapting");
-    const response = demo
+    const response = guidedDemo
       ? {
           data: validateAdaptationSafety(
             createFallbackAdaptation(adaptationRequest),

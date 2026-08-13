@@ -291,6 +291,12 @@ try {
     if (!adaptation.parameters.some((parameter) => parameter.includes("→"))) {
       throw new Error(`Adaptation did not expose a before/after change: ${JSON.stringify(adaptation)}`);
     }
+    if (testCapture && expectFallback && !adaptation.source?.includes("Safe fallback")) {
+      throw new Error(`Captured-room adaptation lost its fallback provenance: ${JSON.stringify(adaptation)}`);
+    }
+    if (!testCapture && !adaptation.source?.includes("Guided demo")) {
+      throw new Error(`Guided adaptation lost its demo provenance: ${JSON.stringify(adaptation)}`);
+    }
     adaptationScreenshot = await screenshot("05-adaptation");
   }
 
