@@ -1,0 +1,594 @@
+{
+  "schemaVersion": "1.0.0",
+  "tool": "moverealm-safety-probe",
+  "toolVersion": "1.0.0",
+  "mode": "contracts",
+  "commit": "cf157093ff3dab7b3598387d68973f82a3e364c2",
+  "repository": {
+    "commit": "cf157093ff3dab7b3598387d68973f82a3e364c2",
+    "headTree": "404fdc889cabc0212a6fd2197102eff7da5abde6",
+    "dirty": false,
+    "statusEntryCount": 0,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "scope": "Synthetic adversarial candidates evaluated against MoveRealm's production safety contracts. This is contract-behaviour evidence only: it is not a human trial, a pose or latency measurement, a security audit, a certification, or an assessment of CodeBuddy's output quality.",
+  "privacy": "No participant data, camera frame, pose landmark, room still, identity, or health inference is read or written. Every room in this report is a synthetic fixture defined in the tool itself.",
+  "observedAt": "2026-08-13T17:01:24Z",
+  "finishedAt": "2026-08-13T17:01:25Z",
+  "gate": {
+    "kind": "production-contracts",
+    "bridgeVersion": "1.0.0",
+    "node": "v24.10.0"
+  },
+  "planner": {
+    "label": "deterministic",
+    "status": "active",
+    "detail": "Catalogue attacks plus boundary-directed escalation derived from observed verdicts.",
+    "model": null
+  },
+  "worlds": [
+    "open",
+    "tight",
+    "uncertain",
+    "no_lateral",
+    "no_vertical"
+  ],
+  "termination": "no_new_probes",
+  "oracle": {
+    "ruleCount": 40,
+    "tiers": {
+      "specified": 24,
+      "documented": 15,
+      "derived": 1
+    },
+    "note": "The oracle is an independent restatement of the documented rules. A disagreement means the docs, the oracle, or the gate has drifted from the other two."
+  },
+  "totals": {
+    "rounds": 6,
+    "probes": 332,
+    "defended": 302,
+    "honored": 30,
+    "breaches": 0,
+    "overRejections": 0,
+    "inconclusive": 0
+  },
+  "controls": {
+    "count": 20,
+    "passed": true,
+    "detail": "Every compliant baseline was accepted, so the refusals below are selective."
+  },
+  "invariants": [
+    {
+      "invariant": "adapt.adjustment_labels",
+      "tier": "specified",
+      "source": "AdaptationDecisionSchema",
+      "probes": 5,
+      "defended": 5,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "adapt.conservative_envelope_lock",
+      "tier": "specified",
+      "source": "validateAdaptationSafety",
+      "probes": 1,
+      "defended": 1,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "adapt.declared_matches_actual",
+      "tier": "documented",
+      "source": "README - adaptation is visibly labelled",
+      "probes": 15,
+      "defended": 15,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "adapt.none_exclusive",
+      "tier": "specified",
+      "source": "AdaptationDecisionSchema",
+      "probes": 5,
+      "defended": 5,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "adapt.preserve_movement",
+      "tier": "documented",
+      "source": "README - 'it cannot replace the next movement'",
+      "probes": 20,
+      "defended": 20,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "adapt.reason",
+      "tier": "specified",
+      "source": "AdaptationDecisionSchema",
+      "probes": 5,
+      "defended": 5,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "adapt.round_bounds",
+      "tier": "specified",
+      "source": "QuestRoundSchema",
+      "probes": 5,
+      "defended": 5,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "adapt.shape",
+      "tier": "specified",
+      "source": "AdaptationDecisionSchema",
+      "probes": 15,
+      "defended": 15,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "adapt.side_step_narrow_envelope",
+      "tier": "documented",
+      "source": "README - side-step range is bounded by the confirmed room",
+      "probes": 1,
+      "defended": 1,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "adapt.too_hard_must_reduce",
+      "tier": "specified",
+      "source": "validateAdaptationSafety",
+      "probes": 5,
+      "defended": 5,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "adapt.too_hard_no_increase",
+      "tier": "documented",
+      "source": "README - adaptation tunes difficulty from telemetry",
+      "probes": 10,
+      "defended": 10,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "combination.envelope_behind_decoy",
+      "tier": "n/a",
+      "source": "n/a",
+      "probes": 18,
+      "defended": 13,
+      "honored": 5,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "combination.lateral_and_budget",
+      "tier": "n/a",
+      "source": "n/a",
+      "probes": 2,
+      "defended": 2,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "combination.rebuilt_final_round",
+      "tier": "n/a",
+      "source": "n/a",
+      "probes": 18,
+      "defended": 13,
+      "honored": 5,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "control.adaptation",
+      "tier": "n/a",
+      "source": "n/a",
+      "probes": 10,
+      "defended": 0,
+      "honored": 10,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "control.plan",
+      "tier": "n/a",
+      "source": "n/a",
+      "probes": 5,
+      "defended": 0,
+      "honored": 5,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "control.scene",
+      "tier": "n/a",
+      "source": "n/a",
+      "probes": 5,
+      "defended": 0,
+      "honored": 5,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.copy_bounds",
+      "tier": "specified",
+      "source": "QuestPlanSchema",
+      "probes": 5,
+      "defended": 5,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.duration_total",
+      "tier": "documented",
+      "source": "README - 'must total exactly 180 seconds'",
+      "probes": 15,
+      "defended": 15,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.floor_confirmed",
+      "tier": "documented",
+      "source": "README - user confirms the floor before a quest starts",
+      "probes": 5,
+      "defended": 5,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.mechanic_pairing",
+      "tier": "documented",
+      "source": "README - 'reaches collect fireflies, squats shelter seedlings, side-steps redirect a river'",
+      "probes": 11,
+      "defended": 11,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.movement_vocabulary",
+      "tier": "documented",
+      "source": "README - 'Exactly three validated movement IDs'",
+      "probes": 12,
+      "defended": 12,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.reach_envelope_without_lateral",
+      "tier": "specified",
+      "source": "validatePlanSafety",
+      "probes": 2,
+      "defended": 2,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.reach_envelope_without_vertical",
+      "tier": "specified",
+      "source": "validatePlanSafety",
+      "probes": 1,
+      "defended": 1,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.round_bounds",
+      "tier": "specified",
+      "source": "QuestRoundSchema",
+      "probes": 30,
+      "defended": 30,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.round_copy",
+      "tier": "specified",
+      "source": "QuestRoundSchema",
+      "probes": 5,
+      "defended": 5,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.round_count",
+      "tier": "documented",
+      "source": "README - 'Three rounds plus configured rests'",
+      "probes": 10,
+      "defended": 10,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.round_ids",
+      "tier": "derived",
+      "source": "QuestPlanSchema superRefine",
+      "probes": 5,
+      "defended": 5,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.shape",
+      "tier": "specified",
+      "source": "QuestPlanSchema",
+      "probes": 20,
+      "defended": 20,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.side_step_narrow_envelope",
+      "tier": "documented",
+      "source": "README - side-step range is bounded by the confirmed room",
+      "probes": 2,
+      "defended": 2,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.side_step_requires_lateral",
+      "tier": "documented",
+      "source": "README - 'Side-step range cannot exceed the user-confirmed room envelope'",
+      "probes": 2,
+      "defended": 2,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.squat_requires_vertical",
+      "tier": "specified",
+      "source": "validatePlanSafety",
+      "probes": 1,
+      "defended": 1,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.theme",
+      "tier": "specified",
+      "source": "QuestPlanSchema",
+      "probes": 5,
+      "defended": 5,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.uncertain_conservative_envelope",
+      "tier": "documented",
+      "source": "docs/EVALUATION.md - 'fails closed to in-place reaches for uncertain rooms'",
+      "probes": 5,
+      "defended": 5,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "plan.uncertain_reach_only",
+      "tier": "documented",
+      "source": "docs/EVALUATION.md - occluded floor rejects squats",
+      "probes": 1,
+      "defended": 1,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "scene.confidence",
+      "tier": "specified",
+      "source": "SceneProfileSchema",
+      "probes": 5,
+      "defended": 5,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "scene.directions",
+      "tier": "specified",
+      "source": "SceneProfileSchema",
+      "probes": 15,
+      "defended": 15,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "scene.high_severity_blocks_lane",
+      "tier": "documented",
+      "source": "README - room-constrained planning",
+      "probes": 5,
+      "defended": 5,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "scene.obstacles",
+      "tier": "specified",
+      "source": "SceneProfileSchema",
+      "probes": 10,
+      "defended": 10,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "scene.shape",
+      "tier": "specified",
+      "source": "SceneProfileSchema",
+      "probes": 10,
+      "defended": 10,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    },
+    {
+      "invariant": "scene.summary",
+      "tier": "specified",
+      "source": "SceneProfileSchema",
+      "probes": 5,
+      "defended": 5,
+      "honored": 0,
+      "breaches": 0,
+      "overRejections": 0,
+      "inconclusive": 0
+    }
+  ],
+  "frontiers": [
+    {
+      "name": "Narrow-room side-step envelope",
+      "parameter": "rounds[2].rangeScale",
+      "world": "tight",
+      "status": "measured",
+      "documentedThreshold": 0.62,
+      "acceptedMax": 0.6156,
+      "rejectedMin": 0.6203,
+      "matchesDocumented": true,
+      "detail": "Accepted up to 0.6156; refused from 0.6203."
+    },
+    {
+      "name": "Reach envelope without a vertical lane",
+      "parameter": "rounds[0].rangeScale",
+      "world": "no_vertical",
+      "status": "measured",
+      "documentedThreshold": 0.62,
+      "acceptedMax": 0.6156,
+      "rejectedMin": 0.6203,
+      "matchesDocumented": true,
+      "detail": "Accepted up to 0.6156; refused from 0.6203."
+    },
+    {
+      "name": "Reach envelope without a lateral lane",
+      "parameter": "rounds[0].rangeScale",
+      "world": "no_lateral",
+      "status": "measured",
+      "documentedThreshold": 0.7,
+      "acceptedMax": 0.7,
+      "rejectedMin": 0.7047,
+      "matchesDocumented": true,
+      "detail": "Accepted up to 0.7; refused from 0.7047."
+    },
+    {
+      "name": "Uncertain-room envelope",
+      "parameter": "rounds[0].rangeScale",
+      "world": "uncertain",
+      "status": "measured",
+      "documentedThreshold": 0.62,
+      "acceptedMax": 0.6156,
+      "rejectedMin": 0.6203,
+      "matchesDocumented": true,
+      "detail": "Accepted up to 0.6156; refused from 0.6203."
+    },
+    {
+      "name": "Schema range-scale ceiling in a fully open room",
+      "parameter": "rounds[0].rangeScale",
+      "world": "open",
+      "status": "measured",
+      "documentedThreshold": 1.0,
+      "acceptedMax": 1.0,
+      "rejectedMin": 1.0031,
+      "matchesDocumented": true,
+      "detail": "Accepted up to 1.0; refused from 1.0031."
+    },
+    {
+      "name": "Target-rate ceiling",
+      "parameter": "rounds[0].targetRate",
+      "world": "open",
+      "status": "measured",
+      "documentedThreshold": 16,
+      "acceptedMax": 16,
+      "rejectedMin": 17,
+      "matchesDocumented": true,
+      "detail": "Accepted up to 16; refused from 17."
+    },
+    {
+      "name": "Adapted envelope lock without a lateral lane",
+      "parameter": "nextRound.rangeScale",
+      "world": "uncertain",
+      "status": "measured",
+      "documentedThreshold": 0.62,
+      "acceptedMax": 0.6156,
+      "rejectedMin": 0.6203,
+      "matchesDocumented": true,
+      "detail": "Accepted up to 0.6156; refused from 0.6203."
+    }
+  ],
+  "findings": [],
+  "inconclusiveProbes": []
+}

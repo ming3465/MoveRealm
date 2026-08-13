@@ -10,14 +10,52 @@ certification, official judging, or human-trial evidence. See
 Deterministic fixture, contract, consistency, and movement-feasibility gates run first and remain
 authoritative. In the recorded uncertain-room case, they rejected an occluded-floor squat even
 though the advisory model scored that plan positively; the reach-only validated fallback passed.
+The 8B open/tight candidate/report files are frozen predecessor `7fe9009` evaluator snapshots. Their
+candidate JSON does not satisfy the newer `cf15709` canonical-presentation gates; do not cite those
+old open/tight results as current-candidate passes.
 
 [`evaluation/python-agent-qwen3-vl-4b.json`](evaluation/python-agent-qwen3-vl-4b.json) is the
 privacy-bounded output of the optional Python recovery agent using local Qwen3-VL 4B. The model
 preferred the unsafe original 18/24 over the safe fallback 15/24; deterministic gates rejected the
 original and the agent selected the labelled fallback. Its SHA-256 is
-`585949ce0a97084cdd27fc0113a514fea6c60670e748b999625d798fe199566f`.
+`b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029`. It embeds clean commit
+`cf157093ff3dab7b3598387d68973f82a3e364c2`, tree
+`404fdc889cabc0212a6fd2197102eff7da5abde6`, and shared context SHA-256
+`502824677434c6c6d0196d367ecdcfdde1f8aaa84138f1fe976858dce766fcfa`. The original and fallback
+judge latencies were 43.492 and 37.550 seconds respectively.
 
-## Release snapshot — 13 August 2026
+## Clean local candidate — 14 August 2026
+
+- Exact source commit: `cf157093ff3dab7b3598387d68973f82a3e364c2`
+- Exact source tree: `404fdc889cabc0212a6fd2197102eff7da5abde6`
+- `npm run test:all`: **120/120 Vitest tests across 15 files**, **13/13 Python recovery-agent tests**,
+  and **82/82 safety-probe tests**.
+- Strict production build: **passed**.
+- Dependency audit: **0 vulnerabilities**.
+- Clean Docker image:
+  `sha256:724a0e56188dc18e4d7419556a72084d5e0c9398674510a50c3c8177d80aaa57`
+  (343,092,337 bytes); embedded commit/tree provenance, health, index, and basic smoke all passed.
+- Production-mode guided full smoke: **passed** under local audit build ID `build-20260814` (not a
+  GitHub Actions run), with reach/squat/side-step, scores 0→145→290→435, adaptation 64→48% /
+  0.90→0.77× / 7→6, postcard 2.6 min / 18% / `N/A`, no API POSTs, and no errors.
+- Production-mode captured-room full fallback smoke: **passed** under the same local audit ID, with
+  camera ready, exact scene/plan/adapt/adapt POSTs, score 435, `Safe fallback`, adaptation 60→44% /
+  0.90→0.77× / 7→6, the same postcard totals, and no errors.
+- Both local exports matched the exact commit/build, set personal/media fields false, and kept
+  keyboard pose metrics `null` / thresholds `not_evaluated`.
+- Push/deployment: **pending**. The public app remains the deployed `7fe9009` predecessor.
+- Current CodeBuddy check: **BLOCKED externally**, not passed. Localhost health succeeded, but the
+  strict scene smoke returned the labelled deterministic fallback after its 45-second deadline; a
+  sanitized local log recorded HTTP 429 before generation on all 8 upstream retries.
+
+The Safety Probe's clean contract run covered 332 candidates: 302 defended, 30 honored, 0 breaches,
+0 over-rejections, and 0 inconclusive probes, with 20/20 controls and seven matching frontiers. Its
+SHA-256 values are `df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5`
+for [`../agent/evidence/safety-probe.json`](../agent/evidence/safety-probe.json) and
+`e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` for
+[`../agent/evidence/safety-probe.md`](../agent/evidence/safety-probe.md).
+
+## Deployed predecessor snapshot — 13 August 2026
 
 - Public guided demo: <https://ming3465.github.io/MoveRealm/>
 - Source repository: <https://github.com/ming3465/MoveRealm>
@@ -27,7 +65,7 @@ original and the agent selected the labelled fallback. Its SHA-256 is
   [`7fe9009`](https://github.com/ming3465/MoveRealm/commit/7fe9009728d545798c1b5efd7b367d4f54264eaf)
   completed `npm ci`, **100/100 tests across 13 files**, the production build, artifact upload, and
   deployment. The deployed client carries build `build-31714506917` and the exact full commit SHA.
-- Current release verification: 13 test files, **100/100 tests passed** locally and in CI.
+- Deployed-predecessor verification: 13 test files, **100/100 tests passed** locally and in CI.
 - Dependency audit: **0 vulnerabilities**.
 - Exact-release public camera basic smoke: **passed** with Chrome's fake camera,
   `cameraReady=true`, score 0→145, API POSTs `[]`, and no console errors. It is controlled,
@@ -52,8 +90,19 @@ deterministic path and must not be described as live CodeBuddy.
 
 ## Sanitized live-agent evidence
 
-The JSON files in `validation/` are sanitized observations from `npm run smoke:agent` on 13 August
-2026. They contain synthetic fixture hashes, structured scene/plan/adaptation output, source labels,
+The newest availability record is
+[`validation/codebuddy-upstream-blocker-2026-08-14.json`](validation/codebuddy-upstream-blocker-2026-08-14.json),
+SHA-256 `961f9ad01e1932d2f93b53d0e3c593cce97b290169c10f195bc757df0d6319a9`.
+For local candidate `cf15709`, localhost health was true, but the strict scene smoke reached the
+bounded 45-second deadline and selected the labelled deterministic fallback. The sanitized log
+recorded HTTP 429 before generation on all eight upstream retries. It retains no credential, prompt,
+model response, local log path, or room image. This record proves bounded recovery and cleanup; it is
+**not** a successful live CodeBuddy observation. The artifact also discloses that the observation
+preceded the clean source freeze and occurred in a dirty worktree; its source was later frozen as
+`cf15709`.
+
+The predecessor live-agent JSON files described below are sanitized observations from
+`npm run smoke:agent` on 13 August 2026. They contain synthetic fixture hashes, structured scene/plan/adaptation output, source labels,
 latencies, and upload-cleanup state. They contain no room image bytes, live frames, landmarks,
 credentials, run IDs, submitted model prompts, email addresses, or personal data. The structured
 adaptation records do retain bounded user-facing round instructions and reasons generated from
@@ -111,12 +160,20 @@ The full guided browser smoke asserts the result card's exact accounting:
 This supports the wording “2.6 active minutes within a 3.0-minute adventure.” It does not support a
 claim of three active minutes or any real-person tracking result.
 
-The current exact-release guided keyboard record is preserved at
+The deployed-predecessor exact-release guided keyboard record is preserved at
 [`validation/public-guided-keyboard-session-7fe9009.json`](validation/public-guided-keyboard-session-7fe9009.json).
 Its pose metrics and real-camera thresholds are explicitly `null` / `not_evaluated`; it validates
 the exporter and release identity but is not a human trial.
 
 ## Reproduction commands
+
+Verify all local candidate test layers before collecting browser evidence:
+
+```bash
+npm run test:all
+npm run build
+npm audit --audit-level=low
+```
 
 Start the local app in one terminal:
 
@@ -143,7 +200,8 @@ calling any individual command a final submission run.
 
 For new live-agent artifacts, start CodeBuddy and the app, verify `/api/health` reports
 `codeBuddyConnected: true`, then use `npm run smoke:agent` with an explicit fixture and evidence path.
-Do not overwrite the release JSON files without reviewing their provenance and sanitization.
+Require generated `codebuddy` provenance before calling it live; health alone is insufficient. Do
+not overwrite the release JSON files without reviewing their provenance and sanitization.
 
 ```bash
 MOVEREALM_ROOM_MATRIX=1 \
@@ -155,6 +213,12 @@ MOVEREALM_ROOM_MATRIX=1 \
 
 | File | SHA-256 |
 |---|---|
+| `evaluation/python-agent-qwen3-vl-4b.json` | `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029` |
+| `../agent/evidence/safety-probe.json` | `df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5` |
+| `../agent/evidence/safety-probe.md` | `e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` |
+| `validation/codebuddy-upstream-blocker-2026-08-14.json` | `961f9ad01e1932d2f93b53d0e3c593cce97b290169c10f195bc757df0d6319a9` |
+| `validation/local-guided-keyboard-session-cf15709.json` | `aebcf7c43158672e1d4bc486f7f71c7cb56116df3256dcb4592fab1a5deed3aa` |
+| `validation/local-captured-fallback-keyboard-session-cf15709.json` | `ebaa8c4cb97ef91e79c72a81f9f356beaeae04bb89c52bf98cf5e60232cc5b8d` |
 | `validation/public-guided-keyboard-session-7fe9009.json` | `5a3da763a925d02c4152cd305587c3d60e20bb261e354f6372b59fb797ba4620` |
 | `validation/public-guided-keyboard-session-2ab9584.json` | `00458af188807b5e2e49df994ac1581ff27608d9d1628f60d4df11158c2ef8b7` |
 | `validation/live-agent-room-matrix-2ab9584.json` | `e4dabc45278f5be9d177c1c8d1282337d432a5cba3cbe8ebdc4c7008bfb05787` |
@@ -165,6 +229,11 @@ MOVEREALM_ROOM_MATRIX=1 \
 | `../assets/submission/moverealm-cover-380x216.png` | `38637377111cffc7dce5c45ab3e9c0c3591fc55ce692f9af811940880b1dcf2c` |
 
 Any edit to an artifact invalidates its listed checksum; recompute with `shasum -a 256 <file>`.
+
+The final documentation and evidence-file hashes are collected after the documentation snapshot in
+[`submission-manifest.json`](submission-manifest.json). Keeping that manifest separate avoids a
+self-referential checksum inside `docs/SUBMISSION.md`. The manifest does not claim that pending
+human, upload, portal, CodeBuddy-availability, or deployment work is complete.
 
 ## Consent-free guided screenshots
 
@@ -197,9 +266,15 @@ flow. They are separate from the six guided screenshots and are controlled, non-
 - **Pending:** real-person visible camera-to-game latency.
 - **Pending:** real-person time to first accepted movement (TTFF).
 - **Pending:** all three qualitative user trials.
+- **Pending:** a successful current CodeBuddy strict live check; the latest local attempt is the
+  explicitly blocked/fallback record above.
+- **Pending:** authorization to push and deploy the current local branch (application source
+  checkpoint `cf15709` plus its frozen evidence/docs), then verify the resulting public build and
+  pushed branch HEAD.
 - **Complete local artifact:** 4:58 camera-free backup video and transcript; see below.
 - **Pending:** upload that video, or a preferred live-person recording, to YouTube or Google Drive
   and verify its public URL.
+- **Pending:** team-member and registered-contact portal fields.
 
 Synthetic fixtures, keyboard telemetry, a successful deployment, and a camera-permission smoke do
 not close any of those pending items.

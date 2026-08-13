@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "1.0.0",
+  "repository": {
+    "commit": "cf157093ff3dab7b3598387d68973f82a3e364c2",
+    "headTree": "404fdc889cabc0212a6fd2197102eff7da5abde6",
+    "dirty": false,
+    "statusEntryCount": 0,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "agent": {
+    "name": "MoveRealm Python Shadow Agent",
+    "runtime": "python-stdlib",
+    "judgeMode": "ollama",
+    "model": "qwen3-vl:4b-instruct-q4_K_M",
+    "safetyAuthority": "deterministic-production-gates",
+    "modelRole": "advisory-only"
+  },
+  "decision": "use_validated_fallback",
+  "complete": true,
+  "chosen": {
+    "observedAt": "2026-08-13T17:02:57.961Z",
+    "fixtureId": "uncertain-room",
+    "source": "fallback",
+    "inputSha256": "437e086069dde4be73d2828a5961fa8cdb55bfe45d9df99f7491d5b91d61d1ce",
+    "candidateContextSha256": "502824677434c6c6d0196d367ecdcfdde1f8aaa84138f1fe976858dce766fcfa",
+    "hardGatesPassed": true,
+    "eligible": true,
+    "judgeStatus": "scored",
+    "advisoryEarned": 15,
+    "advisoryPossible": 24,
+    "modelDigest": "ee4b975b58c17ce268cd19d40db35d5edc64603035d2ffc1fee1968eb0947f7b",
+    "judgeLatencyMs": 37550
+  },
+  "evaluations": [
+    {
+      "observedAt": "2026-08-13T17:02:19.778Z",
+      "fixtureId": "uncertain-room",
+      "source": "codebuddy",
+      "inputSha256": "06e546751cdc075f6e94ce51c58236df4b1ed4eab2c316c6fc7bf00ed2f3dac5",
+      "candidateContextSha256": "502824677434c6c6d0196d367ecdcfdde1f8aaa84138f1fe976858dce766fcfa",
+      "hardGatesPassed": false,
+      "eligible": false,
+      "judgeStatus": "scored",
+      "advisoryEarned": 18,
+      "advisoryPossible": 24,
+      "modelDigest": "ee4b975b58c17ce268cd19d40db35d5edc64603035d2ffc1fee1968eb0947f7b",
+      "judgeLatencyMs": 43492
+    },
+    {
+      "observedAt": "2026-08-13T17:02:57.961Z",
+      "fixtureId": "uncertain-room",
+      "source": "fallback",
+      "inputSha256": "437e086069dde4be73d2828a5961fa8cdb55bfe45d9df99f7491d5b91d61d1ce",
+      "candidateContextSha256": "502824677434c6c6d0196d367ecdcfdde1f8aaa84138f1fe976858dce766fcfa",
+      "hardGatesPassed": true,
+      "eligible": true,
+      "judgeStatus": "scored",
+      "advisoryEarned": 15,
+      "advisoryPossible": 24,
+      "modelDigest": "ee4b975b58c17ce268cd19d40db35d5edc64603035d2ffc1fee1968eb0947f7b",
+      "judgeLatencyMs": 37550
+    }
+  ],
+  "trace": [
+    {
+      "step": "observe",
+      "status": "complete",
+      "detail": "Loaded frozen fixture uncertain-room."
+    },
+    {
+      "step": "evaluate_primary",
+      "status": "fail",
+      "detail": "Deterministic production gates evaluated before advisory quality."
+    },
+    {
+      "step": "recover",
+      "status": "started",
+      "detail": "Primary failed closed; evaluating the supplied fallback."
+    },
+    {
+      "step": "recover",
+      "status": "pass",
+      "detail": "Fallback passed the same authoritative gates."
+    },
+    {
+      "step": "verify",
+      "status": "pass",
+      "detail": "Selected output remains eligible after the complete tool loop."
+    }
+  ],
+  "rawModelOutputRetained": false
+}

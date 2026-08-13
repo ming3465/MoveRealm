@@ -55,7 +55,30 @@ The harness never downloads a model itself. `--strict-judge` fails when Ollama i
 the model response is invalid. Without it, hard gates still run and the judge is honestly
 `not_run`.
 
-## Recorded observation — 13 August 2026
+## Local candidate status — 14 August 2026
+
+The clean local source candidate is commit `cf157093ff3dab7b3598387d68973f82a3e364c2`, tree
+`404fdc889cabc0212a6fd2197102eff7da5abde6`. It passed 120/120 Vitest tests across 15 files,
+13/13 Python recovery-agent tests, 82/82 safety-probe tests, the strict production build, and a
+0-vulnerability dependency audit. This candidate has not been pushed or deployed; the public site
+remains the `7fe9009` release described below.
+
+Its two production-mode full browser smokes also passed using local audit build identifier
+`build-20260814`—not a GitHub Actions run. The guided and captured-room fallback exports both embed
+the exact candidate commit/build, exclude personal/media fields, and leave keyboard pose metrics
+unevaluated. Their exact behavior and checksums are recorded in
+[`release-checks.md`](../artifacts/validation/release-checks.md).
+
+The current live CodeBuddy check is **BLOCKED by the external service**. Localhost health returned
+success, but the strict scene smoke reached its bounded 45-second deadline and the application
+correctly returned a labelled deterministic fallback. The sanitized local blocker record reports
+HTTP 429 before generation on all eight upstream retries. It contains no credential, prompt, model
+response, local path, or room image. This is fallback/availability evidence, not a successful live
+CodeBuddy result; preserve the older live records below as predecessor evidence and retry before a
+live recording. The sanitized record is
+[`codebuddy-upstream-blocker-2026-08-14.json`](../artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json).
+
+## Preserved deployed-predecessor observation — 13 August 2026
 
 The evaluator source and final report set are frozen at release commit
 [`7fe9009`](https://github.com/ming3465/MoveRealm/commit/7fe9009728d545798c1b5efd7b367d4f54264eaf).
@@ -81,6 +104,19 @@ The final records are
 [`uncertain-room-original.json`](../artifacts/evaluation/reports/uncertain-room-original.json), and
 [`uncertain-room-corrected.json`](../artifacts/evaluation/reports/uncertain-room-corrected.json).
 
+These 8B reports and their source candidate bundles are frozen predecessor `7fe9009` evaluator
+snapshots. In particular, the predecessor open/tight candidates do not satisfy the newer `cf15709`
+canonical-presentation gates and must not be described as passing the current evaluator. Current
+candidate proof comes from the 120-test Vitest layer, Safety Probe, Python uncertain-room recovery,
+and two full browser smokes above. A fresh current open/tight live matrix remains unavailable while
+the external CodeBuddy 429 blocker persists.
+
+As a separate ephemeral compatibility check, `cf15709` reconstructed open, tight, and uncertain
+candidates from the preserved live matrix into a temporary directory, then ran the current evaluator
+with `--judge none`; all three deterministic gates passed and were eligible. Their input SHA-256
+prefixes were `d6f66a09`, `5a0af7f7`, and `437e0860`. This was not frozen as a new artifact, did not
+run the 8B model, and is not a fresh live CodeBuddy observation.
+
 The uncertain plan included a squat despite an occluded floor. The Shadow Judge still liked it;
 the production safety gate rejected it. A labelled deterministic fallback then produced reach-only
 rounds and passed. This disagreement is more useful than the numeric score and demonstrates why
@@ -104,8 +140,11 @@ also runs with `--judge none` when only the authoritative gates are needed.
 
 One strict local run on 14 August 2026 is frozen at
 [`python-agent-qwen3-vl-4b.json`](../artifacts/evaluation/python-agent-qwen3-vl-4b.json), SHA-256
-`585949ce0a97084cdd27fc0113a514fea6c60670e748b999625d798fe199566f`. The model scored the unsafe
-original **18/24** in 58.093 seconds and the validated fallback only **15/24** in 41.404 seconds.
+`b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029`. The record embeds clean
+commit `cf157093ff3dab7b3598387d68973f82a3e364c2`, tree
+`404fdc889cabc0212a6fd2197102eff7da5abde6`, and shared candidate-context SHA-256
+`502824677434c6c6d0196d367ecdcfdde1f8aaa84138f1fe976858dce766fcfa`. The model scored the unsafe
+original **18/24** in 43.492 seconds and the validated fallback only **15/24** in 37.550 seconds.
 The agent nevertheless rejected the higher-scored original, selected the eligible fallback, and
 completed its recovery loop. This is controlled synthetic evaluation, not runtime, participant, or
 model-accuracy evidence.
@@ -118,6 +157,18 @@ npm run agent:python -- \
   --judge ollama --strict-judge \
   --out artifacts/evaluation/python-agent-qwen3-vl-4b.json
 ```
+
+## Adversarial safety probe
+
+The separate Python Safety Probe attacked the real production contract bridge at the same clean
+commit and tree. It terminated after six adaptive rounds with 332 candidates: 302 unsafe candidates
+defended, 30 compliant candidates honored, **0 breaches**, **0 over-rejections**, and **0
+inconclusive probes**. All 20 compliant controls passed, and all seven measured frontiers matched
+their documented thresholds. Its frozen SHA-256 values are
+`df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5` for the JSON report and
+`e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` for the Markdown report.
+The probe's 82/82 tests passed. This is synthetic contract-behaviour evidence, not a security audit,
+certification, runtime model evaluation, participant result, or pose/latency measurement.
 
 ## References
 

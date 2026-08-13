@@ -1,9 +1,22 @@
 # MoveRealm release checks
 
-Recorded on 13 August 2026 in Asia/Singapore. This file separates automated and controlled
+Recorded on 13–14 August 2026 in Asia/Singapore. This file separates automated and controlled
 observations from the real-person and submission work that is still pending.
 
-## Release identity
+## Clean local candidate identity — 14 August 2026
+
+- Source commit: `cf157093ff3dab7b3598387d68973f82a3e364c2`
+- Source tree: `404fdc889cabc0212a6fd2197102eff7da5abde6`
+- Source state for recorded candidate gates: clean tracked checkout
+- Push/deployment: **not performed**; explicit authorization and new public verification remain
+  pending.
+- Docker image:
+  `sha256:724a0e56188dc18e4d7419556a72084d5e0c9398674510a50c3c8177d80aaa57`
+  (343,092,337 bytes), built with the exact candidate commit/tree provenance.
+- Local browser audit build ID: `build-20260814`. This is an evidence-compatible local identifier,
+  **not** a GitHub Actions run or public deployment ID.
+
+## Deployed predecessor identity — 13 August 2026
 
 - Application source commit: `7fe9009728d545798c1b5efd7b367d4f54264eaf`
 - Application build ID: `build-31714506917`
@@ -12,10 +25,10 @@ observations from the real-person and submission work that is still pending.
 - Pages workflow: [run 31714506917](https://github.com/ming3465/MoveRealm/actions/runs/31714506917)
 - Workflow result: `success`; `npm ci`, tests, build, Pages configuration, artifact upload, and
   deployment all completed successfully.
-- Latest packaged-adapter Docker evidence (**predecessor `2ab9584` only**):
+- Earlier packaged-adapter Docker evidence (**predecessor `2ab9584` only**):
   `sha256:a205205819345589179d079656e0afefb38887b8b460a2c00d942dc0a11e47b6`
   (343,057,128 bytes), tag `moverealm:2ab9584`, built with predecessor build/commit arguments. No
-  Docker run was performed for `7fe9009`; this image does not carry the current release identity.
+  Docker run was performed for `7fe9009`; this image does not carry the deployed predecessor identity.
 
 The Pages workflow ignores pushes limited to `docs/**`, `artifacts/**`, `README.md`, and
 `assets/README.md`. This documentation-only follow-up therefore does not redeploy the app or create
@@ -29,7 +42,49 @@ source-bearing path changes or the workflow is manually dispatched.
 - Google Chrome 151.0.7922.137
 - Node.js 24.12.0; npm 11.9.0
 
-## Automated release gates
+## Clean local candidate gates
+
+| Check | Command or source | Observed result |
+|---|---|---|
+| Complete automated tests | `npm run test:all` | **PASS** — 120/120 Vitest tests across 15 files; 13/13 Python recovery-agent tests; 82/82 Python safety-probe tests |
+| Strict client/server typecheck and production bundle | `npm run build` | **PASS** |
+| Dependency audit | `npm audit --audit-level=low` | **PASS** — 0 vulnerabilities |
+| Submission-document local links | resolve local Markdown targets in the 7 reconciled files | **PASS** — 130/130 links resolved |
+| Documentation diff hygiene | `git diff --check` | **PASS** |
+| Exact Docker provenance | inspect packaged client and image metadata | **PASS** — commit `cf157093…`, tree `404fdc8…`, and expected image digest matched |
+| Docker health and index | packaged adapter health endpoint and root document | **PASS** |
+| Docker basic smoke | packaged local candidate | **PASS** |
+| Guided full browser smoke | production mode; local audit build `build-20260814` | **PASS** — reach/squat/side-step; scores 0→145→290→435; `Guided demo` adaptation 64→48%, 0.90→0.77×, 7→6; postcard 2.6 min / 18% / `N/A`; API POSTs `[]`; no errors |
+| Captured-room full fallback smoke | production mode; fake camera; local audit build `build-20260814` | **PASS** — camera ready; exact scene/plan/adapt/adapt POSTs; all rounds to score 435; `Safe fallback`; adaptation 60→44%, 0.90→0.77×, 7→6; postcard 2.6 min / 18% / `N/A`; no errors |
+| Python recovery artifact | controlled Qwen3-VL 4B run | **PASS** — hard gates rejected the 18/24 original (43.492 s) and selected the eligible 15/24 fallback (37.550 s) |
+| Adversarial Safety Probe | clean contract mode | **PASS** — 332 probes: 302 defended, 30 honored, 0 breaches, 0 over-rejections, 0 inconclusive; 20 controls; 7 frontiers |
+| Current strict CodeBuddy scene check | localhost service plus bounded adapter request | **BLOCKED EXTERNALLY** — health true; labelled deterministic fallback after 45 s; sanitized log recorded HTTP 429 before generation on all 8 upstream retries; **not a live pass** |
+
+The Python artifact SHA-256 is
+`b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029`; it records shared
+candidate-context SHA-256 `502824677434c6c6d0196d367ecdcfdde1f8aaa84138f1fe976858dce766fcfa`.
+The Safety Probe report SHA-256 values are
+`df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5` (JSON) and
+`e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` (Markdown).
+The sanitized CodeBuddy blocker is
+[`codebuddy-upstream-blocker-2026-08-14.json`](codebuddy-upstream-blocker-2026-08-14.json), SHA-256
+`961f9ad01e1932d2f93b53d0e3c593cce97b290169c10f195bc757df0d6319a9`. It records that the
+availability observation occurred before the source was frozen and while the worktree was dirty;
+the application source was subsequently frozen as `cf15709`. It is not clean-source live-pass
+evidence.
+
+The two privacy-reviewed local browser exports are:
+
+- [`local-guided-keyboard-session-cf15709.json`](local-guided-keyboard-session-cf15709.json),
+  SHA-256 `aebcf7c43158672e1d4bc486f7f71c7cb56116df3256dcb4592fab1a5deed3aa`;
+- [`local-captured-fallback-keyboard-session-cf15709.json`](local-captured-fallback-keyboard-session-cf15709.json),
+  SHA-256 `ebaa8c4cb97ef91e79c72a81f9f356beaeae04bb89c52bf98cf5e60232cc5b8d`.
+
+Both embed exact commit `cf157093ff3dab7b3598387d68973f82a3e364c2` and local audit build
+`build-20260814`, set personal identifiers, images/video, raw landmarks, room stills, and upload paths
+to false, and leave keyboard pose metrics `null` with human/device thresholds `not_evaluated`.
+
+## Deployed predecessor gates
 
 | Check | Command or source | Observed result |
 |---|---|---|
@@ -48,14 +103,14 @@ source-bearing path changes or the workflow is manually dispatched.
 | Earlier packaged full fallback adaptation | predecessor Docker URL plus capture, adaptation, and expected-fallback flags | **PASS** — `Safe fallback`; range 60→44%, tempo 0.90→0.77×, rate 7→6; not rerun for `7fe9009` |
 
 The predecessor Docker smokes and request audits used Chrome's fake camera and keyboard controls.
-No Docker scope was rerun for `7fe9009`, so none of it may be cited as current-release packaged
+No Docker scope was rerun for `7fe9009`, so none of it may be cited as deployed-predecessor packaged
 evidence. These controlled checks are not real-person tracking evidence or a replacement for the
 pending real-camera network inspection.
 
 ## Evidence-integrity hardening
 
-The current release retains the automated validation and UI safeguards introduced in `2ab9584` for
-local anonymous evidence:
+The deployed predecessor and clean local candidate retain the automated validation and UI safeguards
+introduced in `2ab9584` for local anonymous evidence:
 
 - trial IDs are restricted to `trial-1`, `trial-2`, and `trial-3`;
 - an exact 40-character commit SHA and numeric `build-N` provenance pair must both be present or both
@@ -68,8 +123,9 @@ local anonymous evidence:
   temporary anchor, delays object-URL revocation, and reports sanitized success, hash-unavailable, or
   failure status.
 
-The 100-test suite covers these integrity boundaries. They validate exported records; they do not
-complete any of the pending human trials or measure real-person performance.
+The predecessor's 100-test suite and the candidate's 120-test Vitest layer cover these integrity
+boundaries. They validate exported records; they do not complete any of the pending human trials or
+measure real-person performance.
 
 ## Offline Shadow Judge
 
@@ -86,6 +142,17 @@ disagreement is evidence for keeping the model advisory, not runtime output, saf
 accuracy, official judging, or human evidence.
 The synthetic record contains no participant media, webcam stream, landmarks, identity, or health
 inference. See [`docs/EVALUATION.md`](../../docs/EVALUATION.md).
+
+Those 8B open/tight reports are frozen predecessor `7fe9009` evaluator snapshots. Their candidate
+JSON does not pass the newer `cf15709` canonical-presentation gates and is not current-candidate pass
+evidence. The clean candidate is supported by the current tests/probe, Python uncertain-room
+recovery, and full browser smokes above; a current live open/tight matrix is blocked by CodeBuddy's
+external 429 response.
+
+An ephemeral current-source compatibility check reconstructed open/tight/uncertain candidates from
+the preserved matrix into `/tmp` and ran `npm run eval -- --judge none`; all three deterministic
+gates passed and were eligible (input SHA-256 prefixes `d6f66a09`, `5a0af7f7`, `437e0860`). No new
+artifact or 8B model report was frozen, and this is not fresh live CodeBuddy evidence.
 
 ## Full guided session
 
@@ -185,6 +252,11 @@ rate 7→5 while keeping the next squat. Its inputs were explicitly synthetic ke
 - real-person time to first accepted movement target below 45 seconds;
 - browser network inspection during a real-person camera session;
 - three consenting user trials;
+- a successful strict current-candidate CodeBuddy generation; localhost connectivity and safe
+  fallback passed, but the external 429 blocker remains;
+- authorization to push and deploy the current local branch, whose application source is frozen at
+  `cf157093ff3dab7b3598387d68973f82a3e364c2`, followed by exact verification of the resulting
+  public build and pushed branch HEAD;
 - accepted YouTube or Google Drive upload URL for the completed 4:58.834 local backup (or a
   preferred live-person recording);
 - participant consent for any retained real-person media;

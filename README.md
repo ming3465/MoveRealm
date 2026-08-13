@@ -30,6 +30,36 @@ The Pages workflow ignores changes limited to `docs/**`, `artifacts/**`, `README
 run 31714506917 remains the exact application release until source-bearing paths change or the
 workflow is manually dispatched.
 
+## Local release candidate — 14 August 2026
+
+The newer source candidate is clean commit
+`cf157093ff3dab7b3598387d68973f82a3e364c2`, tree
+`404fdc889cabc0212a6fd2197102eff7da5abde6`. It has **not** been pushed or deployed; the public URL
+still serves the `7fe9009` predecessor above.
+
+The exact clean candidate passed `npm run test:all`: **120/120 Vitest tests across 15 files**, **13/13
+Python recovery-agent tests**, and **82/82 Python safety-probe tests**. The strict production build
+passed and `npm audit --audit-level=low` reported **0 vulnerabilities**. Its clean Docker image is
+`sha256:724a0e56188dc18e4d7419556a72084d5e0c9398674510a50c3c8177d80aaa57`
+(343,092,337 bytes); embedded commit/tree provenance, health, index, and the basic packaged smoke all
+passed.
+
+Two clean-source, production-mode local browser smokes also passed with `build-20260814`, which is a
+**local audit build identifier, not a GitHub Actions run**. The guided full route completed reach,
+squat, and side-step rounds with scores 0→145→290→435 and its expected visible adaptation. The
+captured-room full route reached camera readiness, made exactly scene/plan/adapt/adapt POSTs, then
+completed all three rounds through the labelled `Safe fallback`. Both postcards reported 2.6 active
+minutes, 18% completion, and tracking `N/A`; both exports matched the exact candidate commit/build,
+retained no personal/media fields, and kept keyboard pose metrics `null`. See the two local candidate
+records in [`artifacts/validation/`](artifacts/validation/).
+
+The current CodeBuddy live check is **blocked externally**, not passed. Localhost health succeeded,
+but a strict scene smoke reached the bounded 45-second deadline and visibly returned the labelled
+deterministic fallback. A sanitized local log recorded HTTP 429 before generation on all eight
+upstream retries. Retry CodeBuddy before recording any segment as `CodeBuddy live`; this observation
+does not supersede the preserved predecessor live evidence. See the sanitized
+[`blocker record`](artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json).
+
 ## Run it
 
 Requirements: Node 22.12+ and a modern Chromium/Safari browser. Camera access requires localhost
@@ -100,9 +130,9 @@ deterministic path. A production Node deployment serves both the Vite bundle and
 ## Verification
 
 ```bash
-npm test             # current release: 100/100 tests pass across 13 files
+npm run test:all     # local candidate: 120 Vitest + 13 recovery-agent + 82 probe tests
 npm run build        # strict client/server typecheck and production bundle
-npm audit --audit-level=low  # current release: 0 vulnerabilities
+npm audit --audit-level=low  # local candidate: 0 vulnerabilities
 ```
 
 Start `npm run dev` in one terminal, then use a second terminal for the browser checks:
@@ -143,7 +173,7 @@ Earlier controlled UI evidence used Chrome's synthetic fake-camera stream: healt
 and target rate 7 → 5; and the temporary upload directory was empty afterward. This is agent/UI and
 cleanup evidence, not real-person FPS, visible response latency, TTFF, or usability evidence.
 
-The current full guided smoke checks the honest result accounting: three 52-second movement rounds are
+The deployed-predecessor full guided smoke checks the honest result accounting: three 52-second movement rounds are
 **2.6 active minutes**, and two 12-second rests bring the complete adventure to **3.0 minutes**.
 Keyboard-mode tracking FPS remains `N/A`; it is not presented as a real-person pose measurement.
 
@@ -156,7 +186,7 @@ names, media, room text, agent prose, upload paths, and raw landmarks; the UI di
 SHA-256 after download. Keyboard or mixed-control exports deliberately do not evaluate real-camera
 pose gates.
 
-The current release retains the evidence boundary introduced in `2ab9584`: only anonymous trials
+The deployed predecessor and clean local candidate retain the evidence boundary introduced in `2ab9584`: only anonymous trials
 1–3 are accepted; build ID
 and exact 40-character commit provenance must be supplied together; completion counts, full
 adaptation parameters, and plan/adaptation latency totals must agree; and the sanitized download
@@ -172,6 +202,8 @@ unsafe uncertain-room plan positively while the hard gate rejected its occluded-
 reach-only fallback passed. The judge never approves, rewrites, blocks, or executes a quest, and its
 scores are not accuracy, safety, official-judge, human-trial, or runtime evidence. See
 [`docs/EVALUATION.md`](docs/EVALUATION.md) for the fixed setup, observations, and limitations.
+The 8B open/tight reports are predecessor `7fe9009` snapshots; their candidate JSON is not a
+`cf15709` current-gate pass.
 
 The dependency-free [`python_agent/`](python_agent/) wrapper turns that evaluator into a small
 `observe → evaluate → recover → verify` agent. It defaults to the free local 3.3 GB Qwen3-VL 4B
@@ -184,6 +216,12 @@ Movement Director; this Python loop is offline evaluation evidence.
 npm run test:python
 npm run agent:python -- --candidate <candidate.json> --fallback-candidate <fallback.json>
 ```
+
+The frozen Python-agent record belongs to clean commit `cf157093ff3dab7b3598387d68973f82a3e364c2`
+and tree `404fdc889cabc0212a6fd2197102eff7da5abde6`. Both candidates share context SHA-256
+`502824677434c6c6d0196d367ecdcfdde1f8aaa84138f1fe976858dce766fcfa`; its artifact SHA-256 is
+`b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029`. The original scored 18/24
+in 43.492 seconds and the validated fallback scored 15/24 in 37.550 seconds.
 
 Use the [three-person trial protocol](docs/TRIAL_PROTOCOL.md) before collecting any human evidence.
 Real-person FPS, visible latency, TTFF, and all three trials remain pending until three consenting M1
@@ -203,16 +241,19 @@ refused.
 ```bash
 npm run probe                     # attack the production contracts
 npm run probe -- --mode live      # audit a running adapter
-npm run probe:tests               # 78 tests, standard library only
+npm run probe:tests               # 82 tests, standard library only
 ```
 
-Against commit `a14c7e5` with `MOVEREALM_FORCE_FALLBACK=1`, it ran 332 candidates over 6 adaptive
-rounds and terminated on its own when nothing new appeared: 302 refusals, 30 compliant acceptances,
+Against clean commit `cf157093ff3dab7b3598387d68973f82a3e364c2`, it ran 332 candidates over 6 adaptive
+rounds and terminated on its own when nothing new appeared: 302 unsafe candidates defended and 30
+compliant candidates honored,
 **0 breaches and 0 over-rejections**, with all 20 compliant baselines accepted. Bisection measured
 seven envelope frontiers, each agreeing with the documented threshold — the narrow-room side-step
 cap, for example, was observed accepted up to 0.6156 and refused from 0.6203 against a documented
-0.62. The live audit passed 42/42 checks across all five synthetic rooms. The stub gates in its test
-suite prove a breach *would* be reported. This is contract-behaviour evidence over synthetic rooms:
+0.62. The contract report contains 0 inconclusive probes and has SHA-256
+`df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5` (JSON) and
+`e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` (Markdown). The stub gates in
+its 82-test suite prove a breach *would* be reported. This is contract-behaviour evidence over synthetic rooms:
 not a human trial, pose or latency measurement, security audit, or certification. The tool never
 approves, rewrites, blocks, or executes a quest, and reads no participant data.
 

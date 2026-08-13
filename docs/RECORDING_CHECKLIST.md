@@ -7,8 +7,8 @@ CodeBuddy development tip.
 ## Choose and label the path
 
 - **Preferred:** live CodeBuddy run. Continue only after `/api/health` shows
-  `codeBuddyConnected: true`, and keep the `CodeBuddy live` badge visible when making live-agent
-  claims.
+  `codeBuddyConnected: true` **and** a strict request returns generated output before its deadline;
+  keep the `CodeBuddy live` badge visible when making live-agent claims. Health alone is insufficient.
 - **Backup:** choose “Try the guided demo.” Say that it is a pre-validated profile with deterministic
   decisions and keyboard controls. Keep the `Guided demo` label visible.
 - **Automatic recovery:** if the service fails and `Safe fallback` appears, keep recording only if
@@ -23,13 +23,35 @@ CodeBuddy development tip.
   [Pages run 31714506917](https://github.com/ming3465/MoveRealm/actions/runs/31714506917) for commit
   `7fe9009` / build `build-31714506917` passed all 100 tests across 13 files, the production build,
   and deployment.
+- [x] Confirm clean local candidate `cf157093ff3dab7b3598387d68973f82a3e364c2` / tree
+  `404fdc889cabc0212a6fd2197102eff7da5abde6` passed `npm run test:all`: 120/120 Vitest tests
+  across 15 files, 13/13 Python recovery-agent tests, and 82/82 Safety Probe tests; its strict build
+  and 0-vulnerability audit also passed.
+- [x] Confirm its clean Docker image
+  `sha256:724a0e56188dc18e4d7419556a72084d5e0c9398674510a50c3c8177d80aaa57`
+  (343,092,337 bytes) embedded the exact candidate provenance and passed health, index, and basic
+  packaged smoke checks.
+- [x] Confirm both clean-source, production-mode full browser routes passed under local audit build
+  ID `build-20260814`—not a GitHub Actions run. Guided: three mechanics, scores 0→145→290→435,
+  adaptation 64→48%, 0.90→0.77×, 7→6, no POSTs/errors. Captured fallback: camera ready, exact
+  scene/plan/adapt/adapt POSTs, score 435, `Safe fallback`, adaptation 60→44%, 0.90→0.77×, 7→6,
+  no errors. Both exports matched the exact identity and kept personal/media fields false and
+  keyboard pose metrics unevaluated.
+- [ ] Push/deploy the current local branch only with explicit authorization. Its application source
+  checkpoint is `cf15709`; verify the resulting public build and pushed branch HEAD. Until then, the
+  public app remains `7fe9009` / build `build-31714506917`.
+- [ ] Retry the current CodeBuddy strict check. Its latest result is **BLOCKED externally**: localhost
+  health succeeded, but scene analysis returned labelled `Safe fallback` after 45 seconds; the
+  sanitized log recorded HTTP 429 before generation on all 8 upstream retries. Do not call it a
+  live-agent pass; see
+  [`codebuddy-upstream-blocker-2026-08-14.json`](../artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json).
 - [x] Confirm `npm audit --audit-level=low` reports 0 vulnerabilities.
 - [x] Confirm the exact-release public camera basic smoke passed with Chrome's fake camera:
   `cameraReady=true`, score 0→145, API POSTs `[]`, and no console errors. This is controlled,
   non-human evidence.
 - [x] Confirm the exact-release public full-smoke adaptation step passed with `Guided demo`
   provenance.
-- [x] Keep the latest Docker evidence labelled **predecessor-only**. No Docker run was performed for
+- [x] Keep the earlier Docker evidence labelled **predecessor-only**. No Docker run was performed for
   `7fe9009`; the predecessor image `moverealm:2ab9584`, ID
   `sha256:a205205819345589179d079656e0afefb38887b8b460a2c00d942dc0a11e47b6`
   (343,057,128 bytes), embeds the exact `2ab9584` commit/build identity.
@@ -48,7 +70,7 @@ CodeBuddy development tip.
   The preserved file is
   [`public-guided-keyboard-session-7fe9009.json`](../artifacts/validation/public-guided-keyboard-session-7fe9009.json);
   its keyboard timing is not human TTFF evidence.
-- [x] Confirm the current release retains the exporter integrity boundary: trial 1–3 only, paired
+- [x] Confirm the deployed predecessor and clean local candidate retain the exporter integrity boundary: trial 1–3 only, paired
   exact provenance, count/adaptation/latency consistency, and robust sanitized download behavior.
 - [x] Review the [offline Shadow Judge record](EVALUATION.md): deterministic fixture, contract,
   consistency, and movement-feasibility gates remain authoritative and rejected an unsafe plan the
@@ -75,8 +97,9 @@ CodeBuddy development tip.
 
 Still explicitly pending before a final evidence-complete submission: a public YouTube or Google
 Drive URL for the backup or a preferred live-person take, all three user trials, real-person pose
-FPS, real-person visible response latency, and real-person time to first accepted movement (TTFF).
-Do not substitute synthetic-camera or keyboard values.
+FPS, real-person visible response latency, real-person time to first accepted movement (TTFF), a
+successful current CodeBuddy generation, the authorized candidate push/deployment, and team/contact
+portal fields. Do not substitute synthetic-camera or keyboard values.
 
 The Pages workflow ignores docs- and artifacts-only pushes. This documentation follow-up does not
 redeploy the app; release identity remains commit `7fe9009`, run 31714506917, build
@@ -89,6 +112,8 @@ redeploy the app; release identity remains commit `7fe9009`, run 31714506917, bu
   terminal line containing a secret.
 - [ ] Start MoveRealm, open `/api/health`, and capture `codeBuddyConnected: true` without exposing
   credentials.
+- [ ] Complete one strict scene request and require `CodeBuddy live`; if it reaches the 45-second
+  bound or shows `Safe fallback`, use the fallback script and do not narrate it as live AI.
 - [ ] Place one visible chair or desk edge in a deliberately constrained camera lane.
 - [ ] Confirm the returned room analysis on screen before narrating its classification or obstacles.
 - [ ] Rehearse one difficult first round so the visible adaptation has real telemetry to explain.

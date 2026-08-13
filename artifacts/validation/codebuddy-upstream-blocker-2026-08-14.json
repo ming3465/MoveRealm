@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "external-runtime-blocker",
+  "observedAt": "2026-08-14T00:54:06+08:00",
+  "applicationSourceLaterFrozenAs": "cf157093ff3dab7b3598387d68973f82a3e364c2",
+  "worktreeWasDirtyDuringObservation": true,
+  "codeBuddy": {
+    "cliVersion": "2.136.0",
+    "localhostHttpHealth": true,
+    "authenticationMode": "isolated localhost-only audit service",
+    "toolsEnabled": false,
+    "sessionPersistence": false
+  },
+  "probe": {
+    "operation": "scene analysis",
+    "fixture": "tight-room.png",
+    "adapterDeadlineMs": 45000,
+    "strictLiveResult": "failed",
+    "applicationResult": "labelled deterministic fallback",
+    "temporaryUploadDirectoryEmptyAfterward": true
+  },
+  "sanitizedUpstreamObservation": {
+    "httpStatus": 429,
+    "failurePhase": "before generation",
+    "primaryRetriesObserved": 8,
+    "auxiliaryRetriesObserved": 8,
+    "generatedStructuredResult": false
+  },
+  "interpretation": "The localhost transport and MoveRealm fallback worked, but the external CodeBuddy model service did not generate a response. This record is a blocker observation, not live-agent success evidence.",
+  "privacy": {
+    "rawPromptRetained": false,
+    "rawModelResponseRetained": false,
+    "credentialsRetained": false,
+    "localLogPathRetained": false,
+    "roomImageRetained": false
+  }
+}

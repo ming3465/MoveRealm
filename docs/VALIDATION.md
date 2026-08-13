@@ -12,7 +12,49 @@ dash (`—`) means **not measured**; it is not a zero and must never be replaced
 - **Pending human/device evidence** — requires a real person, real webcam, and target device.
 - **Pending submission evidence** — requires a finished, accessible recording or artifact.
 
-## Current release verification — 13 August 2026
+## Clean local candidate verification — 14 August 2026
+
+Exact source: commit `cf157093ff3dab7b3598387d68973f82a3e364c2`, tree
+`404fdc889cabc0212a6fd2197102eff7da5abde6`. The verification records were produced from a clean
+tracked checkout. This candidate has not been pushed or deployed; the public site remains the
+`7fe9009` deployed predecessor.
+
+| Check | Observed | Evidence status |
+|---|---|---|
+| Complete automated test gate | `npm run test:all`: **120/120 Vitest tests across 15 files**, **13/13 Python recovery-agent tests**, **82/82 safety-probe tests** | recorded automated local-candidate evidence |
+| Production build | strict client/server checks and Vite build passed | recorded automated local-candidate evidence |
+| npm dependency audit | **0 vulnerabilities** | recorded automated local-candidate evidence |
+| Clean Docker identity | `sha256:724a0e56188dc18e4d7419556a72084d5e0c9398674510a50c3c8177d80aaa57` (343,092,337 bytes); embedded commit/tree provenance matched | recorded packaged local-candidate evidence |
+| Clean Docker health, index, and basic smoke | all passed | recorded packaged local-candidate evidence |
+| Guided full browser smoke | production mode; local audit ID `build-20260814`; three mechanics; scores 0→145→290→435; adaptation 64→48%, 0.90→0.77×, 7→6; 2.6 min / 18% / `N/A`; no POSTs/errors | recorded automated local-candidate evidence; audit ID is not a CI run |
+| Captured-room full fallback smoke | production mode; camera ready; exact scene/plan/adapt/adapt POSTs; scores to 435; `Safe fallback`; adaptation 60→44%, 0.90→0.77×, 7→6; 2.6 min / 18% / `N/A`; no errors | recorded synthetic-camera local-candidate evidence; audit ID is not a CI run |
+| Python Qwen3-VL 4B recovery | unsafe original 18/24 in 43.492 s; eligible fallback 15/24 in 37.550 s; hard gates selected fallback | recorded controlled synthetic evidence |
+| Safety Probe | 332 candidates: 302 defended, 30 honored, 0 breaches, 0 over-rejections, 0 inconclusive; 20/20 controls and 7/7 frontiers | recorded controlled synthetic evidence |
+| Current CodeBuddy strict scene check | **BLOCKED externally**: localhost health true; labelled fallback after bounded 45 s; sanitized log recorded HTTP 429 before generation on all 8 upstream retries | recorded availability/fallback evidence; **not a live pass** |
+
+The Python recovery artifact SHA-256 is
+`b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029`; both evaluations share
+candidate-context SHA-256 `502824677434c6c6d0196d367ecdcfdde1f8aaa84138f1fe976858dce766fcfa`.
+The Safety Probe report SHA-256 values are
+`df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5` (JSON) and
+`e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` (Markdown).
+
+`build-20260814` is a local audit build identifier, not a GitHub Actions run. The guided export is
+[`local-guided-keyboard-session-cf15709.json`](../artifacts/validation/local-guided-keyboard-session-cf15709.json),
+SHA-256 `aebcf7c43158672e1d4bc486f7f71c7cb56116df3256dcb4592fab1a5deed3aa`. The captured fallback
+export is
+[`local-captured-fallback-keyboard-session-cf15709.json`](../artifacts/validation/local-captured-fallback-keyboard-session-cf15709.json),
+SHA-256 `ebaa8c4cb97ef91e79c72a81f9f356beaeae04bb89c52bf98cf5e60232cc5b8d`. Both embed the exact
+candidate commit and audit build, set personal/media privacy fields false, and leave pose FPS,
+inference, visible latency, and TTFF thresholds `not_evaluated` because controls were keyboard-based.
+
+The current CodeBuddy result means no local-candidate live-agent pass may be claimed. Its localhost
+transport worked and the product recovered safely, but the external model service returned no
+generated result. Retry the live check before recording or explicitly use the `Safe fallback`
+disclosure. The privacy-sanitized observation is
+[`codebuddy-upstream-blocker-2026-08-14.json`](../artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json).
+
+## Deployed predecessor verification — 13 August 2026
 
 | Check | Observed | Evidence status |
 |---|---|---|
@@ -28,7 +70,7 @@ dash (`—`) means **not measured**; it is not a zero and must never be replaced
 | Predecessor public full smoke and anonymous export | passed against `2ab9584` / run 31682611174; checksum and exact identity matched; pose gates `not_evaluated` | recorded predecessor automated evidence |
 | Predecessor Docker captured-room basic path | `2ab9584` image; forced-fallback health true/CodeBuddy false; camera ready; `Safe fallback`; score 0→145 | recorded predecessor automated evidence |
 | Predecessor Docker basic request audit | one still POST; only scene and plan POSTs | recorded predecessor automated evidence |
-| Earlier Docker full fallback adaptation | passed with `Safe fallback`; not rerun for the current application release | recorded predecessor automated evidence |
+| Earlier Docker full fallback adaptation | passed with `Safe fallback`; not rerun for the deployed `7fe9009` release | recorded predecessor automated evidence |
 | Offline Shadow Judge | hard gates overrode a positive advisory score for an unsafe uncertain-room plan | recorded controlled synthetic evaluation |
 | Guided screenshot set | 6 consent-free PNGs | recorded submission artifacts |
 | Synthetic fake-camera CodeBuddy UI set | 2 consent-free PNGs; live source badges and upload cleanup recorded | recorded controlled evidence |
@@ -45,7 +87,7 @@ The Pages workflow excludes docs-only changes under `docs/**`, `artifacts/**`, `
 `assets/README.md` from its push trigger. This documentation follow-up does not imply a newer
 application deployment; run 31714506917 remains the exact application release.
 
-The current release retains the evidence-integrity checks introduced in `2ab9584` around the local
+The deployed predecessor retains the evidence-integrity checks introduced in `2ab9584` around the local
 exporter:
 
 - anonymous trial IDs are limited to `trial-1`, `trial-2`, and `trial-3`;
@@ -57,7 +99,7 @@ exporter:
 - the UI prevents duplicate downloads, clamps the trial input to 1–3, removes its temporary anchor,
   delays object-URL cleanup, and presents sanitized success, hash-unavailable, or failure status.
 
-These are automated integrity controls covered by the current 100-test suite. They do not complete a
+These are automated integrity controls covered by the deployed predecessor's 100-test suite. They do not complete a
 human trial or measure pose performance.
 
 ## Recorded automated browser evidence — 13 August 2026
@@ -70,7 +112,7 @@ Chrome's fake stream does not contain a trackable person, so this evidence does 
 real-person pose FPS, camera-to-visual response latency, movement accuracy, time to first movement,
 or usability.
 
-The current `7fe9009` public application passed an exact-release camera basic smoke as a separate
+The deployed `7fe9009` public application passed an exact-release camera basic smoke as a separate
 deployed-site observation, not a CI browser job. Chrome's fake camera reached `cameraReady: true`,
 the first score advanced 0 → 145, the request audit recorded API POSTs `[]`, and no console errors
 occurred. Because the stream was synthetic, this does not close any real-person camera gate.
@@ -85,7 +127,8 @@ fake-camera basic path reached camera readiness, preserved safe defaults, showed
 scored 0 → 145, sent exactly scene and plan POSTs, left the temporary-upload directory empty, and
 the container was stopped and its port freed after stop escalation. Exit 137 means this is not
 recorded as a graceful stop. The earlier packaged full fallback adaptation also remains predecessor
-evidence. Neither Docker scope was rerun for the current release.
+evidence. Those older Docker scopes were not rerun for `7fe9009`; the clean local candidate has the
+separate packaged evidence recorded above.
 
 The exact-release full browser smoke also passed against commit
 `7fe9009728d545798c1b5efd7b367d4f54264eaf`, Pages run 31714506917, and build
@@ -97,7 +140,7 @@ POSTs `[]`; and no console errors occurred.
 That smoke downloaded anonymous keyboard evidence. The privacy-reviewed copy is preserved as
 [`public-guided-keyboard-session-7fe9009.json`](../artifacts/validation/public-guided-keyboard-session-7fe9009.json).
 Its SHA-256 `5a3da763a925d02c4152cd305587c3d60e20bb261e354f6372b59fb797ba4620`
-matched the preserved file, and its product identity exactly matched the current release commit and
+matched the preserved file, and its product identity exactly matched the deployed predecessor commit and
 build. The export records three rounds, two adaptations, 156 completed active seconds within the
 planned 180-second adventure, and keyboard tracking. Tracking FPS, inference, and visible-response
 values are `null`/`N/A`; the FPS, inference, visible-latency, and TTFF gates are `not_evaluated`.
@@ -114,7 +157,7 @@ unexpected POST destination. The earlier full fallback adaptation evidence addit
 `POST /api/quest/adapt`; do not merge the two scopes. Both are controlled fake-camera evidence, so
 the real-camera network inspection remains pending.
 
-The current full guided-smoke oracle checks the result card's time accounting:
+The deployed-predecessor full guided-smoke oracle checks the result card's time accounting:
 
 - Three 52-second rounds = 156 seconds = **2.6 active minutes**.
 - Two 12-second rests = 24 seconds = 0.4 minutes.
@@ -209,6 +252,12 @@ media, webcam stream, landmarks, identity, or health inference. See
 [`EVALUATION.md`](EVALUATION.md) for the fixed model settings, reproduction commands, hard-gate
 definitions, recorded scores, and limitations.
 
+The 8B open/tight reports are frozen predecessor `7fe9009` evaluator snapshots. Their predecessor
+candidate JSON does not pass the newer `cf15709` canonical-presentation gates, so these scores are
+not current-candidate pass evidence. Current candidate evidence is limited to the new tests/probe,
+Python uncertain-room recovery, and full browser smokes recorded above; the current live open/tight
+matrix remains blocked by the external CodeBuddy 429 response.
+
 ## Pending real-person and submission evidence
 
 Record these only from the actual target laptop, a real webcam, and a consenting participant, or
@@ -222,6 +271,8 @@ from the finished submission artifact where specified.
 | Three-user qualitative trial | three completed observations | — | **pending all 3 user trials** |
 | Camera-free backup video file | 3–5 minutes; overview, features, reflection, tip | 4:58.834; H.264/AAC; 1440×810 | **recorded local artifact** |
 | Accepted video URL | accessible YouTube or Google Drive link | — | **pending upload and signed-out check** |
+| Local-candidate push and deployment | publish the current local branch, whose application source is checkpoint `cf157093ff3dab7b3598387d68973f82a3e364c2`, and verify the resulting public build plus pushed branch HEAD | — | **pending explicit authorization and deployment** |
+| Team members and registered contact | completed portal fields | — | **pending user input** |
 
 Follow the repeatable, consent-first procedure in
 [`TRIAL_PROTOCOL.md`](TRIAL_PROTOCOL.md). The final postcard's local evidence exporter records
