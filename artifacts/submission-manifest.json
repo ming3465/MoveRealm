@@ -1,0 +1,160 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-08-14T01:25:18+08:00",
+  "product": "MoveRealm",
+  "applicationSource": {
+    "commit": "cf157093ff3dab7b3598387d68973f82a3e364c2",
+    "tree": "404fdc889cabc0212a6fd2197102eff7da5abde6"
+  },
+  "documentationSnapshot": {
+    "commit": "a0c97f3d0aa146ff3ab433901fe593e14e95aecd",
+    "tree": "1222e3edb41b3431c5fcf1810d2c315ac600d315"
+  },
+  "publicPredecessor": {
+    "commit": "7fe9009728d545798c1b5efd7b367d4f54264eaf",
+    "buildId": "build-31714506917",
+    "pagesRunId": 31714506917,
+    "url": "https://ming3465.github.io/MoveRealm/"
+  },
+  "artifacts": [
+    {
+      "path": "assets/submission/moverealm-guided-backup.mp4",
+      "sha256": "dd4d2ef14e7eed8217f45a520a056e895d098a74755d5e09c0ba9fcbe3951951",
+      "classification": "camera-free backup video; upload pending"
+    },
+    {
+      "path": "assets/submission/moverealm-guided-backup-transcript.txt",
+      "sha256": "3ecedf106de903f9c552a4042a7c1a77e7514338a37d2c2bf3287fc2ffe3c20a",
+      "classification": "backup narration transcript"
+    },
+    {
+      "path": "assets/submission/moverealm-cover-380x216.png",
+      "sha256": "38637377111cffc7dce5c45ab3e9c0c3591fc55ce692f9af811940880b1dcf2c",
+      "classification": "submission cover image"
+    },
+    {
+      "path": "assets/submission/screenshots/01-landing.png",
+      "sha256": "abb574b44daa01bcda4ccd4bd43548d7e9d989627f35853dc5d2dd70d1811d18",
+      "classification": "consent-free guided UI"
+    },
+    {
+      "path": "assets/submission/screenshots/02-confirm-room.png",
+      "sha256": "3cecb302b16dc4b29b0444d60f77f80691fea707a84e0fc1c150ceda83460bc0",
+      "classification": "consent-free guided UI"
+    },
+    {
+      "path": "assets/submission/screenshots/03-calibration.png",
+      "sha256": "12e9f974d1570ac2f112ef94a6778e75e112c9641e91e6850d7639fd28f0938e",
+      "classification": "consent-free guided UI"
+    },
+    {
+      "path": "assets/submission/screenshots/04-game.png",
+      "sha256": "e89388ff5245bd38b8405a783f6087af2f3b571f502790521d6430885a587d60",
+      "classification": "consent-free guided UI"
+    },
+    {
+      "path": "assets/submission/screenshots/05-adaptation.png",
+      "sha256": "b3d632ad24b94e82c9a5f44a141b55cfe98fd2a7ba229d1662c9ce1c24bb2fea",
+      "classification": "consent-free guided UI"
+    },
+    {
+      "path": "assets/submission/screenshots/06-postcard.png",
+      "sha256": "7aed29ba39d0d12341fa1e9027d4b0e06b84f310add77731c9a6428cde35ff42",
+      "classification": "consent-free guided UI"
+    },
+    {
+      "path": "assets/submission/screenshots/07-live-codebuddy-scene.png",
+      "sha256": "48e0e5f0fd8bd402f8550021b3ca338034414d7a9ad6acc2252ff0c68889fc4a",
+      "classification": "predecessor synthetic fake-camera CodeBuddy UI"
+    },
+    {
+      "path": "assets/submission/screenshots/08-live-codebuddy-adaptation.png",
+      "sha256": "06c00b49384d72ee83f0ada2d8a476e486f7a189020ac5bf68ce28949dbfce40",
+      "classification": "predecessor synthetic fake-camera CodeBuddy UI"
+    },
+    {
+      "path": "docs/SUBMISSION.md",
+      "sha256": "0023e55e7c7037cfaebc5a6c9255126cfef35de9b47a25201518dbf4317d2225",
+      "classification": "portal copy and submission checklist"
+    },
+    {
+      "path": "docs/TRIAL_PROTOCOL.md",
+      "sha256": "3c5d630fd6ae0f1384485a5a4424904fd3d2b8aa7168a9fda07fbf742f8a26b9",
+      "classification": "consent-first human trial protocol; execution pending"
+    },
+    {
+      "path": "docs/EVALUATION.md",
+      "sha256": "803f1c54ec7382b366252a7c5e81a84071861ec596bf1afd33895be1d54fd2c2",
+      "classification": "offline advisory-model evaluation record"
+    },
+    {
+      "path": "docs/VALIDATION.md",
+      "sha256": "6def24148a15a41d74101404e3415bf0b17a23a7c6bd0c1e12428453318f63c4",
+      "classification": "validation and pending-action record"
+    },
+    {
+      "path": "artifacts/validation/release-checks.md",
+      "sha256": "5338201de21ca17803a7bf5620b7e7a555ab67955c39397042dc08eb87d8f386",
+      "classification": "test, build, audit, Docker, and smoke record"
+    },
+    {
+      "path": "artifacts/evaluation/python-agent-qwen3-vl-4b.json",
+      "sha256": "b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029",
+      "classification": "synthetic local-model recovery-agent evidence"
+    },
+    {
+      "path": "agent/evidence/safety-probe.json",
+      "sha256": "df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5",
+      "classification": "synthetic deterministic contract-probe evidence"
+    },
+    {
+      "path": "agent/evidence/safety-probe.md",
+      "sha256": "e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df",
+      "classification": "human-readable synthetic contract-probe evidence"
+    },
+    {
+      "path": "artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json",
+      "sha256": "961f9ad01e1932d2f93b53d0e3c593cce97b290169c10f195bc757df0d6319a9",
+      "classification": "sanitized external HTTP 429 blocker; not live-agent success"
+    },
+    {
+      "path": "artifacts/validation/local-guided-keyboard-session-cf15709.json",
+      "sha256": "aebcf7c43158672e1d4bc486f7f71c7cb56116df3256dcb4592fab1a5deed3aa",
+      "classification": "exact-source guided keyboard smoke; not human evidence"
+    },
+    {
+      "path": "artifacts/validation/local-captured-fallback-keyboard-session-cf15709.json",
+      "sha256": "ebaa8c4cb97ef91e79c72a81f9f356beaeae04bb89c52bf98cf5e60232cc5b8d",
+      "classification": "exact-source fake-camera fallback smoke; not human evidence"
+    },
+    {
+      "path": "artifacts/validation/public-guided-keyboard-session-7fe9009.json",
+      "sha256": "5a3da763a925d02c4152cd305587c3d60e20bb261e354f6372b59fb797ba4620",
+      "classification": "deployed-predecessor guided keyboard export"
+    },
+    {
+      "path": "artifacts/validation/live-agent-room-matrix-2ab9584.json",
+      "sha256": "e4dabc45278f5be9d177c1c8d1282337d432a5cba3cbe8ebdc4c7008bfb05787",
+      "classification": "predecessor controlled CodeBuddy matrix; synthetic telemetry"
+    }
+  ],
+  "pendingExternalActions": [
+    "Obtain explicit authorization to push and deploy the current local branch, then verify the resulting public build and pushed branch HEAD.",
+    "Restore current CodeBuddy upstream availability and obtain a strict generated CodeBuddy result rather than fallback.",
+    "Run three consenting real-person M1 Pro webcam trials and record FPS, visible response latency, time to first movement, completion, and privacy observations.",
+    "Upload the 4:58.834 backup video or a preferred live take to YouTube or Google Drive and verify signed-out access.",
+    "Enter team members, registered contact email, video URL, and remaining portal fields, then submit."
+  ],
+  "privacy": {
+    "participantMediaIncluded": false,
+    "personalIdentifiersIncluded": false,
+    "credentialsIncluded": false,
+    "rawModelOutputIncluded": false,
+    "rawPoseLandmarksIncluded": false
+  },
+  "notes": [
+    "The application-source and documentation-snapshot commits are intentionally separate.",
+    "The manifest is generated after the documentation snapshot and therefore does not hash itself.",
+    "Synthetic, keyboard, fake-camera, fallback, and predecessor artifacts do not satisfy pending human or current live-agent requirements."
+  ]
+}
