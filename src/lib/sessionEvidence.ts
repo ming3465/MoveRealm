@@ -37,9 +37,9 @@ export interface SessionResult {
 }
 
 export interface SessionEvidenceBuildMetadata {
-  /** A CI build identifier containing only letters, numbers, dots, underscores, or dashes. */
+  /** The non-personal numeric CI run identifier, formatted as `build-N`. */
   buildId?: string | null;
-  /** A hexadecimal source revision. Branch names and local filesystem paths are intentionally excluded. */
+  /** The exact 40-character Git source revision. Branch names and paths are excluded. */
   commitSha?: string | null;
 }
 
@@ -177,9 +177,9 @@ export interface SessionEvidence {
   };
 }
 
-const TRIAL_ID_PATTERN = /^trial-[0-9]{1,4}$/;
-const BUILD_ID_PATTERN = /^(?:build|submission)-[0-9][0-9._-]{0,31}(?:-[a-f0-9]{7,12})?$/i;
-const COMMIT_SHA_PATTERN = /^[a-f0-9]{7,64}$/i;
+const TRIAL_ID_PATTERN = /^trial-[1-3]$/;
+const BUILD_ID_PATTERN = /^build-[1-9][0-9]{0,19}$/;
+const COMMIT_SHA_PATTERN = /^[a-f0-9]{40}$/i;
 
 function safeIdentifier(
   value: string | null | undefined,
@@ -332,6 +332,16 @@ function trackingMode(modes: Set<"pose" | "keyboard">): SessionEvidence["context
   return modes.has("pose") ? "pose" : "keyboard";
 }
 
+function sameQuestRound(left: QuestRound, right: QuestRound): boolean {
+  return left.id === right.id &&
+    left.movementId === right.movementId &&
+    left.durationSeconds === right.durationSeconds &&
+    left.targetRate === right.targetRate &&
+    left.rangeScale === right.rangeScale &&
+    left.tempo === right.tempo &&
+    left.mechanic === right.mechanic;
+}
+
 /**
  * Builds deterministic, JSON-safe session evidence from aggregate game results.
  *
@@ -352,6 +362,12 @@ export function buildSessionEvidence(input: BuildSessionEvidenceInput): SessionE
     : directorStep(input.sceneDirector);
   const planMeta = directorStep(input.result.directorMetas.plan);
   const adaptationMetas = input.result.directorMetas.adaptations.map(directorStep);
+  const buildId = safeIdentifier(input.build?.buildId, BUILD_ID_PATTERN, "buildId");
+  const commitSha = safeIdentifier(input.build?.commitSha, COMMIT_SHA_PATTERN, "commitSha");
+
+  if ((buildId == null) !== (commitSha == null)) {
+    throw new Error("Build evidence requires both buildId and commitSha, or neither.");
+  }
 
   if (adaptationMetas.length !== adaptations.length) {
     throw new Error("Provide exactly one director provenance record per adaptation.");
@@ -375,6 +391,12 @@ export function buildSessionEvidence(input: BuildSessionEvidenceInput): SessionE
       throw new Error("Session telemetry must align uniquely with the validated plan order.");
     }
     seenRoundIds.add(round.roundId);
+    const expectedCompletionRate = round.targetsPresented === 0
+      ? 0
+      : round.targetsCompleted / round.targetsPresented;
+    if (Math.abs(round.completionRate - expectedCompletionRate) > 1e-9) {
+      throw new Error("Each round completion rate must match its target counts.");
+    }
     const poseTracked = round.trackingMode === "pose";
     return {
       roundId: round.roundId,
@@ -397,8 +419,7 @@ export function buildSessionEvidence(input: BuildSessionEvidenceInput): SessionE
     if (
       !afterRound ||
       !appliesTo ||
-      adaptation.nextRound.id !== appliesTo.id ||
-      adaptation.nextRound.movementId !== appliesTo.movementId
+      !sameQuestRound(adaptation.nextRound, appliesTo)
     ) {
       throw new Error("Session adaptations must align with the following validated round.");
     }
@@ -476,6 +497,16 @@ export function buildSessionEvidence(input: BuildSessionEvidenceInput): SessionE
     throw new Error("Session target totals must match the per-round telemetry.");
   }
 
+  const directorLatencyMs = finiteNonNegative(
+    input.result.directorLatencyMs,
+    "directorLatencyMs",
+  )!;
+  const provenanceLatencyMs = input.result.directorMetas.plan.latencyMs +
+    input.result.directorMetas.adaptations.reduce((sum, meta) => sum + meta.latencyMs, 0);
+  if (Math.abs(directorLatencyMs - provenanceLatencyMs) > 0.001) {
+    throw new Error("Director latency total must match plan and adaptation provenance.");
+  }
+
   const sources = [
     ...(sceneMeta ? [sceneMeta.source] : []),
     planMeta.source,
@@ -488,8 +519,8 @@ export function buildSessionEvidence(input: BuildSessionEvidenceInput): SessionE
     product: {
       name: "MoveRealm",
       appVersion: packageMetadata.version,
-      buildId: safeIdentifier(input.build?.buildId, BUILD_ID_PATTERN, "buildId"),
-      commitSha: safeIdentifier(input.build?.commitSha, COMMIT_SHA_PATTERN, "commitSha"),
+      buildId,
+      commitSha,
     },
     context: {
       roomSpaceClass,
@@ -539,10 +570,7 @@ export function buildSessionEvidence(input: BuildSessionEvidenceInput): SessionE
       plan: planMeta,
       adaptations: adaptationMetas,
       sourcesUsed: [...new Set(sources)],
-      sessionPlanAndAdaptationLatencyMs: rounded(
-        planMeta.latencyMs + adaptationMetas.reduce((sum, step) => sum + step.latencyMs, 0),
-        0,
-      ),
+      sessionPlanAndAdaptationLatencyMs: rounded(directorLatencyMs, 0),
     },
     rounds,
     adaptations: adaptationEvidence,

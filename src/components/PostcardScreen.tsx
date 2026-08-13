@@ -23,6 +23,7 @@ export function PostcardScreen({
 }: PostcardScreenProps) {
   const [trialNumber, setTrialNumber] = useState(1);
   const [exportStatus, setExportStatus] = useState("");
+  const [exporting, setExporting] = useState(false);
   const completion = result.totalTargets
     ? Math.round((result.completedTargets / result.totalTargets) * 100)
     : 0;
@@ -38,38 +39,56 @@ export function PostcardScreen({
       : "N/A in keyboard mode";
 
   const downloadEvidence = async () => {
-    const evidence = buildSessionEvidence({
-      trialId: `trial-${trialNumber}`,
-      roomSpaceClass,
-      result,
-      sceneDirector: sceneMeta,
-      build: {
-        buildId: import.meta.env.VITE_BUILD_ID || null,
-        commitSha: import.meta.env.VITE_COMMIT_SHA || null,
-      },
-    });
-    const serialized = `${JSON.stringify(evidence, null, 2)}\n`;
-    const blob = new Blob([serialized], {
-      type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `moverealm-trial-${trialNumber}-session.json`;
-    link.click();
-    window.setTimeout(() => URL.revokeObjectURL(url), 0);
-    if (globalThis.crypto?.subtle) {
-      const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(serialized));
-      const checksum = [...new Uint8Array(digest)]
-        .map((byte) => byte.toString(16).padStart(2, "0"))
-        .join("");
-      setExportStatus(
-        `Downloaded anonymous evidence for trial ${trialNumber}. SHA-256 ${checksum}`,
-      );
-    } else {
-      setExportStatus(
-        `Downloaded anonymous evidence for trial ${trialNumber}. SHA-256 is unavailable on this origin.`,
-      );
+    if (exporting) return;
+    setExporting(true);
+    setExportStatus("Preparing anonymous evidence…");
+    try {
+      const evidence = buildSessionEvidence({
+        trialId: `trial-${trialNumber}`,
+        roomSpaceClass,
+        result,
+        sceneDirector: sceneMeta,
+        build: {
+          buildId: import.meta.env.VITE_BUILD_ID || null,
+          commitSha: import.meta.env.VITE_COMMIT_SHA || null,
+        },
+      });
+      const serialized = `${JSON.stringify(evidence, null, 2)}\n`;
+      const blob = new Blob([serialized], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `moverealm-trial-${trialNumber}-session.json`;
+      link.hidden = true;
+      document.body.append(link);
+      try {
+        link.click();
+      } finally {
+        link.remove();
+        window.setTimeout(() => URL.revokeObjectURL(url), 1_000);
+      }
+
+      let checksum: string | null = null;
+      if (globalThis.crypto?.subtle) {
+        try {
+          const digest = await globalThis.crypto.subtle.digest(
+            "SHA-256",
+            new TextEncoder().encode(serialized),
+          );
+          checksum = [...new Uint8Array(digest)]
+            .map((byte) => byte.toString(16).padStart(2, "0"))
+            .join("");
+        } catch {
+          checksum = null;
+        }
+      }
+      setExportStatus(checksum
+        ? `Downloaded anonymous evidence for trial ${trialNumber}. SHA-256 ${checksum}`
+        : `Downloaded anonymous evidence for trial ${trialNumber}. SHA-256 is unavailable on this origin.`);
+    } catch {
+      setExportStatus("Evidence export failed. No file was downloaded; restart this run and try again.");
+    } finally {
+      setExporting(false);
     }
   };
 
@@ -115,17 +134,17 @@ export function PostcardScreen({
                 id="trial-number"
                 type="number"
                 min={1}
-                max={9999}
+                max={3}
                 inputMode="numeric"
                 value={trialNumber}
                 onChange={(event) => {
                   const value = Number(event.target.value);
-                  setTrialNumber(Number.isInteger(value) ? Math.min(9999, Math.max(1, value)) : 1);
+                  setTrialNumber(Number.isInteger(value) ? Math.min(3, Math.max(1, value)) : 1);
                 }}
               />
             </div>
-            <button className="secondary-button" type="button" onClick={() => void downloadEvidence()}>
-              Download local run evidence
+            <button className="secondary-button" type="button" disabled={exporting} onClick={() => void downloadEvidence()}>
+              {exporting ? "Preparing evidence…" : "Download local run evidence"}
             </button>
             <p>This JSON stays on this device and contains aggregate metrics only—no image, video, identifiers, or landmarks.</p>
             <span role="status" aria-live="polite">{exportStatus}</span>

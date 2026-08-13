@@ -8,6 +8,7 @@ import type {
   AdaptationDecision,
   DirectorMeta,
   QuestPlan,
+  QuestRound,
   RoundTelemetry,
 } from "../src/shared/contracts.js";
 import { createFallbackPlan, DEMO_SCENES } from "../src/shared/fallbacks.js";
@@ -63,22 +64,33 @@ function meta(source: DirectorMeta["source"], latencyMs: number): DirectorMeta {
 }
 
 function resultFor(mode: "pose" | "keyboard" = "pose"): SessionResult {
-  const plan = createFallbackPlan(planRequest);
+  const initialPlan = createFallbackPlan(planRequest);
+  const decisions = adaptations(initialPlan);
+  const plan = {
+    ...initialPlan,
+    rounds: initialPlan.rounds.map((round, index) =>
+      index === 0 ? round : decisions[index - 1].nextRound),
+  };
   const rounds = telemetry(plan, mode);
+  const planMeta = meta("fallback", 2_045.2);
+  const adaptationMetas = [meta("codebuddy", 650.4), meta("fallback", 420.1)];
   return {
     // This free-form title is intentionally sensitive-looking; the builder must not copy it.
     plan: { ...plan, title: "Alice's bedroom adventure" },
     telemetry: rounds,
-    adaptations: adaptations(plan),
+    adaptations: decisions,
     activeSeconds: 156,
     totalTargets: 24,
     completedTargets: 18,
     timeToFirstMovementMs: 31_249.6,
-    directorLatencyMs: 4_321.4,
+    directorLatencyMs: planMeta.latencyMs + adaptationMetas.reduce(
+      (sum, item) => sum + item.latencyMs,
+      0,
+    ),
     poseMetricSummaries: {},
     directorMetas: {
-      plan: meta("fallback", 2_045.2),
-      adaptations: [meta("codebuddy", 650.4), meta("fallback", 420.1)],
+      plan: planMeta,
+      adaptations: adaptationMetas,
     },
     journeyDurationMs: 205_555,
   };
@@ -110,7 +122,7 @@ describe("privacy-safe session evidence", () => {
       roomSpaceClass: "open" as const,
       result,
       sceneDirector: meta("codebuddy", 1_204.6),
-      build: { buildId: "submission-2026.08.13", commitSha: "abc1234" },
+      build: { buildId: "build-123456", commitSha: "a".repeat(40) },
     };
 
     const first = buildSessionEvidence(input);
@@ -121,8 +133,8 @@ describe("privacy-safe session evidence", () => {
     expect(first.product).toEqual({
       name: "MoveRealm",
       appVersion: "0.1.0",
-      buildId: "submission-2026.08.13",
-      commitSha: "abc1234",
+      buildId: "build-123456",
+      commitSha: "a".repeat(40),
     });
     expect(first.context).toEqual({ roomSpaceClass: "open", trackingMode: "pose" });
     expect(first.duration).toEqual({
@@ -160,6 +172,7 @@ describe("privacy-safe session evidence", () => {
       evaluatedValue: 96.2,
     });
     expect(first.director.sourcesUsed).toEqual(["codebuddy", "fallback"]);
+    expect(first.director.sessionPlanAndAdaptationLatencyMs).toBe(3_116);
     expect(first.rounds[0]).toMatchObject({
       roundId: "round-1",
       trackingMode: "pose",
@@ -186,6 +199,7 @@ describe("privacy-safe session evidence", () => {
       roomSpaceClass: "tight",
       result: {
         ...keyboardResult,
+        directorLatencyMs: 0,
         directorMetas: { plan: meta("demo", 0), adaptations: [meta("demo", 0), meta("demo", 0)] },
       },
       sceneDirector: null,
@@ -228,7 +242,7 @@ describe("privacy-safe session evidence", () => {
     };
 
     const evidence = buildSessionEvidence({
-      trialId: "trial-7",
+      trialId: "trial-3",
       roomSpaceClass: "open",
       result: mixedResult,
       sceneDirector: meta("codebuddy", 100),
@@ -289,7 +303,7 @@ describe("privacy-safe session evidence", () => {
 
     expect(() =>
       buildSessionEvidence({
-        trialId: "trial-4",
+        trialId: "trial-1",
         roomSpaceClass: null,
         result,
         sceneDirector: null,
@@ -299,7 +313,7 @@ describe("privacy-safe session evidence", () => {
 
     expect(() =>
       buildSessionEvidence({
-        trialId: "trial-5",
+        trialId: "trial-1",
         roomSpaceClass: null,
         result: { ...result, totalTargets: result.totalTargets + 1 },
         sceneDirector: null,
@@ -308,12 +322,138 @@ describe("privacy-safe session evidence", () => {
 
     expect(() =>
       buildSessionEvidence({
-        trialId: "trial-6",
+        trialId: "trial-1",
         roomSpaceClass: null,
         result: { ...result, telemetry: result.telemetry.slice(0, 2) },
         sceneDirector: null,
       }),
     ).toThrow(/all validated rounds/i);
+  });
+
+  it("rejects internally contradictory counts, adaptation parameters, and latency totals", () => {
+    const completionMismatch = resultFor("pose");
+    completionMismatch.telemetry[0] = {
+      ...completionMismatch.telemetry[0],
+      completionRate: 0.9,
+    };
+    expect(() =>
+      buildSessionEvidence({
+        trialId: "trial-1",
+        roomSpaceClass: "open",
+        result: completionMismatch,
+        sceneDirector: null,
+      }),
+    ).toThrow(/completion rate must match/i);
+
+    const latencyMismatch = resultFor("pose");
+    latencyMismatch.directorLatencyMs += 1;
+    expect(() =>
+      buildSessionEvidence({
+        trialId: "trial-3",
+        roomSpaceClass: "uncertain",
+        result: latencyMismatch,
+        sceneDirector: null,
+      }),
+    ).toThrow(/latency total must match/i);
+  });
+
+  it.each<[string, (round: QuestRound) => QuestRound]>([
+    ["round identity", (round) => ({ ...round, id: "round-3" })],
+    ["movement and mechanic", (round) => ({
+      ...round,
+      movementId: "reach",
+      mechanic: "collect_fireflies",
+    })],
+    ["duration", (round) => ({ ...round, durationSeconds: round.durationSeconds + 1 })],
+    ["target rate", (round) => ({ ...round, targetRate: round.targetRate + 1 })],
+    ["range scale", (round) => ({ ...round, rangeScale: round.rangeScale + 0.01 })],
+    ["tempo", (round) => ({ ...round, tempo: round.tempo + 0.01 })],
+  ])("rejects an adaptation whose %s contradicts the final plan", (_label, mutate) => {
+    const result = resultFor("pose");
+    const firstDecision = result.adaptations[0];
+    result.adaptations[0] = {
+      ...firstDecision,
+      nextRound: mutate(firstDecision.nextRound),
+    };
+
+    expect(() =>
+      buildSessionEvidence({
+        trialId: "trial-2",
+        roomSpaceClass: "tight",
+        result,
+        sceneDirector: null,
+      }),
+    ).toThrow(/adaptations must align/i);
+  });
+
+  it("does not require private/free-form round prose to match for adaptation integrity", () => {
+    const result = resultFor("pose");
+    const firstDecision = result.adaptations[0];
+    result.adaptations[0] = {
+      ...firstDecision,
+      nextRound: { ...firstDecision.nextRound, prompt: "Different non-exported prompt" },
+    };
+
+    expect(() =>
+      buildSessionEvidence({
+        trialId: "trial-2",
+        roomSpaceClass: "tight",
+        result,
+        sceneDirector: null,
+      }),
+    ).not.toThrow();
+  });
+
+  it("requires protocol trial IDs and complete exact release provenance", () => {
+    const result = resultFor("pose");
+    expect(() =>
+      buildSessionEvidence({
+        trialId: "trial-4",
+        roomSpaceClass: null,
+        result,
+        sceneDirector: null,
+      }),
+    ).toThrow(/trialId/i);
+
+    expect(() =>
+      buildSessionEvidence({
+        trialId: "trial-1",
+        roomSpaceClass: null,
+        result,
+        sceneDirector: null,
+        build: { buildId: "build-123" },
+      }),
+    ).toThrow(/both buildId and commitSha/i);
+
+    expect(() =>
+      buildSessionEvidence({
+        trialId: "trial-1",
+        roomSpaceClass: null,
+        result,
+        sceneDirector: null,
+        build: { buildId: "build-123", commitSha: "abc1234" },
+      }),
+    ).toThrow(/commitSha/i);
+
+    expect(() =>
+      buildSessionEvidence({
+        trialId: "trial-1",
+        roomSpaceClass: null,
+        result,
+        sceneDirector: null,
+        build: { buildId: "submission-2026.08.13", commitSha: "a".repeat(40) },
+      }),
+    ).toThrow(/buildId/i);
+
+    expect(() =>
+      buildSessionEvidence({
+        trialId: "trial-1",
+        roomSpaceClass: null,
+        result,
+        sceneDirector: null,
+        build: { buildId: `build-${"9".repeat(21)}`, commitSha: "a".repeat(40) },
+      }),
+    ).toThrow(/buildId/i);
   });
 
   it("summarizes finite non-negative samples with deterministic nearest-rank percentiles", () => {
