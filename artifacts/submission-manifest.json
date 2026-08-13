@@ -1,14 +1,14 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-08-14T01:25:18+08:00",
+  "generatedAt": "2026-08-14T01:41:22+08:00",
   "product": "MoveRealm",
   "applicationSource": {
     "commit": "cf157093ff3dab7b3598387d68973f82a3e364c2",
     "tree": "404fdc889cabc0212a6fd2197102eff7da5abde6"
   },
   "documentationSnapshot": {
-    "commit": "a0c97f3d0aa146ff3ab433901fe593e14e95aecd",
-    "tree": "1222e3edb41b3431c5fcf1810d2c315ac600d315"
+    "commit": "c4254bf52c99e9551d75c4c915dfd4ca829d9be7",
+    "tree": "25652fd52a289d6db21b4040d2c8446d7a3d46a1"
   },
   "publicPredecessor": {
     "commit": "7fe9009728d545798c1b5efd7b367d4f54264eaf",
@@ -74,7 +74,7 @@
     },
     {
       "path": "docs/SUBMISSION.md",
-      "sha256": "0023e55e7c7037cfaebc5a6c9255126cfef35de9b47a25201518dbf4317d2225",
+      "sha256": "848e1adc32b96e8e448d176d4b9c7d12c134cefeb53858bedddb9dad40e227f9",
       "classification": "portal copy and submission checklist"
     },
     {
@@ -84,17 +84,17 @@
     },
     {
       "path": "docs/EVALUATION.md",
-      "sha256": "803f1c54ec7382b366252a7c5e81a84071861ec596bf1afd33895be1d54fd2c2",
+      "sha256": "08cd42bb22e6e49a60315fad79fa83e1b0d2e66f69b8f80d42d6eb13eabab007",
       "classification": "offline advisory-model evaluation record"
     },
     {
       "path": "docs/VALIDATION.md",
-      "sha256": "6def24148a15a41d74101404e3415bf0b17a23a7c6bd0c1e12428453318f63c4",
+      "sha256": "d7f60c28579024dadd05589a21de52ffa1fd52328f5a7508aa3f944137cf2520",
       "classification": "validation and pending-action record"
     },
     {
       "path": "artifacts/validation/release-checks.md",
-      "sha256": "5338201de21ca17803a7bf5620b7e7a555ab67955c39397042dc08eb87d8f386",
+      "sha256": "847ad00857b1cd9f8d09dd3d5c04c5695bb04a457ed647bcfe9c3a90de302661",
       "classification": "test, build, audit, Docker, and smoke record"
     },
     {
@@ -116,6 +116,11 @@
       "path": "artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json",
       "sha256": "961f9ad01e1932d2f93b53d0e3c593cce97b290169c10f195bc757df0d6319a9",
       "classification": "sanitized external HTTP 429 blocker; not live-agent success"
+    },
+    {
+      "path": "artifacts/validation/codebuddy-current-vision-instability-2026-08-14.json",
+      "sha256": "6acfa59a47552c0b0c0334c4c9c627949ae4c65aa09d1eeeaa8064864d283fda",
+      "classification": "mixed current CodeBuddy loop and vision-instability evidence; not a live-agent pass"
     },
     {
       "path": "artifacts/validation/local-guided-keyboard-session-cf15709.json",
@@ -140,7 +145,7 @@
   ],
   "pendingExternalActions": [
     "Obtain explicit authorization to push and deploy the current local branch, then verify the resulting public build and pushed branch HEAD.",
-    "Restore current CodeBuddy upstream availability and obtain a strict generated CodeBuddy result rather than fallback.",
+    "Obtain one stable strict CodeBuddy run that generates scene, plan, and adaptation output and materially differentiates all three room fixtures.",
     "Run three consenting real-person M1 Pro webcam trials and record FPS, visible response latency, time to first movement, completion, and privacy observations.",
     "Upload the 4:58.834 backup video or a preferred live take to YouTube or Google Drive and verify signed-out access.",
     "Enter team members, registered contact email, video URL, and remaining portal fields, then submit."
