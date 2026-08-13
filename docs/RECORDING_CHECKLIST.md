@@ -1,0 +1,195 @@
+# MoveRealm recording checklist
+
+Target final duration: **3 minutes 40 seconds**. The official submission window is 3–5 minutes. This
+script covers the required project overview, core agent features and usage, build reflection, and a
+CodeBuddy development tip.
+
+## Choose and label the path
+
+- **Preferred:** live CodeBuddy run. Continue only after `/api/health` shows
+  `codeBuddyConnected: true`, and keep the `CodeBuddy live` badge visible when making live-agent
+  claims.
+- **Backup:** choose “Try the guided demo.” Say that it is a pre-validated profile with deterministic
+  decisions and keyboard controls. Keep the `Guided demo` label visible.
+- **Automatic recovery:** if the service fails and `Safe fallback` appears, keep recording only if
+  you explicitly say that CodeBuddy became unavailable and the deterministic safety path took over.
+  Never cut around the badge or call fallback output live AI.
+
+## Before recording
+
+### Release and evidence
+
+- [ ] Complete the final release gates in [SUBMISSION.md](SUBMISSION.md) and save their logs.
+- [ ] Keep [VALIDATION.md](VALIDATION.md) open; do not quote pending human/device values as results.
+- [ ] Open the deployed HTTPS app at **[PENDING PUBLIC URL]** in a signed-out browser.
+- [ ] If deployment is not ready, record the production-shaped local build and leave the public URL
+  as pending in the submission package.
+- [ ] Verify the demo video destination is **[PENDING YOUTUBE OR GOOGLE DRIVE URL]**.
+- [ ] Prepare the 16:9 cover image at **[PENDING FILE]**.
+
+### Live path
+
+- [ ] Start CodeBuddy with `npm run codebuddy` in a persistent terminal.
+- [ ] Set `CODEBUDDY_PASSWORD` server-side if authentication is enabled; never show `.env` or the
+  terminal line containing a secret.
+- [ ] Start MoveRealm, open `/api/health`, and capture `codeBuddyConnected: true` without exposing
+  credentials.
+- [ ] Place one visible chair or desk edge in a deliberately constrained camera lane.
+- [ ] Confirm the returned room analysis on screen before narrating its classification or obstacles.
+- [ ] Rehearse one difficult first round so the visible adaptation has real telemetry to explain.
+
+### Camera, consent, and presentation
+
+- [ ] Obtain explicit consent from every identifiable participant before recording.
+- [ ] Frame out private photos, addresses, notifications, emails, tokens, and unrelated browser tabs.
+- [ ] Use a clean floor, stable camera, audible microphone, 1080p capture, and large cursor.
+- [ ] Disable notifications and verify no password, bearer token, redemption code, or account email
+  appears.
+- [ ] Keep one static/local guided-demo tab ready as the backup path.
+- [ ] Reset the app and begin on the landing screen with the source badge visible.
+
+## Exact 3:40 narrative and shot list
+
+Read the quoted lines exactly. Perform the on-screen action before advancing. If the actual live
+output contradicts a line, stop and restart the take; do not narrate a result that is not visible.
+
+### 0:00–0:15 — Problem
+
+On screen: landing page, three-minute duration, energy choices, and no-jumping lock.
+
+> A movement session often fails before it starts: not enough time, uncertain floor space, or no
+> motivation. MoveRealm turns the room already around you into the controller for one focused,
+> three-minute adventure.
+
+Evidence gate: show “3 minutes” and “No jumping” while saying them.
+
+### 0:15–0:40 — Observe
+
+On screen: choose an energy level, select “Scan my room,” preview the still, and approve it.
+
+> I choose my energy and approve one room still. This is the only image sent for scene analysis.
+> Live camera frames and pose landmarks stay in this browser, so CodeBuddy never receives a live
+> video feed.
+
+Evidence gate: show the still-approval step; do not imply that an unapproved frame was uploaded.
+
+### 0:40–1:05 — Constrain
+
+On screen: room classification, obstacle pins, permitted directions, floor-clear control, and
+side-step range.
+
+> The Movement Director turns what it can see into explicit constraints. Here it marks the usable
+> lane and the nearby obstacle. I still make the final safety decision: the floor is clear, and my
+> side-step range is limited to the space I can actually use.
+
+Evidence gate: point only to classification, obstacles, and directions visible in this take. If the
+scene is uncertain, say “uncertain” and show the conservative central lane.
+
+### 1:05–1:25 — Plan
+
+On screen: `CodeBuddy live` badge, generated quest, source latency, and safety note.
+
+> CodeBuddy now builds a constrained Neon Rainforest quest. Only three validated movements can
+> appear: reach, squat, and side-step. The AI proposes the plan, but typed safety contracts decide
+> what is allowed, including exactly three rounds totaling one hundred and eighty seconds.
+
+Evidence gate: the badge must say `CodeBuddy live`. If it does not, use the applicable fallback
+disclosure below.
+
+### 1:25–1:40 — Calibrate
+
+On screen: T-pose calibration followed by one comfortable side-step.
+
+> A short T-pose establishes camera framing, then one comfortable side-step sets my personal range.
+> The room constraint stays in control even if the model asks for more.
+
+Evidence gate: show calibration completing rather than cutting directly to gameplay.
+
+### 1:40–2:25 — Play and tracking safety
+
+On screen: complete near targets, intentionally miss wider targets, briefly leave the frame, then
+return until play resumes.
+
+> In the rainforest, reaches collect fireflies, squats shelter seedlings, and permitted side-steps
+> redirect the river. Pose inference runs in a MediaPipe Worker on this device. I will miss the wider
+> targets so the next decision has real evidence. When I leave the frame, low confidence pauses the
+> world instead of guessing. Three reliable frames are required before it resumes.
+
+Evidence gate: capture the visible pause and resume. Do not claim live-person FPS or latency unless
+the values were recorded and moved out of pending status in `VALIDATION.md`.
+
+### 2:25–2:55 — Re-plan
+
+On screen: choose “Too hard,” then hold on the explanation and before/after parameters.
+
+> I add explicit feedback: Too hard. The visible trace explains the next decision using completed
+> and missed targets plus my feedback. The next validated movement stays the same; only its target
+> envelope, tempo, and target rate may change. That makes adaptation observable without letting the
+> agent invent a new exercise.
+
+Evidence gate: read only the adjustments actually displayed. If `Safe fallback` appears, use the
+fallback disclosure and do not imply this decision came from CodeBuddy.
+
+### 2:55–3:15 — Result
+
+On screen: final garden postcard, active time, completion, and any measured runtime statistic.
+
+> The session ends with a garden postcard, active time, completion, and measured runtime telemetry.
+> This is intentionally light movement for healthy adults, not medical or rehabilitation guidance.
+> Stop if you feel pain, dizziness, or unwell.
+
+Evidence gate: do not convert a target or pending measurement into a result.
+
+### 3:15–3:40 — Architecture, build reflection, and value
+
+On screen: architecture diagram or a clean split view of the app and the relevant source map.
+
+> The key build choice was to treat agent output as untrusted. CodeBuddy makes bounded decisions;
+> Zod enforces room and movement rules; MediaPipe keeps live pose local; and fallback stays visible.
+> My CodeBuddy tip is to request strict structured output and design its failure path together.
+> MoveRealm starts consumer-first, with wellness and hospitality licensing to validate next.
+
+Evidence gate: show truthful CodeBuddy usage evidence during this section or immediately after it.
+
+## Exact contingency disclosures
+
+Use one of these lines immediately when its condition occurs.
+
+### Guided demo
+
+> This is the guided backup, not a live agent result. It uses a pre-validated tight-room profile,
+> deterministic director decisions, and keyboard controls so judges can still inspect the complete
+> interaction flow.
+
+### Safe fallback
+
+> CodeBuddy is unavailable in this run, so MoveRealm has visibly switched to its deterministic safe
+> fallback. The same movement contracts and confirmed room constraints still apply, but this result
+> is not live AI output.
+
+### Uncertain room
+
+> The room analysis is uncertain, so MoveRealm keeps movement in the conservative central and
+> vertical lane instead of guessing about lateral space.
+
+### Live tracking measurement still pending
+
+> This run demonstrates the interaction path. Live-person pose FPS and camera-to-visual latency are
+> still pending measured device validation, so I am not presenting target values as results.
+
+## After recording
+
+- [ ] Final duration is between 3:00 and 5:00; target is 3:40.
+- [ ] Opening establishes the problem and target user within 15 seconds.
+- [ ] `CodeBuddy live`, `Guided demo`, or `Safe fallback` is readable whenever agent provenance matters.
+- [ ] One still versus local live video is clearly explained.
+- [ ] Floor confirmation, low-confidence pause, and visible adaptation are shown rather than asserted.
+- [ ] Health scope and stop guidance are audible.
+- [ ] Build reflection and one CodeBuddy development tip are included.
+- [ ] No pending measurement is spoken as an observed value.
+- [ ] No secret, personal notification, participant image without consent, or private CodeBuddy
+  history is visible.
+- [ ] Captions match the spoken disclosures and do not overstate live-agent behavior.
+- [ ] Upload privacy is set so judges can open the link without requesting access.
+- [ ] Test the video and public app URLs in a signed-out browser.
+- [ ] Compute the final video checksum and update [SUBMISSION.md](SUBMISSION.md).

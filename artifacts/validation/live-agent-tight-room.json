@@ -1,0 +1,106 @@
+{
+  "observedAt": "2026-08-13T06:07:04.142Z",
+  "baseUrl": "http://127.0.0.1:4181",
+  "health": {
+    "ok": true,
+    "product": "MoveRealm",
+    "movementDirector": "codebuddy",
+    "codeBuddyConnected": true
+  },
+  "allowFallback": true,
+  "roomMatrix": false,
+  "observations": [
+    {
+      "fixture": "tight-room.png",
+      "fixtureSha256": "c896462d2205f92270992c9edb9013ab578b58e5e734d6a63f954877a43c9068",
+      "scene": {
+        "spaceClass": "tight",
+        "obstacles": [
+          {
+            "label": "desk",
+            "zone": "left",
+            "severity": "high"
+          },
+          {
+            "label": "pedestal cabinet",
+            "zone": "center",
+            "severity": "medium"
+          },
+          {
+            "label": "armchair",
+            "zone": "right",
+            "severity": "high"
+          },
+          {
+            "label": "wardrobe/shelving unit",
+            "zone": "left",
+            "severity": "medium"
+          }
+        ],
+        "permittedDirections": [
+          "vertical",
+          "center"
+        ],
+        "confidence": 0.82,
+        "summary": "Narrow corridor-style room; desk occupies left, chair occupies right. A slim center lane supports vertical reaches and careful center-line squats only."
+      },
+      "sceneSource": "codebuddy",
+      "sceneLatencyMs": 21793,
+      "sceneClientElapsedMs": 21804,
+      "planSource": "fallback",
+      "planDetail": "CodeBuddy run timed out after 30000ms.",
+      "planLatencyMs": 30013,
+      "planClientElapsedMs": 30032,
+      "planSignature": "reach:0.64|squat:0.64|reach:0.64",
+      "planTotalSeconds": 180
+    }
+  ],
+  "adaptation": {
+    "source": "codebuddy",
+    "latencyMs": 5005,
+    "clientElapsedMs": 5008,
+    "syntheticTelemetry": {
+      "roundId": "round-1",
+      "movementId": "reach",
+      "completionRate": 0.3333333333333333,
+      "movementRange": 0.54,
+      "poseConfidence": 0,
+      "trackingFps": 0,
+      "trackingMode": "keyboard",
+      "targetsPresented": 12,
+      "targetsCompleted": 4,
+      "feedback": "too_hard"
+    },
+    "before": {
+      "id": "round-2",
+      "movementId": "squat",
+      "durationSeconds": 52,
+      "targetRate": 7,
+      "rangeScale": 0.64,
+      "tempo": 0.9,
+      "mechanic": "shelter_seedlings",
+      "prompt": "Lower gently to shelter the seedlings",
+      "accent": "orchid"
+    },
+    "decision": {
+      "nextRound": {
+        "id": "round-2",
+        "movementId": "squat",
+        "durationSeconds": 52,
+        "targetRate": 5,
+        "rangeScale": 0.48,
+        "tempo": 0.7,
+        "mechanic": "shelter_seedlings",
+        "prompt": "Gently lower to shelter the seedlings",
+        "accent": "mint"
+      },
+      "reason": "Only 4 of 12 targets were reached and you chose Too hard, so the next targets are shallower and slower.",
+      "adjustments": [
+        "target_envelope",
+        "tempo",
+        "target_rate"
+      ]
+    }
+  },
+  "localUploadDirectoryEmpty": true
+}

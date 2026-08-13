@@ -1,0 +1,97 @@
+{
+  "observedAt": "2026-08-13T06:06:06.798Z",
+  "baseUrl": "http://127.0.0.1:4181",
+  "health": {
+    "ok": true,
+    "product": "MoveRealm",
+    "movementDirector": "codebuddy",
+    "codeBuddyConnected": true
+  },
+  "allowFallback": true,
+  "roomMatrix": false,
+  "observations": [
+    {
+      "fixture": "open-room.png",
+      "fixtureSha256": "ac9bf9aa222fac44e1ed192a5e2bd2d21902cb63c74f3968f2dfbc3a7b3386b3",
+      "scene": {
+        "spaceClass": "open",
+        "obstacles": [
+          {
+            "label": "chair",
+            "zone": "right",
+            "severity": "low"
+          },
+          {
+            "label": "sliding door curtains",
+            "zone": "center",
+            "severity": "low"
+          }
+        ],
+        "permittedDirections": [
+          "vertical",
+          "left",
+          "right",
+          "center"
+        ],
+        "confidence": 0.88,
+        "summary": "Large open tiled living area, mostly clear. Chair at right edge; curtains at center wall. Ample space for reach, squat, and side-step in all directions."
+      },
+      "sceneSource": "codebuddy",
+      "sceneLatencyMs": 17824,
+      "sceneClientElapsedMs": 17835,
+      "planSource": "codebuddy",
+      "planLatencyMs": 27480,
+      "planClientElapsedMs": 27488,
+      "planSignature": "reach:0.82|squat:0.75|side_step:0.88",
+      "planTotalSeconds": 180
+    }
+  ],
+  "adaptation": {
+    "source": "codebuddy",
+    "latencyMs": 5490,
+    "clientElapsedMs": 5493,
+    "syntheticTelemetry": {
+      "roundId": "round-1",
+      "movementId": "reach",
+      "completionRate": 0.3333333333333333,
+      "movementRange": 0.54,
+      "poseConfidence": 0,
+      "trackingFps": 0,
+      "trackingMode": "keyboard",
+      "targetsPresented": 12,
+      "targetsCompleted": 4,
+      "feedback": "too_hard"
+    },
+    "before": {
+      "id": "round-2",
+      "movementId": "squat",
+      "durationSeconds": 52,
+      "targetRate": 8,
+      "rangeScale": 0.75,
+      "tempo": 0.8,
+      "mechanic": "shelter_seedlings",
+      "prompt": "Sink low to shield tiny seedlings sheltering beneath the forest floor!",
+      "accent": "orchid"
+    },
+    "decision": {
+      "nextRound": {
+        "id": "round-2",
+        "movementId": "squat",
+        "durationSeconds": 52,
+        "targetRate": 6,
+        "rangeScale": 0.55,
+        "tempo": 0.65,
+        "mechanic": "shelter_seedlings",
+        "prompt": "Gently sink to shelter the tiny seedlings resting just below you!",
+        "accent": "mint"
+      },
+      "reason": "Only 4 of 12 targets were reached and you chose Too hard, so the next targets are shallower, fewer, and slower.",
+      "adjustments": [
+        "target_envelope",
+        "tempo",
+        "target_rate"
+      ]
+    }
+  },
+  "localUploadDirectoryEmpty": true
+}

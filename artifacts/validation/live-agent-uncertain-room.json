@@ -1,0 +1,100 @@
+{
+  "observedAt": "2026-08-13T06:18:43.010Z",
+  "baseUrl": "http://127.0.0.1:4181",
+  "health": {
+    "ok": true,
+    "product": "MoveRealm",
+    "movementDirector": "codebuddy",
+    "codeBuddyConnected": true
+  },
+  "allowFallback": false,
+  "roomMatrix": false,
+  "observations": [
+    {
+      "fixture": "uncertain-room.png",
+      "fixtureSha256": "c625f09d36157a59639de31ec4759542b19ecc6c00deeb889a1c212926670898",
+      "scene": {
+        "spaceClass": "uncertain",
+        "obstacles": [
+          {
+            "label": "door frame left",
+            "zone": "left",
+            "severity": "medium"
+          },
+          {
+            "label": "door or wall right",
+            "zone": "right",
+            "severity": "medium"
+          },
+          {
+            "label": "curtain/window wall",
+            "zone": "center",
+            "severity": "low"
+          }
+        ],
+        "permittedDirections": [
+          "vertical",
+          "center"
+        ],
+        "confidence": 0.38,
+        "summary": "View is a narrow doorway looking into a room; floor and lateral space not visible. Only vertical reach and limited center reach can be cautiously permitted."
+      },
+      "sceneSource": "codebuddy",
+      "sceneLatencyMs": 15631,
+      "sceneClientElapsedMs": 15643,
+      "planSource": "codebuddy",
+      "planLatencyMs": 24600,
+      "planClientElapsedMs": 24618,
+      "planSignature": "reach:0.55|squat:0.6|reach:0.62",
+      "planTotalSeconds": 180
+    }
+  ],
+  "adaptation": {
+    "source": "codebuddy",
+    "latencyMs": 5753,
+    "clientElapsedMs": 5756,
+    "syntheticTelemetry": {
+      "roundId": "round-1",
+      "movementId": "reach",
+      "completionRate": 0.3333333333333333,
+      "movementRange": 0.54,
+      "poseConfidence": 0,
+      "trackingFps": 0,
+      "trackingMode": "keyboard",
+      "targetsPresented": 12,
+      "targetsCompleted": 4,
+      "feedback": "too_hard"
+    },
+    "before": {
+      "id": "round-2",
+      "movementId": "squat",
+      "durationSeconds": 52,
+      "targetRate": 6,
+      "rangeScale": 0.6,
+      "tempo": 0.7,
+      "mechanic": "shelter_seedlings",
+      "prompt": "Lower into a gentle squat to shelter tiny seedlings from the rain.",
+      "accent": "orchid"
+    },
+    "decision": {
+      "nextRound": {
+        "id": "round-2",
+        "movementId": "squat",
+        "durationSeconds": 52,
+        "targetRate": 4,
+        "rangeScale": 0.45,
+        "tempo": 0.55,
+        "mechanic": "shelter_seedlings",
+        "prompt": "Gently lower into a soft squat to shelter tiny seedlings from the rain.",
+        "accent": "mint"
+      },
+      "reason": "Only 4 of 12 targets were reached and you chose Too hard, so the next targets are shallower and slower.",
+      "adjustments": [
+        "target_envelope",
+        "tempo",
+        "target_rate"
+      ]
+    }
+  },
+  "localUploadDirectoryEmpty": true
+}

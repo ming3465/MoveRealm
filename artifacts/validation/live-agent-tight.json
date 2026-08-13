@@ -1,0 +1,110 @@
+{
+  "observedAt": "2026-08-13T06:02:04.041Z",
+  "baseUrl": "http://127.0.0.1:4181",
+  "health": {
+    "ok": true,
+    "product": "MoveRealm",
+    "movementDirector": "codebuddy",
+    "codeBuddyConnected": true
+  },
+  "allowFallback": false,
+  "roomMatrix": false,
+  "observations": [
+    {
+      "fixture": "tight-room.png",
+      "fixtureSha256": "c896462d2205f92270992c9edb9013ab578b58e5e734d6a63f954877a43c9068",
+      "scene": {
+        "spaceClass": "tight",
+        "obstacles": [
+          {
+            "label": "desk",
+            "zone": "left",
+            "severity": "high"
+          },
+          {
+            "label": "cabinet unit",
+            "zone": "left",
+            "severity": "medium"
+          },
+          {
+            "label": "pedestal/drawer unit",
+            "zone": "center",
+            "severity": "medium"
+          },
+          {
+            "label": "armchair",
+            "zone": "right",
+            "severity": "medium"
+          },
+          {
+            "label": "bookcase",
+            "zone": "right",
+            "severity": "low"
+          }
+        ],
+        "permittedDirections": [
+          "vertical",
+          "center"
+        ],
+        "confidence": 0.78,
+        "summary": "Narrow corridor between desk and chair; clear center lane supports vertical reaches and limited side steps. Left and right zones blocked by furniture."
+      },
+      "sceneSource": "codebuddy",
+      "sceneLatencyMs": 18961,
+      "sceneClientElapsedMs": 18993,
+      "planSource": "codebuddy",
+      "planLatencyMs": 21900,
+      "planClientElapsedMs": 21935,
+      "planSignature": "reach:0.65|squat:0.75|reach:0.6",
+      "planTotalSeconds": 180
+    }
+  ],
+  "adaptation": {
+    "source": "codebuddy",
+    "latencyMs": 5502,
+    "clientElapsedMs": 5513,
+    "syntheticTelemetry": {
+      "roundId": "round-1",
+      "movementId": "reach",
+      "completionRate": 0.3333333333333333,
+      "movementRange": 0.54,
+      "poseConfidence": 0,
+      "trackingFps": 0,
+      "trackingMode": "keyboard",
+      "targetsPresented": 12,
+      "targetsCompleted": 4,
+      "feedback": "too_hard"
+    },
+    "before": {
+      "id": "round-2",
+      "movementId": "squat",
+      "durationSeconds": 52,
+      "targetRate": 7,
+      "rangeScale": 0.75,
+      "tempo": 0.8,
+      "mechanic": "shelter_seedlings",
+      "prompt": "Lower gently to shield tiny glowing seedlings from the neon rain.",
+      "accent": "orchid"
+    },
+    "decision": {
+      "nextRound": {
+        "id": "round-2",
+        "movementId": "squat",
+        "durationSeconds": 52,
+        "targetRate": 5,
+        "rangeScale": 0.55,
+        "tempo": 0.6,
+        "mechanic": "shelter_seedlings",
+        "prompt": "Gently lower to cover the tiny glowing seedlings as the soft rain falls.",
+        "accent": "mint"
+      },
+      "reason": "Only 4 of 12 targets were reached and you chose Too hard, so the next targets are closer, slower, and arrive less often.",
+      "adjustments": [
+        "target_envelope",
+        "tempo",
+        "target_rate"
+      ]
+    }
+  },
+  "localUploadDirectoryEmpty": true
+}

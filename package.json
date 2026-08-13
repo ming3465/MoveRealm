@@ -1,0 +1,46 @@
+{
+  "name": "moverealm",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "NODE_ENV=development tsx server/index.ts",
+    "build": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.server.json --noEmit && vite build && tsc -p tsconfig.server-build.json",
+    "start": "NODE_ENV=production node .server-dist/server/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "smoke:browser": "node scripts/browser-smoke.mjs",
+    "smoke:agent": "tsx scripts/live-agent-smoke.ts",
+    "codebuddy": "codebuddy --serve --port 8080 --session-id moverealm"
+  },
+  "dependencies": {
+    "@mediapipe/tasks-vision": "1.0.1",
+    "express": "5.2.1",
+    "multer": "2.2.0",
+    "phaser": "4.2.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.6",
+    "@types/multer": "2.0.0",
+    "@types/node": "24.10.12",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@types/supertest": "6.0.3",
+    "@vitejs/plugin-react": "6.0.1",
+    "jsdom": "28.0.0",
+    "supertest": "7.2.2",
+    "tsx": "4.21.0",
+    "typescript": "7.0.2",
+    "vite": "8.2.1",
+    "vitest": "4.1.10"
+  },
+  "engines": {
+    "node": ">=22.12"
+  },
+  "overrides": {
+    "esbuild": "0.28.2"
+  }
+}
