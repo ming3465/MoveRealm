@@ -17,11 +17,18 @@ visibly labelled deterministic decisions. The live CodeBuddy Movement Director r
 production Node adapter described below; the public demo does not impersonate that integration.
 
 The release-application Pages deployment
-[run 31675892852](https://github.com/ming3465/MoveRealm/actions/runs/31675892852) for commit
-[`d640de4`](https://github.com/ming3465/MoveRealm/commit/d640de4) passed all 55 tests across 7 files,
-the production build, artifact upload, and deployment. Six consent-free guided screenshots and two
-controlled synthetic fake-camera CodeBuddy UI captures are available under
+[run 31682611174](https://github.com/ming3465/MoveRealm/actions/runs/31682611174) for commit
+[`2ab9584`](https://github.com/ming3465/MoveRealm/commit/2ab9584cff8d98bbfb41b1d7f8b9fa821257ac52)
+passed all 75 tests across 10 files, the production build, artifact upload, and deployment. The
+deployed client identifies itself as build `build-31682611174` at full commit
+`2ab9584cff8d98bbfb41b1d7f8b9fa821257ac52`. Six consent-free guided screenshots and two controlled
+synthetic fake-camera CodeBuddy UI captures are available under
 [`assets/submission/screenshots/`](assets/submission/screenshots/).
+
+The Pages workflow ignores changes limited to `docs/**`, `artifacts/**`, `README.md`, and
+`assets/README.md`. Documentation-only release follow-ups therefore do not redeploy the application;
+run 31682611174 remains the exact application release until source-bearing paths change or the
+workflow is manually dispatched.
 
 ## Run it
 
@@ -93,7 +100,7 @@ deterministic path. A production Node deployment serves both the Vite bundle and
 ## Verification
 
 ```bash
-npm test             # current release: 55/55 tests pass across 7 files
+npm test             # current release: 75/75 tests pass across 10 files
 npm run build        # strict client/server typecheck and production bundle
 npm audit --audit-level=low  # current release: 0 vulnerabilities
 ```
@@ -108,12 +115,23 @@ MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
 MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
 ```
 
-Recorded release checks include a passing public basic smoke, a passing public adaptation smoke with
-`Guided demo` provenance, and a passing Docker-packaged captured-room fallback adaptation with
-`Safe fallback` provenance. The exact-release public full smoke against commit `d640de4` and Pages
-run 31675892852 also passed: all three rounds scored, the adaptation exposed its before/after
-change, the postcard reported 2.6 active minutes and a 3.0-minute adventure with tracking `N/A`,
-replay/stop completed, and no console errors appeared. See
+The current `2ab9584` public basic smoke passed. Its exact-release Docker image
+`moverealm:2ab9584` (`sha256:a205205819345589179d079656e0afefb38887b8b460a2c00d942dc0a11e47b6`,
+343,057,128 bytes) embedded the exact commit/build identity. In forced-fallback mode, its fake-camera
+basic path reported health true with CodeBuddy disconnected, reached camera readiness, preserved safe
+defaults, showed `Safe fallback`, scored 0 → 145, sent exactly the scene and plan POSTs, and left the
+temporary-upload directory empty. The container stopped and its port was freed after stop escalation.
+Its exit 137 is not presented as a graceful stop.
+
+A separate deployed-site full smoke (not a CI job) passed against exact release identity `2ab9584` /
+run 31682611174 / build `build-31682611174`: scores advanced 0 → 145 → 290 → 435; `Guided
+demo` adaptation showed range 64 → 48%, tempo 0.90 → 0.77×, and target rate 7 → 6; the
+`Glowgarden Awakening` postcard reported 2.6 active minutes, 18% completion, tracking `N/A`, and a
+3.0-minute adventure clock. Replay and stop passed the smoke oracle, the request audit recorded no
+API POSTs, and no console errors appeared. Its preserved anonymous keyboard JSON matched the visible
+SHA-256 `00458af188807b5e2e49df994ac1581ff27608d9d1628f60d4df11158c2ef8b7` and exact
+build/commit identity. Its 3.7-second keyboard first movement and `N/A`/`not_evaluated` pose fields
+are exporter evidence, not human TTFF or pose evidence. See
 [`artifacts/validation/release-checks.md`](artifacts/validation/release-checks.md) for the command and
 result record.
 
@@ -127,9 +145,26 @@ The full guided smoke checks the honest result accounting: three 52-second movem
 **2.6 active minutes**, and two 12-second rests bring the complete adventure to **3.0 minutes**.
 Keyboard-mode tracking FPS remains `N/A`; it is not presented as a real-person pose measurement.
 
-See [docs/DEMO.md](docs/DEMO.md) for the judging script and [docs/VALIDATION.md](docs/VALIDATION.md)
-for the evidence matrix and explicitly pending live-device, three-user, and video checklist. Do not
-fill pending results from estimates.
+## Privacy-safe local evidence
+
+After a completed session, the final postcard can download an anonymous JSON evidence file to the
+current device. It contains aggregate counts, metric summaries and threshold states, round and
+adaptation results, director provenance, and the CI-injected build/commit identity. It excludes
+names, media, room text, agent prose, upload paths, and raw landmarks; the UI displays the file's
+SHA-256 after download. Keyboard or mixed-control exports deliberately do not evaluate real-camera
+pose gates.
+
+Release `2ab9584` hardens this evidence boundary: only anonymous trials 1–3 are accepted; build ID
+and exact 40-character commit provenance must be supplied together; completion counts, full
+adaptation parameters, and plan/adaptation latency totals must agree; and the sanitized download
+prevents duplicate activation, constrains the trial input, cleans up its temporary browser URL, and
+reports download failure or a hash-unavailable status without adding participant data.
+
+Use the [three-person trial protocol](docs/TRIAL_PROTOCOL.md) before collecting any human evidence.
+Real-person FPS, visible latency, TTFF, and all three trials remain pending until three consenting M1
+Pro webcam runs are observed and privacy-reviewed. See [docs/DEMO.md](docs/DEMO.md) for the judging
+script and [docs/VALIDATION.md](docs/VALIDATION.md) for the evidence matrix. Do not fill pending
+results from targets, keyboard runs, fake-camera runs, or estimates.
 
 ## Camera-free backup video
 
@@ -147,6 +182,7 @@ local artifact is not itself an accepted video URL.
 - `server/app.ts` — the three product endpoints, retry, fallback, and still deletion
 - `src/pose/pose.worker.ts` — MediaPipe inference off the UI thread
 - `src/pose/movementDetectors.ts` — calibration, tracking gate, and movement state machines
+- `src/lib/sessionEvidence.ts` — privacy-safe aggregate session evidence and threshold semantics
 - `src/game/NeonRainforestScene.ts` — procedural Phaser world and mechanics
 - `src/components/GameScreen.tsx` — telemetry, visible adaptation, pause/stop, result handoff
 

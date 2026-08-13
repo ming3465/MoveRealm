@@ -16,25 +16,47 @@ dash (`—`) means **not measured**; it is not a zero and must never be replaced
 
 | Check | Observed | Evidence status |
 |---|---|---|
-| Vitest suite | 7 files, **55/55 tests passed** | recorded automated evidence |
-| Production build | strict client/server checks and Vite build passed | recorded in Pages run 31675892852 |
+| Vitest suite | 10 files, **75/75 tests passed** in CI and locally | recorded automated evidence |
+| Production build | strict client/server checks and Vite build passed | recorded in Pages run 31682611174 |
 | npm dependency audit | **0 vulnerabilities** | recorded automated evidence |
-| GitHub Pages deployment | successful for release commit `d640de4` | recorded in Pages run 31675892852 |
+| GitHub Pages deployment | successful for release commit `2ab9584cff8d98bbfb41b1d7f8b9fa821257ac52` | recorded in Pages run 31682611174 |
+| Deployed build identity | `build-31682611174`; commit matched the release SHA | recorded automated release evidence |
 | Public guided demo | <https://ming3465.github.io/MoveRealm/> returned HTTP 200 | recorded deployment check |
 | Source repository | <https://github.com/ming3465/MoveRealm> | recorded release location |
-| Public basic browser smoke | passed | recorded automated release evidence |
-| Public adaptation browser smoke | passed with `Guided demo` provenance | recorded automated release evidence |
-| Docker packaged captured-room fallback adaptation | passed with `Safe fallback` provenance | recorded automated release evidence |
-| Controlled captured-room request audit | one still POST followed only by plan and adaptation POSTs | recorded automated release evidence |
-| Exact-release public full smoke | passed against commit `d640de4` / run 31675892852 | recorded automated release evidence |
+| Current-release public basic browser smoke | passed | recorded automated release evidence |
+| Exact-release public full-smoke adaptation step | passed with `Guided demo` provenance; range 64→48%, tempo 0.90→0.77×, rate 7→6 | recorded automated release evidence |
+| Exact-release Docker captured-room basic path | forced-fallback health true/CodeBuddy false; camera ready; `Safe fallback`; score 0→145 | recorded automated release evidence |
+| Exact-release Docker basic request audit | one still POST; only scene and plan POSTs | recorded automated release evidence |
+| Earlier Docker full fallback adaptation | passed with `Safe fallback`; not rerun as a full path in the current image | recorded predecessor automated evidence |
+| Exact-release public full smoke and anonymous export | passed against `2ab9584` / run 31682611174; checksum and exact identity matched; pose gates `not_evaluated` | recorded automated release evidence |
 | Guided screenshot set | 6 consent-free PNGs | recorded submission artifacts |
 | Synthetic fake-camera CodeBuddy UI set | 2 consent-free PNGs; live source badges and upload cleanup recorded | recorded controlled evidence |
 
-[GitHub Pages run 31675892852](https://github.com/ming3465/MoveRealm/actions/runs/31675892852)
-completed `npm ci`, all 55 tests across 7 files, `npm run build`, artifact upload, and deployment
+[GitHub Pages run 31682611174](https://github.com/ming3465/MoveRealm/actions/runs/31682611174)
+completed `npm ci`, all 75 tests across 10 files, `npm run build`, artifact upload, and deployment
 successfully for release commit
-[`d640de4`](https://github.com/ming3465/MoveRealm/commit/d640de4). The release command and
-result record belongs in [`artifacts/validation/release-checks.md`](../artifacts/validation/release-checks.md).
+[`2ab9584`](https://github.com/ming3465/MoveRealm/commit/2ab9584cff8d98bbfb41b1d7f8b9fa821257ac52).
+CI injected build ID `build-31682611174` and the full commit SHA into the client. The release command
+and result record belongs in
+[`artifacts/validation/release-checks.md`](../artifacts/validation/release-checks.md).
+
+The Pages workflow excludes docs-only changes under `docs/**`, `artifacts/**`, `README.md`, and
+`assets/README.md` from its push trigger. This documentation follow-up does not imply a newer
+application deployment; run 31682611174 remains the exact application release.
+
+Release `2ab9584` adds evidence-integrity checks around the local exporter:
+
+- anonymous trial IDs are limited to `trial-1`, `trial-2`, and `trial-3`;
+- a numeric `build-N` ID and exact 40-character commit SHA must be present together or both absent;
+- each round's completion rate must agree with target counts, and total counts must agree with all
+  round records;
+- every adaptation and its full next-round parameters must agree with the validated final plan;
+- the reported plan/adaptation latency total must agree with its provenance records; and
+- the UI prevents duplicate downloads, clamps the trial input to 1–3, removes its temporary anchor,
+  delays object-URL cleanup, and presents sanitized success, hash-unavailable, or failure status.
+
+These are automated integrity controls. They do not complete a human trial or measure pose
+performance.
 
 ## Recorded automated browser evidence — 13 August 2026
 
@@ -46,20 +68,40 @@ Chrome's fake stream does not contain a trackable person, so this evidence does 
 real-person pose FPS, camera-to-visual response latency, movement accuracy, time to first movement,
 or usability.
 
-The public application passed its basic smoke. Its public adaptation smoke also passed and showed
-`Guided demo` provenance. Separately, the packaged Docker path captured a room, exercised the
-fallback adaptation, and showed `Safe fallback` provenance. These checks verify source labelling;
-they do not turn guided or fallback output into live CodeBuddy output. The exact-release public full
-smoke against commit `d640de4` / run 31675892852 also passed: the three round scores advanced
-0 → 145 → 290 → 435; adaptation displayed
-64 → 48% range, 0.90 → 0.77× tempo, and 7 → 6 target rate; the postcard displayed 2.6 active
-minutes, a 3.0-minute adventure clock, and tracking `N/A`; replay and stop passed; and no console
-errors were recorded.
+The current `2ab9584` public application passed its basic smoke. Its exact-release Docker image,
+tagged `moverealm:2ab9584`, is
+`sha256:a205205819345589179d079656e0afefb38887b8b460a2c00d942dc0a11e47b6` (343,057,128 bytes)
+and embeds commit `2ab9584cff8d98bbfb41b1d7f8b9fa821257ac52` / build `build-31682611174`.
+In forced-fallback mode, health reported true with CodeBuddy disconnected. Its controlled
+fake-camera basic path reached camera readiness, preserved safe defaults, showed `Safe fallback`,
+scored 0 → 145, sent exactly scene and plan POSTs, left the temporary-upload directory empty, and
+the container was stopped and its port freed after stop escalation. Exit 137 means this is not
+recorded as a graceful stop. The earlier packaged full fallback adaptation remains valid predecessor
+evidence but was not rerun as a full current-image path.
 
-The packaged captured-room smoke also recorded browser requests. It observed exactly one
-`POST /api/scene/analyze`, followed by `POST /api/quest/plan` and `POST /api/quest/adapt`, with no
-unexpected POST destination. This is controlled fake-camera evidence that frames were not repeatedly
-uploaded in that run; the real-camera network inspection remains pending.
+After deployment, a separate public full browser smoke (not a CI job) passed with exit 0 against
+commit `2ab9584cff8d98bbfb41b1d7f8b9fa821257ac52`, Pages run 31682611174, and build
+`build-31682611174`. Scores advanced 0 → 145 → 290 → 435. The visible `Guided demo`
+adaptation changed range 64 → 48%, tempo 0.90 → 0.77×, and target rate 7 → 6. The
+`Glowgarden Awakening` postcard displayed 2.6 active minutes, 18% completion, tracking `N/A`, and a
+3.0-minute adventure clock. Replay and stop passed the smoke oracle; the request audit recorded no
+API POST requests; and no console errors occurred.
+
+That smoke downloaded anonymous keyboard evidence. The privacy-reviewed copy is preserved as
+[`public-guided-keyboard-session-2ab9584.json`](../artifacts/validation/public-guided-keyboard-session-2ab9584.json).
+Its SHA-256 `00458af188807b5e2e49df994ac1581ff27608d9d1628f60d4df11158c2ef8b7`
+matched the checksum shown in the UI, and its product identity exactly matched the full release
+commit and build. The export correctly labelled the run `keyboard`: tracking FPS, inference, and
+visible-response values were `null`/`N/A`, while the FPS, inference, visible-latency, and TTFF gates
+were `not_evaluated`. Its 3.7-second first movement was keyboard input, so it is not evidence for the
+pending real-person TTFF gate. The checksum identifies this observation; later valid runs can differ
+because the JSON contains observed timing fields.
+
+The exact-release `2ab9584` packaged basic smoke also recorded browser requests. It observed exactly one
+`POST /api/scene/analyze`, followed by `POST /api/quest/plan`, with no adaptation request or
+unexpected POST destination. The earlier full fallback adaptation evidence additionally reached
+`POST /api/quest/adapt`; do not merge the two scopes. Both are controlled fake-camera evidence, so
+the real-camera network inspection remains pending.
 
 The current full guided-smoke oracle also checks the result card's time accounting:
 
@@ -76,6 +118,9 @@ MOVEREALM_FULL_SMOKE=1 npm run smoke:browser
 MOVEREALM_CAMERA_SMOKE=1 npm run smoke:browser
 MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
 MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
+MOVEREALM_URL=https://ming3465.github.io/MoveRealm/ MOVEREALM_FULL_SMOKE=1 \
+  MOVEREALM_EXPECT_COMMIT=2ab9584cff8d98bbfb41b1d7f8b9fa821257ac52 \
+  MOVEREALM_EXPECT_BUILD_ID=build-31682611174 npm run smoke:browser
 ```
 
 These commands document how to reproduce each path. Cite the preserved command and result entries in
@@ -112,41 +157,26 @@ This proves controlled agent connectivity, visible live provenance, adaptation o
 It does **not** establish real-person pose FPS, visible movement latency, TTFF, movement accuracy,
 usability, or a participant result.
 
-## Recorded controlled live-CodeBuddy room matrix — 13 August 2026
+## Recorded current-source live-CodeBuddy room matrix — 13 August 2026
 
-The sanitized JSON observations in [`artifacts/validation/`](../artifacts/validation/) record three
-successful end-to-end live CodeBuddy scene, plan, and adaptation calls. All three health checks
-reported `codeBuddyConnected: true`; every plan totalled 180 seconds; and the local temporary-upload
-directory was empty after analysis.
+The sanitized
+[`live-agent-room-matrix-2ab9584.json`](../artifacts/validation/live-agent-room-matrix-2ab9584.json)
+preserves a fresh localhost controlled run from the current source. Health reported
+`codeBuddyConnected: true`, fallback was disallowed, every scene and plan source was `codebuddy`,
+all plans totalled exactly 180 seconds, and the local temporary-upload directory was empty. Its
+SHA-256 is `e4dabc45278f5be9d177c1c8d1282337d432a5cba3cbe8ebdc4c7008bfb05787`.
 
-| Fixture | Evidence file | Scene | Permitted directions | Plan signature |
-|---|---|---|---|---|
-| Open | [`live-agent-open-room.json`](../artifacts/validation/live-agent-open-room.json) | `open` | vertical, left, right, center | reach 0.82, squat 0.75, side-step 0.88 |
-| Tight | [`live-agent-tight.json`](../artifacts/validation/live-agent-tight.json) | `tight` | vertical, center | reach 0.65, squat 0.75, reach 0.60 |
-| Uncertain | [`live-agent-uncertain-room.json`](../artifacts/validation/live-agent-uncertain-room.json) | `uncertain` | vertical, center | reach 0.55, squat 0.60, reach 0.62 |
+| Fixture | Scene | Permitted directions | Plan signature | Scene latency | Plan latency |
+|---|---|---|---|---:|---:|
+| Open | `open` | vertical, left, right, center | reach 0.85, squat 0.80, side-step 0.90 | 12.686 s | 24.178 s |
+| Tight | `tight` | vertical, center | reach 0.65, squat 0.75, reach 0.68 | 13.433 s | 26.180 s |
+| Uncertain | `uncertain` | vertical, center | reach 0.55, squat 0.60, reach 0.62 | 15.060 s | 22.017 s |
 
-| Fixture | Scene latency | Plan latency | Adaptation latency | Scene / plan / adaptation source |
-|---|---:|---:|---:|---|
-| Open | 17.824 s | 27.480 s | 5.490 s | CodeBuddy / CodeBuddy / CodeBuddy |
-| Tight | 18.961 s | 21.900 s | 5.502 s | CodeBuddy / CodeBuddy / CodeBuddy |
-| Uncertain | 15.631 s | 24.600 s | 5.753 s | CodeBuddy / CodeBuddy / CodeBuddy |
-
-The adaptation request in each artifact uses explicitly labelled synthetic keyboard telemetry: 4 of
-12 targets, `too_hard`, pose confidence 0, and tracking FPS 0. The live adaptation kept the next
-squat movement while reducing its range, tempo, and target rate:
-
-| Fixture | Range | Tempo | Target rate |
-|---|---:|---:|---:|
-| Open | 0.75 → 0.55 | 0.80 → 0.65 | 8 → 6 |
-| Tight | 0.75 → 0.55 | 0.80 → 0.60 | 7 → 5 |
-| Uncertain | 0.60 → 0.45 | 0.70 → 0.55 | 6 → 4 |
-
-This is controlled agent-contract evidence, not a human trial or pose-performance measurement.
-
-[`live-agent-tight-room.json`](../artifacts/validation/live-agent-tight-room.json) intentionally
-preserves a separate recovery run: scene analysis and adaptation were live CodeBuddy results, while
-the plan timed out after 30 seconds and returned the visibly labelled deterministic fallback. It is
-fallback evidence and must not be counted as a fourth successful live plan.
+The same run's tight-room adaptation used explicitly labelled synthetic keyboard telemetry: 4 of
+12 targets, `too_hard`, pose confidence 0, and tracking FPS 0. The live `codebuddy` decision took
+7.627 s and kept the next squat while changing range 0.75 → 0.55, tempo 0.78 → 0.62, and target
+rate 7 → 5. This is controlled agent-contract evidence, not a human trial or pose-performance
+measurement.
 
 ## Pending real-person and submission evidence
 
@@ -162,13 +192,13 @@ from the finished submission artifact where specified.
 | Camera-free backup video file | 3–5 minutes; overview, features, reflection, tip | 4:58.834; H.264/AAC; 1440×810 | **recorded local artifact** |
 | Accepted video URL | accessible YouTube or Google Drive link | — | **pending upload and signed-out check** |
 
-Measurement method:
-
-1. Use the FPS and inference timing emitted by the pose Worker for pose processing.
-2. Use a 60 FPS phone recording for camera-to-visual response latency if possible.
-3. Start the TTFF timer before setup and stop it at the participant's first accepted movement.
-4. Save the raw observation or recording reference with consent; never transcribe a target as an
-   observed result.
+Follow the repeatable, consent-first procedure in
+[`TRIAL_PROTOCOL.md`](TRIAL_PROTOCOL.md). The final postcard's local evidence exporter records
+counted aggregate pose summaries, threshold states, director provenance, and exact build identity
+without names, media, room text, paths, or raw landmarks. Use its FPS p05 and visible-response p95
+only for a completed pose-mode run. The protocol provides a stopwatch fallback for TTFF and a
+separately consented 60 FPS fallback for visible latency. Never transcribe a target or a keyboard
+export as an observed real-person result.
 
 ## Privacy checks
 

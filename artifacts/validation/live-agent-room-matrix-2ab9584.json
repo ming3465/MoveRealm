@@ -1,0 +1,183 @@
+{
+  "observedAt": "2026-08-13T08:46:51.596Z",
+  "baseUrl": "http://127.0.0.1:4173",
+  "health": {
+    "ok": true,
+    "product": "MoveRealm",
+    "movementDirector": "codebuddy",
+    "codeBuddyConnected": true
+  },
+  "allowFallback": false,
+  "roomMatrix": true,
+  "observations": [
+    {
+      "fixture": "open-room.png",
+      "fixtureSha256": "ac9bf9aa222fac44e1ed192a5e2bd2d21902cb63c74f3968f2dfbc3a7b3386b3",
+      "scene": {
+        "spaceClass": "open",
+        "obstacles": [
+          {
+            "label": "chair",
+            "zone": "right",
+            "severity": "low"
+          },
+          {
+            "label": "sliding door frame and curtains",
+            "zone": "center",
+            "severity": "low"
+          }
+        ],
+        "permittedDirections": [
+          "vertical",
+          "left",
+          "right",
+          "center"
+        ],
+        "confidence": 0.88,
+        "summary": "Large open tiled living area, nearly clear floor. Chair at far right edge; curtained balcony door at center rear. Ample room for reach, squat, and side-step in all directions."
+      },
+      "sceneSource": "codebuddy",
+      "sceneLatencyMs": 12686,
+      "sceneClientElapsedMs": 12698,
+      "planSource": "codebuddy",
+      "planLatencyMs": 24178,
+      "planClientElapsedMs": 24183,
+      "planSignature": "reach:0.85|squat:0.8|side_step:0.9",
+      "planTotalSeconds": 180
+    },
+    {
+      "fixture": "tight-room.png",
+      "fixtureSha256": "c896462d2205f92270992c9edb9013ab578b58e5e734d6a63f954877a43c9068",
+      "scene": {
+        "spaceClass": "tight",
+        "obstacles": [
+          {
+            "label": "desk",
+            "zone": "left",
+            "severity": "high"
+          },
+          {
+            "label": "pedestal cabinet",
+            "zone": "center",
+            "severity": "medium"
+          },
+          {
+            "label": "wardrobe",
+            "zone": "left",
+            "severity": "medium"
+          },
+          {
+            "label": "armchair",
+            "zone": "right",
+            "severity": "high"
+          },
+          {
+            "label": "bookcase",
+            "zone": "right",
+            "severity": "low"
+          }
+        ],
+        "permittedDirections": [
+          "vertical",
+          "center"
+        ],
+        "confidence": 0.78,
+        "summary": "Narrow corridor between desk on left and chair on right; clear center lane supports vertical reach and limited side steps; lateral range restricted."
+      },
+      "sceneSource": "codebuddy",
+      "sceneLatencyMs": 13433,
+      "sceneClientElapsedMs": 13444,
+      "planSource": "codebuddy",
+      "planLatencyMs": 26180,
+      "planClientElapsedMs": 26184,
+      "planSignature": "reach:0.65|squat:0.75|reach:0.68",
+      "planTotalSeconds": 180
+    },
+    {
+      "fixture": "uncertain-room.png",
+      "fixtureSha256": "c625f09d36157a59639de31ec4759542b19ecc6c00deeb889a1c212926670898",
+      "scene": {
+        "spaceClass": "uncertain",
+        "obstacles": [
+          {
+            "label": "door frame left",
+            "zone": "left",
+            "severity": "medium"
+          },
+          {
+            "label": "door or wall right",
+            "zone": "right",
+            "severity": "medium"
+          },
+          {
+            "label": "curtain and wall unit",
+            "zone": "center",
+            "severity": "low"
+          }
+        ],
+        "permittedDirections": [
+          "vertical",
+          "center"
+        ],
+        "confidence": 0.38,
+        "summary": "View is a narrow doorway into a partially visible room; floor and lateral clearance are not assessable. Only upright in-place movement is supported with confidence."
+      },
+      "sceneSource": "codebuddy",
+      "sceneLatencyMs": 15060,
+      "sceneClientElapsedMs": 15070,
+      "planSource": "codebuddy",
+      "planLatencyMs": 22017,
+      "planClientElapsedMs": 22024,
+      "planSignature": "reach:0.55|squat:0.6|reach:0.62",
+      "planTotalSeconds": 180
+    }
+  ],
+  "adaptation": {
+    "source": "codebuddy",
+    "latencyMs": 7627,
+    "clientElapsedMs": 7630,
+    "syntheticTelemetry": {
+      "roundId": "round-1",
+      "movementId": "reach",
+      "completionRate": 0.3333333333333333,
+      "movementRange": 0.54,
+      "poseConfidence": 0,
+      "trackingFps": 0,
+      "trackingMode": "keyboard",
+      "targetsPresented": 12,
+      "targetsCompleted": 4,
+      "feedback": "too_hard"
+    },
+    "before": {
+      "id": "round-2",
+      "movementId": "squat",
+      "durationSeconds": 52,
+      "targetRate": 7,
+      "rangeScale": 0.75,
+      "tempo": 0.78,
+      "mechanic": "shelter_seedlings",
+      "prompt": "Lower gently into the undergrowth to shield neon seedlings below.",
+      "accent": "orchid"
+    },
+    "decision": {
+      "nextRound": {
+        "id": "round-2",
+        "movementId": "squat",
+        "durationSeconds": 52,
+        "targetRate": 5,
+        "rangeScale": 0.55,
+        "tempo": 0.62,
+        "mechanic": "shelter_seedlings",
+        "prompt": "Gently lower toward the neon seedlings below, moving at your own pace.",
+        "accent": "mint"
+      },
+      "reason": "Only 4 of 12 targets were reached and you chose Too hard, so the next targets are shallower, fewer, and slower.",
+      "adjustments": [
+        "target_envelope",
+        "tempo",
+        "target_rate"
+      ]
+    }
+  },
+  "localUploadDirectoryEmpty": true
+}

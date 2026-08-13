@@ -5,20 +5,26 @@
 - Public guided demo: <https://ming3465.github.io/MoveRealm/>
 - Source repository: <https://github.com/ming3465/MoveRealm>
 - Release-application deployment:
-  [GitHub Pages run 31675892852](https://github.com/ming3465/MoveRealm/actions/runs/31675892852)
-  for commit [`d640de4`](https://github.com/ming3465/MoveRealm/commit/d640de4) completed `npm ci`,
-  **55/55 tests across 7 files**, the production build, artifact upload, and deployment.
-- Current release verification: 7 test files, **55/55 tests passed**.
+  [GitHub Pages run 31682611174](https://github.com/ming3465/MoveRealm/actions/runs/31682611174)
+  for commit
+  [`2ab9584`](https://github.com/ming3465/MoveRealm/commit/2ab9584cff8d98bbfb41b1d7f8b9fa821257ac52)
+  completed `npm ci`, **75/75 tests across 10 files**, the production build, artifact upload, and
+  deployment. The deployed client carries build `build-31682611174` and the exact full commit SHA.
+- Current release verification: 10 test files, **75/75 tests passed** locally and in CI.
 - Dependency audit: **0 vulnerabilities**.
 - Public basic smoke: **passed**.
-- Public adaptation smoke: **passed** with `Guided demo` provenance.
-- Docker packaged captured-room fallback adaptation: **passed** with `Safe fallback` provenance.
-- Controlled captured-room request audit: **passed** — one scene-still POST, then only plan and
-  adaptation POSTs; no unexpected POST destination.
-- Exact-release public full smoke against commit `d640de4` / run 31675892852: **passed** — round
-  scores 0 → 145 → 290 → 435; adaptation
+- Exact-release public full smoke: **passed** with `Guided demo` provenance and no API POSTs or
+  console errors. Its preserved anonymous keyboard export is
+  [`validation/public-guided-keyboard-session-2ab9584.json`](validation/public-guided-keyboard-session-2ab9584.json).
+- Exact-release Docker captured-room basic path: **passed** with `Safe fallback` provenance; one
+  scene-still POST followed by the plan POST, no unexpected destination, and an empty upload
+  directory. An earlier packaged full fallback adaptation is predecessor evidence, not a current-
+  image full run.
+- Exact-release public full smoke against commit `2ab9584` / run 31682611174: round scores
+  0 → 145 → 290 → 435; adaptation
   64 → 48%, 0.90 → 0.77×, and 7 → 6; postcard 2.6 active minutes / 3.0-minute adventure /
-  tracking `N/A`; replay and stop passed; no console errors.
+  tracking `N/A`; replay and stop passed; no console errors. The visible and downloaded SHA-256
+  both matched `00458af188807b5e2e49df994ac1581ff27608d9d1628f60d4df11158c2ef8b7`.
 
 The preserved release command and result record belongs in
 [`validation/release-checks.md`](validation/release-checks.md).
@@ -32,25 +38,34 @@ deterministic path and must not be described as live CodeBuddy.
 The JSON files in `validation/` are sanitized observations from `npm run smoke:agent` on 13 August
 2026. They contain synthetic fixture hashes, structured scene/plan/adaptation output, source labels,
 latencies, and upload-cleanup state. They contain no room image bytes, live frames, landmarks,
-credentials, run IDs, prompts, email addresses, or personal data.
+credentials, run IDs, submitted model prompts, email addresses, or personal data. The structured
+adaptation records do retain bounded user-facing round instructions and reasons generated from
+synthetic fixtures; they are not participant text.
 
-Use these three successful live CodeBuddy observations for the controlled release room matrix:
+The current-release room matrix is preserved in
+[`validation/live-agent-room-matrix-2ab9584.json`](validation/live-agent-room-matrix-2ab9584.json):
 
-| Fixture | Evidence file | Scene | Directions | Plan signature | Scene / plan / adaptation latency |
-|---|---|---|---|---|---|
-| Open | `live-agent-open-room.json` | open | vertical, left, right, centre | reach 0.82, squat 0.75, side-step 0.88 | 17.824 s / 27.480 s / 5.490 s |
-| Tight | `live-agent-tight.json` | tight | vertical, centre | reach 0.65, squat 0.75, reach 0.60 | 18.961 s / 21.900 s / 5.502 s |
-| Uncertain | `live-agent-uncertain-room.json` | uncertain | vertical, centre | reach 0.55, squat 0.60, reach 0.62 | 15.631 s / 24.600 s / 5.753 s |
+| Fixture | Scene | Directions | Plan signature | Scene / plan latency |
+|---|---|---|---|---|
+| Open | open | vertical, left, right, centre | reach 0.85, squat 0.80, side-step 0.90 | 12.686 s / 24.178 s |
+| Tight | tight | vertical, centre | reach 0.65, squat 0.75, reach 0.68 | 13.433 s / 26.180 s |
+| Uncertain | uncertain | vertical, centre | reach 0.55, squat 0.60, reach 0.62 | 15.060 s / 22.017 s |
 
-Each row records `codebuddy` as the scene, plan, and adaptation source; a 180-second safe plan; and
-an empty local temporary-upload directory after analysis.
+Each row records `codebuddy` as the scene and plan source and a 180-second safe plan. The matrix also
+records an empty local temporary-upload directory after all analyses. Its tight-room adaptation has
+`codebuddy` provenance, took 7.627 s, and changed range 0.75 → 0.55, tempo 0.78 → 0.62, and target
+rate 7 → 5.
+
+The earlier individual `live-agent-open-room.json`, `live-agent-tight.json`, and
+`live-agent-uncertain-room.json` files remain preserved as predecessor observations rather than
+being silently overwritten.
 
 `live-agent-tight-room.json` intentionally preserves a separate transient recovery run in which
 scene and adaptation were live but the plan timed out after 30 seconds and returned the labelled
 deterministic fallback. It demonstrates the fallback state and must not be cited as a successful
 live-plan observation.
 
-The adaptation input in all four files is explicitly marked `syntheticTelemetry`: 4 of 12 targets,
+The adaptation input in these files is explicitly marked `syntheticTelemetry`: 4 of 12 targets,
 `too_hard`, keyboard mode, pose confidence 0, and tracking FPS 0. It is a controlled contract test,
 not a human trial, real-person pose measurement, or user result.
 
@@ -79,6 +94,11 @@ The full guided browser smoke asserts the result card's exact accounting:
 This supports the wording “2.6 active minutes within a 3.0-minute adventure.” It does not support a
 claim of three active minutes or any real-person tracking result.
 
+The exact-release guided keyboard record is preserved at
+[`validation/public-guided-keyboard-session-2ab9584.json`](validation/public-guided-keyboard-session-2ab9584.json).
+Its pose metrics and real-camera thresholds are explicitly `null` / `not_evaluated`; it validates
+the exporter and release identity but is not a human trial.
+
 ## Reproduction commands
 
 Start the local app in one terminal:
@@ -106,10 +126,18 @@ For new live-agent artifacts, start CodeBuddy and the app, verify `/api/health` 
 `codeBuddyConnected: true`, then use `npm run smoke:agent` with an explicit fixture and evidence path.
 Do not overwrite the release JSON files without reviewing their provenance and sanitization.
 
+```bash
+MOVEREALM_ROOM_MATRIX=1 \
+  MOVEREALM_AGENT_EVIDENCE=artifacts/validation/live-agent-room-matrix-2ab9584.json \
+  npm run smoke:agent
+```
+
 ## Artifact checksums
 
 | File | SHA-256 |
 |---|---|
+| `validation/public-guided-keyboard-session-2ab9584.json` | `00458af188807b5e2e49df994ac1581ff27608d9d1628f60d4df11158c2ef8b7` |
+| `validation/live-agent-room-matrix-2ab9584.json` | `e4dabc45278f5be9d177c1c8d1282337d432a5cba3cbe8ebdc4c7008bfb05787` |
 | `validation/live-agent-open-room.json` | `fb29536989e0c56764acdf764cf8def9e954d93ba89707bdbef30b4a368155f5` |
 | `validation/live-agent-tight.json` | `340cfbed25d8a78f38f0cd2a6797202f00807ed88dbac89318cff5267f2f08d7` |
 | `validation/live-agent-uncertain-room.json` | `159bfcfde10804f29b6b34f7a6ef2d00f25aa92d871777a57da2d1f53f723889` |

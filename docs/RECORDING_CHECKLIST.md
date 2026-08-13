@@ -20,17 +20,37 @@ CodeBuddy development tip.
 ### Release and evidence
 
 - [x] Confirm release-application
-  [Pages run 31675892852](https://github.com/ming3465/MoveRealm/actions/runs/31675892852) for commit
-  `d640de4` passed all 55 tests across 7 files, the production build, and deployment.
+  [Pages run 31682611174](https://github.com/ming3465/MoveRealm/actions/runs/31682611174) for commit
+  `2ab9584` / build `build-31682611174` passed all 75 tests across 10 files, the production build,
+  and deployment.
 - [x] Confirm `npm audit --audit-level=low` reports 0 vulnerabilities.
 - [x] Confirm the public basic smoke passed.
-- [x] Confirm the public adaptation smoke passed with `Guided demo` provenance.
-- [x] Confirm the Docker captured-room fallback adaptation passed with `Safe fallback` provenance.
-- [x] Confirm the exact-release public full smoke against commit `d640de4` / run 31675892852 passed
-  all three rounds, adaptation, postcard accounting, replay/stop, and the no-console-error check.
+- [x] Confirm the exact-release public full-smoke adaptation step passed with `Guided demo`
+  provenance.
+- [x] Confirm exact-release Docker image `moverealm:2ab9584`, ID
+  `sha256:a205205819345589179d079656e0afefb38887b8b460a2c00d942dc0a11e47b6`
+  (343,057,128 bytes), embeds the exact commit/build identity.
+- [x] Confirm its basic captured-room path passed with health true/CodeBuddy false, camera ready, safe
+  defaults, `Safe fallback`, score 0→145, only scene/plan POSTs, and empty upload cleanup. The
+  container stopped and its port was freed after stop escalation; do not call exit 137 graceful.
+- [x] Keep the earlier Docker full fallback adaptation labelled predecessor evidence; it was not
+  rerun as a full path in the exact-release image.
+- [x] Confirm the separate exact-release public full smoke against commit `2ab9584` / run 31682611174
+  / build `build-31682611174` exited 0: scores 0→145→290→435; `Guided demo` adaptation
+  64→48%, 0.90→0.77×, 7→6; `Glowgarden Awakening` postcard 2.6 active minutes, 18%
+  completion, tracking `N/A`, and 3.0-minute clock; replay/stop passed; API POSTs `[]`; no console
+  errors. This browser smoke was separate from CI.
+- [x] Confirm that smoke downloaded anonymous keyboard evidence whose visible SHA-256
+  `00458af188807b5e2e49df994ac1581ff27608d9d1628f60d4df11158c2ef8b7` and exact
+  build/commit identity matched, and whose real-camera pose gates remained `N/A`/`not_evaluated`.
+  Its 3.7-second keyboard first movement is not human TTFF evidence.
+- [x] Confirm the `2ab9584` exporter integrity boundary accepts only trial 1–3, requires paired exact
+  provenance, validates count/adaptation/latency consistency, and uses a robust sanitized download.
 - [ ] Complete remaining checks in [SUBMISSION.md](SUBMISSION.md); cite
   [`artifacts/validation/release-checks.md`](../artifacts/validation/release-checks.md).
 - [ ] Keep [VALIDATION.md](VALIDATION.md) open; do not quote pending human/device values as results.
+- [ ] Before any real-person run, follow the consent, privacy, evidence-export, and exact result
+  rules in [TRIAL_PROTOCOL.md](TRIAL_PROTOCOL.md). All three human trials remain pending.
 - [ ] Open <https://ming3465.github.io/MoveRealm/> in a signed-out browser and verify the guided flow.
 - [ ] Keep <https://github.com/ming3465/MoveRealm> ready as the source link.
 - [ ] Remember that GitHub Pages is the static guided demo; use the local/production Node adapter for
@@ -49,6 +69,10 @@ Still explicitly pending before a final evidence-complete submission: a public Y
 Drive URL for the backup or a preferred live-person take, all three user trials, real-person pose
 FPS, real-person visible response latency, and real-person time to first accepted movement (TTFF).
 Do not substitute synthetic-camera or keyboard values.
+
+The Pages workflow ignores docs- and artifacts-only pushes. This documentation follow-up does not
+redeploy the app; release identity remains commit `2ab9584`, run 31682611174, build
+`build-31682611174`.
 
 ### Live path
 
@@ -163,7 +187,10 @@ On screen: final garden postcard, active time, completion, and any measured runt
 > or rehabilitation guidance. Stop if you feel pain, dizziness, or unwell.
 
 Evidence gate: show both `2.6 active minutes` and `Adventure clock 3.0 min`. Do not call 2.6 active
-minutes three active minutes, and do not convert any pending human measurement into a result.
+minutes three active minutes, and do not convert any pending human measurement into a result. For a
+consenting live-person trial, download the anonymous local evidence only under
+[TRIAL_PROTOCOL.md](TRIAL_PROTOCOL.md); the passing keyboard-export smoke is exporter evidence, not
+human FPS, latency, or TTFF evidence.
 
 ### 3:15–3:40 — Architecture, build reflection, and value
 
@@ -222,3 +249,5 @@ Use one of these lines immediately when its condition occurs.
 - [x] Compute the final video checksum and update [SUBMISSION.md](SUBMISSION.md).
 - [x] Keep real-person FPS, visible latency, TTFF, and all three user trials pending unless the raw
   observations are captured and linked.
+- [ ] For a live-person take, privacy-review the downloaded local JSON and record its visible
+  SHA-256 exactly as specified by [TRIAL_PROTOCOL.md](TRIAL_PROTOCOL.md).
