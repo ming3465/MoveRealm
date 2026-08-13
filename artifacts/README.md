@@ -7,31 +7,35 @@ local Qwen3-VL reports. These are advisory evaluator observations, not runtime o
 certification, official judging, or human-trial evidence. See
 [`docs/EVALUATION.md`](../docs/EVALUATION.md) for reproduction and limitations.
 
+Deterministic fixture, contract, consistency, and movement-feasibility gates run first and remain
+authoritative. In the recorded uncertain-room case, they rejected an occluded-floor squat even
+though the advisory model scored that plan positively; the reach-only validated fallback passed.
+
 ## Release snapshot — 13 August 2026
 
 - Public guided demo: <https://ming3465.github.io/MoveRealm/>
 - Source repository: <https://github.com/ming3465/MoveRealm>
 - Release-application deployment:
-  [GitHub Pages run 31682611174](https://github.com/ming3465/MoveRealm/actions/runs/31682611174)
+  [GitHub Pages run 31714506917](https://github.com/ming3465/MoveRealm/actions/runs/31714506917)
   for commit
-  [`2ab9584`](https://github.com/ming3465/MoveRealm/commit/2ab9584cff8d98bbfb41b1d7f8b9fa821257ac52)
-  completed `npm ci`, **75/75 tests across 10 files**, the production build, artifact upload, and
-  deployment. The deployed client carries build `build-31682611174` and the exact full commit SHA.
-- Current release verification: 10 test files, **75/75 tests passed** locally and in CI.
+  [`7fe9009`](https://github.com/ming3465/MoveRealm/commit/7fe9009728d545798c1b5efd7b367d4f54264eaf)
+  completed `npm ci`, **100/100 tests across 13 files**, the production build, artifact upload, and
+  deployment. The deployed client carries build `build-31714506917` and the exact full commit SHA.
+- Current release verification: 13 test files, **100/100 tests passed** locally and in CI.
 - Dependency audit: **0 vulnerabilities**.
-- Public basic smoke: **passed**.
-- Exact-release public full smoke: **passed** with `Guided demo` provenance and no API POSTs or
-  console errors. Its preserved anonymous keyboard export is
-  [`validation/public-guided-keyboard-session-2ab9584.json`](validation/public-guided-keyboard-session-2ab9584.json).
-- Exact-release Docker captured-room basic path: **passed** with `Safe fallback` provenance; one
-  scene-still POST followed by the plan POST, no unexpected destination, and an empty upload
-  directory. An earlier packaged full fallback adaptation is predecessor evidence, not a current-
-  image full run.
-- Exact-release public full smoke against commit `2ab9584` / run 31682611174: round scores
+- Exact-release public camera basic smoke: **passed** with Chrome's fake camera,
+  `cameraReady=true`, score 0→145, API POSTs `[]`, and no console errors. It is controlled,
+  non-human evidence and was run separately from CI.
+- Exact-release public full smoke against commit `7fe9009` / run 31714506917 / build
+  `build-31714506917`: **passed** with `Guided demo` provenance. Round scores were
   0 → 145 → 290 → 435; adaptation
   64 → 48%, 0.90 → 0.77×, and 7 → 6; postcard 2.6 active minutes / 3.0-minute adventure /
-  tracking `N/A`; replay and stop passed; no console errors. The visible and downloaded SHA-256
-  both matched `00458af188807b5e2e49df994ac1581ff27608d9d1628f60d4df11158c2ef8b7`.
+  18% completion / tracking `N/A`; API POSTs `[]`; no console errors. The visible and downloaded
+  SHA-256 both matched
+  `5a3da763a925d02c4152cd305587c3d60e20bb261e354f6372b59fb797ba4620` for
+  [`validation/public-guided-keyboard-session-7fe9009.json`](validation/public-guided-keyboard-session-7fe9009.json).
+- No Docker run was performed for `7fe9009`. The `moverealm:2ab9584` captured-room basic path and
+  earlier packaged full fallback adaptation remain explicitly predecessor-only evidence.
 
 The preserved release command and result record belongs in
 [`validation/release-checks.md`](validation/release-checks.md).
@@ -49,7 +53,7 @@ credentials, run IDs, submitted model prompts, email addresses, or personal data
 adaptation records do retain bounded user-facing round instructions and reasons generated from
 synthetic fixtures; they are not participant text.
 
-The current-release room matrix is preserved in
+The predecessor `2ab9584` room matrix is preserved in
 [`validation/live-agent-room-matrix-2ab9584.json`](validation/live-agent-room-matrix-2ab9584.json):
 
 | Fixture | Scene | Directions | Plan signature | Scene / plan latency |
@@ -101,8 +105,8 @@ The full guided browser smoke asserts the result card's exact accounting:
 This supports the wording “2.6 active minutes within a 3.0-minute adventure.” It does not support a
 claim of three active minutes or any real-person tracking result.
 
-The exact-release guided keyboard record is preserved at
-[`validation/public-guided-keyboard-session-2ab9584.json`](validation/public-guided-keyboard-session-2ab9584.json).
+The current exact-release guided keyboard record is preserved at
+[`validation/public-guided-keyboard-session-7fe9009.json`](validation/public-guided-keyboard-session-7fe9009.json).
 Its pose metrics and real-camera thresholds are explicitly `null` / `not_evaluated`; it validates
 the exporter and release identity but is not a human trial.
 
@@ -118,10 +122,12 @@ Run browser evidence from a second terminal:
 
 ```bash
 npm run smoke:browser
-MOVEREALM_FULL_SMOKE=1 npm run smoke:browser
 MOVEREALM_CAMERA_SMOKE=1 npm run smoke:browser
 MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
 MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
+MOVEREALM_URL=https://ming3465.github.io/MoveRealm/ MOVEREALM_FULL_SMOKE=1 \
+  MOVEREALM_EXPECT_COMMIT=7fe9009728d545798c1b5efd7b367d4f54264eaf \
+  MOVEREALM_EXPECT_BUILD_ID=build-31714506917 npm run smoke:browser
 ```
 
 The camera smoke uses Chrome's fake media stream to check permission and Worker readiness. It does
@@ -143,6 +149,7 @@ MOVEREALM_ROOM_MATRIX=1 \
 
 | File | SHA-256 |
 |---|---|
+| `validation/public-guided-keyboard-session-7fe9009.json` | `5a3da763a925d02c4152cd305587c3d60e20bb261e354f6372b59fb797ba4620` |
 | `validation/public-guided-keyboard-session-2ab9584.json` | `00458af188807b5e2e49df994ac1581ff27608d9d1628f60d4df11158c2ef8b7` |
 | `validation/live-agent-room-matrix-2ab9584.json` | `e4dabc45278f5be9d177c1c8d1282337d432a5cba3cbe8ebdc4c7008bfb05787` |
 | `validation/live-agent-open-room.json` | `fb29536989e0c56764acdf764cf8def9e954d93ba89707bdbef30b4a368155f5` |
