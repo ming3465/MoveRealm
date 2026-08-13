@@ -30,7 +30,7 @@ tracked checkout. This candidate has not been pushed or deployed; the public sit
 | Captured-room full fallback smoke | production mode; camera ready; exact scene/plan/adapt/adapt POSTs; scores to 435; `Safe fallback`; adaptation 60→44%, 0.90→0.77×, 7→6; 2.6 min / 18% / `N/A`; no errors | recorded synthetic-camera local-candidate evidence; audit ID is not a CI run |
 | Python Qwen3-VL 4B recovery | unsafe original 18/24 in 43.492 s; eligible fallback 15/24 in 37.550 s; hard gates selected fallback | recorded controlled synthetic evidence |
 | Safety Probe | 332 candidates: 302 defended, 30 honored, 0 breaches, 0 over-rejections, 0 inconclusive; 20/20 controls and 7/7 frontiers | recorded controlled synthetic evidence |
-| Current CodeBuddy strict scene check | **BLOCKED externally**: localhost health true; labelled fallback after bounded 45 s; sanitized log recorded HTTP 429 before generation on all 8 upstream retries | recorded availability/fallback evidence; **not a live pass** |
+| Current CodeBuddy strict loop | **MIXED / NOT A LIVE PASS**: one strict tight-room CodeBuddy scene → plan → adapt loop succeeded; the next strict matrix collapsed all 3 rooms to one scene signature; later browser/fixture retries fell back at 45 s; explicit vision models timed out | recorded loop/recovery/instability evidence |
 
 The Python recovery artifact SHA-256 is
 `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029`; both evaluations share
@@ -48,11 +48,12 @@ SHA-256 `ebaa8c4cb97ef91e79c72a81f9f356beaeae04bb89c52bf98cf5e60232cc5b8d`. Both
 candidate commit and audit build, set personal/media privacy fields false, and leave pose FPS,
 inference, visible latency, and TTFF thresholds `not_evaluated` because controls were keyboard-based.
 
-The current CodeBuddy result means no local-candidate live-agent pass may be claimed. Its localhost
-transport worked and the product recovered safely, but the external model service returned no
-generated result. Retry the live check before recording or explicitly use the `Safe fallback`
-disclosure. The privacy-sanitized observation is
-[`codebuddy-upstream-blocker-2026-08-14.json`](../artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json).
+The current CodeBuddy result still means no local-candidate live-agent pass may be claimed. The
+structured loop generated one valid tight-room scene, 180-second plan, and grounded adaptation, but
+was not repeatable: the next matrix failed room differentiation and later retries fell back safely.
+Retry before recording or explicitly use the `Safe fallback` disclosure. The newest privacy-safe
+record is [`codebuddy-current-vision-instability-2026-08-14.json`](../artifacts/validation/codebuddy-current-vision-instability-2026-08-14.json),
+SHA-256 `6acfa59a47552c0b0c0334c4c9c627949ae4c65aa09d1eeeaa8064864d283fda`.
 
 ## Deployed predecessor verification — 13 August 2026
 
@@ -255,8 +256,8 @@ definitions, recorded scores, and limitations.
 The 8B open/tight reports are frozen predecessor `7fe9009` evaluator snapshots. Their predecessor
 candidate JSON does not pass the newer `cf15709` canonical-presentation gates, so these scores are
 not current-candidate pass evidence. Current candidate evidence is limited to the new tests/probe,
-Python uncertain-room recovery, and full browser smokes recorded above; the current live open/tight
-matrix remains blocked by the external CodeBuddy 429 response.
+Python uncertain-room recovery, and full browser smokes recorded above; the current live three-room
+matrix was attempted and failed its differentiation gate.
 
 ## Pending real-person and submission evidence
 

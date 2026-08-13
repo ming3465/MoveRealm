@@ -53,12 +53,14 @@ minutes, 18% completion, and tracking `N/A`; both exports matched the exact cand
 retained no personal/media fields, and kept keyboard pose metrics `null`. See the two local candidate
 records in [`artifacts/validation/`](artifacts/validation/).
 
-The current CodeBuddy live check is **blocked externally**, not passed. Localhost health succeeded,
-but a strict scene smoke reached the bounded 45-second deadline and visibly returned the labelled
-deterministic fallback. A sanitized local log recorded HTTP 429 before generation on all eight
-upstream retries. Retry CodeBuddy before recording any segment as `CodeBuddy live`; this observation
-does not supersede the preserved predecessor live evidence. See the sanitized
-[`blocker record`](artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json).
+The current CodeBuddy path is **partially working but not stable enough for a live-demo claim**. After
+an earlier HTTP 429, one strict tight-fixture run completed genuine CodeBuddy scene, 180-second plan,
+and adaptation calls. The immediately following strict matrix collapsed all three visibly different
+rooms to the same conservative profile; later browser and fixture retries hit the 45-second boundary
+and visibly returned `Safe fallback`. Explicit vision-model diagnostics also timed out. Retry before
+recording and require both generated CodeBuddy provenance and three-room differentiation. See the
+sanitized [`current observation`](artifacts/validation/codebuddy-current-vision-instability-2026-08-14.json)
+and the earlier [`429 record`](artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json).
 
 ## Run it
 

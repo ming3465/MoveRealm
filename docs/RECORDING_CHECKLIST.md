@@ -40,11 +40,12 @@ CodeBuddy development tip.
 - [ ] Push/deploy the current local branch only with explicit authorization. Its application source
   checkpoint is `cf15709`; verify the resulting public build and pushed branch HEAD. Until then, the
   public app remains `7fe9009` / build `build-31714506917`.
-- [ ] Retry the current CodeBuddy strict check. Its latest result is **BLOCKED externally**: localhost
-  health succeeded, but scene analysis returned labelled `Safe fallback` after 45 seconds; the
-  sanitized log recorded HTTP 429 before generation on all 8 upstream retries. Do not call it a
+- [ ] Retry the current CodeBuddy strict check and require two conditions in the same stable run:
+  generated scene/plan/adaptation provenance and materially different open/tight/uncertain profiles.
+  The latest observation is mixed: one strict tight-room loop passed, the next matrix collapsed all
+  rooms to one profile, and later browser/fixture retries fell back at 45 seconds. Do not call it a
   live-agent pass; see
-  [`codebuddy-upstream-blocker-2026-08-14.json`](../artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json).
+  [`codebuddy-current-vision-instability-2026-08-14.json`](../artifacts/validation/codebuddy-current-vision-instability-2026-08-14.json).
 - [x] Confirm `npm audit --audit-level=low` reports 0 vulnerabilities.
 - [x] Confirm the exact-release public camera basic smoke passed with Chrome's fake camera:
   `cameraReady=true`, score 0→145, API POSTs `[]`, and no console errors. This is controlled,

@@ -44,9 +44,10 @@ judge latencies were 43.492 and 37.550 seconds respectively.
 - Both local exports matched the exact commit/build, set personal/media fields false, and kept
   keyboard pose metrics `null` / thresholds `not_evaluated`.
 - Push/deployment: **pending**. The public app remains the deployed `7fe9009` predecessor.
-- Current CodeBuddy check: **BLOCKED externally**, not passed. Localhost health succeeded, but the
-  strict scene smoke returned the labelled deterministic fallback after its 45-second deadline; a
-  sanitized local log recorded HTTP 429 before generation on all 8 upstream retries.
+- Current CodeBuddy check: **mixed and unstable**, not a live pass. One strict tight-room request
+  completed CodeBuddy scene, plan, and adaptation calls; the next strict matrix collapsed all three
+  rooms to one conservative profile, and later browser/fixture retries returned the labelled
+  fallback at 45 seconds. Explicit vision-model probes also timed out.
 
 The Safety Probe's clean contract run covered 332 candidates: 302 defended, 30 honored, 0 breaches,
 0 over-rejections, and 0 inconclusive probes, with 20/20 controls and seven matching frontiers. Its
@@ -90,7 +91,16 @@ deterministic path and must not be described as live CodeBuddy.
 
 ## Sanitized live-agent evidence
 
-The newest availability record is
+The newest mixed result is
+[`validation/codebuddy-current-vision-instability-2026-08-14.json`](validation/codebuddy-current-vision-instability-2026-08-14.json),
+SHA-256 `6acfa59a47552c0b0c0334c4c9c627949ae4c65aa09d1eeeaa8064864d283fda`.
+It records a genuine strict tight-room scene → plan → adapt pass, followed by a failed three-room
+differentiation gate, a strict browser fallback at 45 seconds, and bounded explicit vision-model
+timeouts. No credential, prompt, raw response, local path, image, or participant data is retained.
+It proves that the structured loop can run and that recovery is safe; it does **not** prove a stable
+current live demo or materially different current scene profiles.
+
+The earlier availability record is
 [`validation/codebuddy-upstream-blocker-2026-08-14.json`](validation/codebuddy-upstream-blocker-2026-08-14.json),
 SHA-256 `961f9ad01e1932d2f93b53d0e3c593cce97b290169c10f195bc757df0d6319a9`.
 For local candidate `cf15709`, localhost health was true, but the strict scene smoke reached the
@@ -216,6 +226,7 @@ MOVEREALM_ROOM_MATRIX=1 \
 | `evaluation/python-agent-qwen3-vl-4b.json` | `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029` |
 | `../agent/evidence/safety-probe.json` | `df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5` |
 | `../agent/evidence/safety-probe.md` | `e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` |
+| `validation/codebuddy-current-vision-instability-2026-08-14.json` | `6acfa59a47552c0b0c0334c4c9c627949ae4c65aa09d1eeeaa8064864d283fda` |
 | `validation/codebuddy-upstream-blocker-2026-08-14.json` | `961f9ad01e1932d2f93b53d0e3c593cce97b290169c10f195bc757df0d6319a9` |
 | `validation/local-guided-keyboard-session-cf15709.json` | `aebcf7c43158672e1d4bc486f7f71c7cb56116df3256dcb4592fab1a5deed3aa` |
 | `validation/local-captured-fallback-keyboard-session-cf15709.json` | `ebaa8c4cb97ef91e79c72a81f9f356beaeae04bb89c52bf98cf5e60232cc5b8d` |
@@ -266,8 +277,8 @@ flow. They are separate from the six guided screenshots and are controlled, non-
 - **Pending:** real-person visible camera-to-game latency.
 - **Pending:** real-person time to first accepted movement (TTFF).
 - **Pending:** all three qualitative user trials.
-- **Pending:** a successful current CodeBuddy strict live check; the latest local attempt is the
-  explicitly blocked/fallback record above.
+- **Pending:** a stable current CodeBuddy strict live check that both generates the full loop and
+  materially differentiates all three rooms; the latest observation is mixed and not a live pass.
 - **Pending:** authorization to push and deploy the current local branch (application source
   checkpoint `cf15709` plus its frozen evidence/docs), then verify the resulting public build and
   pushed branch HEAD.

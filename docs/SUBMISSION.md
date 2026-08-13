@@ -66,10 +66,12 @@ labelled `Safe fallback`, showed adaptation 60→44%, 0.90→0.77×, 7→6, and 
 postcard totals with no errors. Both anonymous exports matched the exact commit/build, retained no
 personal or media fields, and kept keyboard pose metrics `null`.
 
-The current CodeBuddy live check is **BLOCKED externally**, not passed. Localhost health succeeded,
-but a strict scene smoke returned the labelled deterministic fallback after its bounded 45-second
-deadline. The sanitized local log reported HTTP 429 before generation on all eight upstream retries.
-Do not record this candidate as `CodeBuddy live` until a fresh strict check succeeds.
+The current CodeBuddy check is **mixed and not a live pass**. One strict tight-room request completed
+genuine CodeBuddy scene, 180-second plan, and grounded adaptation calls. The immediately following
+strict matrix collapsed all three rooms to one conservative scene signature; later browser and
+fixture retries returned labelled fallback at 45 seconds, and explicit vision-model probes timed
+out. Do not record this candidate as `CodeBuddy live` until one stable run both generates the full
+loop and materially differentiates the three rooms.
 
 The deployed predecessor retains the anonymous evidence boundary introduced in `2ab9584`: only trials
 1–3 are accepted; an exact
@@ -263,7 +265,7 @@ results in [`artifacts/validation/release-checks.md`](../artifacts/validation/re
 | Anonymous guided-keyboard evidence export | **PASS — preserved JSON; SHA-256 `5a3da763…` and exact build/commit matched; pose gates `not_evaluated`** | [`public-guided-keyboard-session-7fe9009.json`](../artifacts/validation/public-guided-keyboard-session-7fe9009.json); [`release-checks.md`](../artifacts/validation/release-checks.md) |
 | Camera/Worker smoke | recorded synthetic-camera evidence on 13 August | [`VALIDATION.md`](VALIDATION.md) |
 | Synthetic fake-camera live CodeBuddy UI | **PASS — health true, scene/adaptation `CodeBuddy live`, bounded adaptation, empty temporary upload directory** | [`VALIDATION.md`](VALIDATION.md); [`artifacts/README.md`](../artifacts/README.md) |
-| Current local-candidate CodeBuddy strict scene check | **BLOCKED EXTERNALLY — localhost health true; labelled fallback after 45 s; sanitized log recorded HTTP 429 before generation on 8 retries; not a live pass** | [`codebuddy-upstream-blocker-2026-08-14.json`](../artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json) |
+| Current local-candidate CodeBuddy strict check | **MIXED / NOT A LIVE PASS — one tight-room scene → plan → adapt loop passed; the next matrix failed differentiation; later retries fell back at 45 s** | [`codebuddy-current-vision-instability-2026-08-14.json`](../artifacts/validation/codebuddy-current-vision-instability-2026-08-14.json) |
 | Public HTTPS real-person camera flow | **[PENDING DEVICE RUN]** | **[PENDING]** |
 | Predecessor live CodeBuddy open/tight/uncertain matrix | **PASS for `2ab9584` evidence; synthetic adaptation telemetry is not human evidence** | [`live-agent-room-matrix-2ab9584.json`](../artifacts/validation/live-agent-room-matrix-2ab9584.json); [`release-checks.md`](../artifacts/validation/release-checks.md) |
 | Offline Shadow Judge | **PASS as controlled advisory evaluation — hard gates rejected an unsafe plan the model scored positively** | [`EVALUATION.md`](EVALUATION.md) |
@@ -304,7 +306,8 @@ Finalize artifacts first, then compute checksums. Any subsequent edit invalidate
 | Offline Shadow Judge record | Supporting synthetic advisory evaluation; not runtime, safety certification, official judging, or human evidence | [`docs/EVALUATION.md`](EVALUATION.md) | see the [post-freeze manifest](../artifacts/submission-manifest.json) |
 | Python Qwen3-VL 4B recovery record | Supporting controlled synthetic fail-closed agent evidence | [`python-agent-qwen3-vl-4b.json`](../artifacts/evaluation/python-agent-qwen3-vl-4b.json) | `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029` |
 | Safety Probe JSON / Markdown | Supporting synthetic contract-behaviour evidence | [`safety-probe.json`](../agent/evidence/safety-probe.json) / [`safety-probe.md`](../agent/evidence/safety-probe.md) | `df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5` / `e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` |
-| Current CodeBuddy blocker record | Availability/fallback evidence; explicitly not a live pass | [`codebuddy-upstream-blocker-2026-08-14.json`](../artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json) | `961f9ad01e1932d2f93b53d0e3c593cce97b290169c10f195bc757df0d6319a9` |
+| Current CodeBuddy mixed-result record | Loop/recovery/vision-instability evidence; explicitly not a live pass | [`codebuddy-current-vision-instability-2026-08-14.json`](../artifacts/validation/codebuddy-current-vision-instability-2026-08-14.json) | `6acfa59a47552c0b0c0334c4c9c627949ae4c65aa09d1eeeaa8064864d283fda` |
+| Earlier CodeBuddy 429 record | Earlier availability/fallback phase; explicitly not a live pass | [`codebuddy-upstream-blocker-2026-08-14.json`](../artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json) | `961f9ad01e1932d2f93b53d0e3c593cce97b290169c10f195bc757df0d6319a9` |
 | Final validation record | Supporting evidence | [`docs/VALIDATION.md`](VALIDATION.md) | see the [post-freeze manifest](../artifacts/submission-manifest.json) |
 | Test/build/audit/smoke record | Supporting evidence | [`artifacts/validation/release-checks.md`](../artifacts/validation/release-checks.md) | see the [post-freeze manifest](../artifacts/submission-manifest.json) |
 
@@ -338,8 +341,9 @@ shasum -a 256 path/to/moverealm-cover.png
 - [ ] Obtain authorization, push the current local branch (application source checkpoint
   `cf15709` plus frozen evidence/docs), deploy it, and verify the resulting public build and pushed
   branch HEAD; until then the public app remains `7fe9009`.
-- [ ] Retry the strict CodeBuddy check and require a generated `CodeBuddy live` result; the current
-  local-candidate check is externally blocked and returned `Safe fallback` after 45 seconds.
+- [ ] Retry the strict CodeBuddy check and require both a generated full loop and materially
+  different open/tight/uncertain profiles in one stable run; the latest mixed observation is not a
+  live-agent pass.
 - [x] Exact-release full smoke verified the anonymous keyboard export's visible SHA-256,
   `N/A`/`not_evaluated` pose semantics, exact build identity, three rounds and adaptation,
   no API POSTs, and no console errors.

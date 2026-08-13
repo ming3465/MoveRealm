@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "current-live-agent-instability-observation",
+  "observedFrom": "2026-08-14T01:28:14+08:00",
+  "observedThrough": "2026-08-14T01:38:36+08:00",
+  "applicationSourceCommit": "cf157093ff3dab7b3598387d68973f82a3e364c2",
+  "codeBuddy": {
+    "cliVersion": "2.136.0",
+    "transport": "isolated localhost-only HTTP service",
+    "authentication": "disabled for the temporary localhost audit service",
+    "toolsEnabled": false,
+    "sessionPersistence": false
+  },
+  "strictSingleFixturePass": {
+    "fixture": "tight-room.png",
+    "fixtureSha256": "c896462d2205f92270992c9edb9013ab578b58e5e734d6a63f954877a43c9068",
+    "healthConnected": true,
+    "sceneSource": "codebuddy",
+    "sceneLatencyMs": 4762,
+    "scene": {
+      "spaceClass": "uncertain",
+      "permittedDirections": [
+        "vertical"
+      ],
+      "confidence": 0.2
+    },
+    "planSource": "codebuddy",
+    "planLatencyMs": 12378,
+    "planTotalSeconds": 180,
+    "planMovementIds": [
+      "reach",
+      "reach",
+      "reach"
+    ],
+    "adaptationSource": "codebuddy",
+    "adaptationLatencyMs": 4733,
+    "adaptationInput": {
+      "trackingMode": "keyboard",
+      "targetsCompleted": 4,
+      "targetsPresented": 12,
+      "movementRange": 0.54,
+      "feedback": "too_hard"
+    },
+    "adaptationChange": {
+      "rangeScale": [
+        0.6,
+        0.45
+      ],
+      "tempo": [
+        0.85,
+        0.7
+      ],
+      "targetRate": [
+        8,
+        6
+      ]
+    },
+    "temporaryUploadDirectoryEmptyAfterward": true
+  },
+  "strictThreeRoomMatrix": {
+    "healthConnected": true,
+    "fallbackAllowed": false,
+    "allCallsReachedCodeBuddy": true,
+    "result": "failed differentiation gate",
+    "sceneSignatures": [
+      "uncertain|vertical,center",
+      "uncertain|vertical,center",
+      "uncertain|vertical,center"
+    ],
+    "reason": "The three visually distinct fixtures collapsed to the same conservative scene envelope.",
+    "temporaryUploadDirectoryEmptyAfterward": true
+  },
+  "exactSourceBrowserAttempt": {
+    "fakeCameraReady": true,
+    "healthConnected": true,
+    "requiredSource": "codebuddy",
+    "observedSceneSource": "fallback",
+    "sceneLatencyMs": 45010,
+    "visibleLabel": "Safe fallback",
+    "consoleErrors": 0,
+    "result": "failed strict live provenance before gameplay"
+  },
+  "explicitVisionModelDiagnostics": [
+    {
+      "model": "gemini-3.0-flash",
+      "operation": "open-room scene analysis through the application adapter",
+      "result": "bounded fallback after the 45-second application deadline"
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "operation": "open-room scene analysis through the application adapter",
+      "result": "bounded fallback after the 45-second application deadline"
+    },
+    {
+      "model": "gpt-5.4",
+      "operation": "direct HTTP API image attachment probe",
+      "result": "CodeBuddy task timed out after 45 seconds"
+    },
+    {
+      "model": "gemini-3.1-flash-lite",
+      "operation": "direct HTTP API image attachment probe",
+      "result": "CodeBuddy task timed out after 45 seconds"
+    }
+  ],
+  "interpretation": "The current CodeBuddy path can complete one schema-valid scene-plan-adapt loop, and MoveRealm fails closed when it cannot. It did not provide stable three-room visual differentiation or a complete strict live browser run in this observation window. This is mixed pass/fail evidence, not a current live-demo pass.",
+  "privacy": {
+    "fixtureBytesRetainedInThisRecord": false,
+    "rawPromptsRetained": false,
+    "rawModelResponsesRetained": false,
+    "credentialsRetained": false,
+    "localPathsRetained": false,
+    "participantDataRetained": false
+  }
+}

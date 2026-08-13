@@ -69,13 +69,14 @@ the exact candidate commit/build, exclude personal/media fields, and leave keybo
 unevaluated. Their exact behavior and checksums are recorded in
 [`release-checks.md`](../artifacts/validation/release-checks.md).
 
-The current live CodeBuddy check is **BLOCKED by the external service**. Localhost health returned
-success, but the strict scene smoke reached its bounded 45-second deadline and the application
-correctly returned a labelled deterministic fallback. The sanitized local blocker record reports
-HTTP 429 before generation on all eight upstream retries. It contains no credential, prompt, model
-response, local path, or room image. This is fallback/availability evidence, not a successful live
-CodeBuddy result; preserve the older live records below as predecessor evidence and retry before a
-live recording. The sanitized record is
+The current live CodeBuddy check is **mixed and unstable**. An earlier sanitized observation recorded
+HTTP 429 before generation. A later strict tight-room request completed genuine CodeBuddy scene,
+180-second plan, and adaptation calls, but the next strict three-room matrix collapsed every fixture
+to the same conservative scene signature. Later browser/fixture retries returned labelled fallback
+at the 45-second boundary, while four explicitly selected vision models timed out. This is useful
+loop-and-recovery evidence, but not a stable current live or three-room pass. The newest sanitized
+record is [`codebuddy-current-vision-instability-2026-08-14.json`](../artifacts/validation/codebuddy-current-vision-instability-2026-08-14.json);
+the earlier phase is retained in
 [`codebuddy-upstream-blocker-2026-08-14.json`](../artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json).
 
 ## Preserved deployed-predecessor observation — 13 August 2026
@@ -108,8 +109,8 @@ These 8B reports and their source candidate bundles are frozen predecessor `7fe9
 snapshots. In particular, the predecessor open/tight candidates do not satisfy the newer `cf15709`
 canonical-presentation gates and must not be described as passing the current evaluator. Current
 candidate proof comes from the 120-test Vitest layer, Safety Probe, Python uncertain-room recovery,
-and two full browser smokes above. A fresh current open/tight live matrix remains unavailable while
-the external CodeBuddy 429 blocker persists.
+and two full browser smokes above. A fresh current open/tight/uncertain live matrix was attempted but
+failed the differentiation gate, so the predecessor model reports remain historical evidence only.
 
 As a separate ephemeral compatibility check, `cf15709` reconstructed open, tight, and uncertain
 candidates from the preserved live matrix into a temporary directory, then ran the current evaluator

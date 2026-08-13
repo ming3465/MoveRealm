@@ -58,7 +58,7 @@ source-bearing path changes or the workflow is manually dispatched.
 | Captured-room full fallback smoke | production mode; fake camera; local audit build `build-20260814` | **PASS** — camera ready; exact scene/plan/adapt/adapt POSTs; all rounds to score 435; `Safe fallback`; adaptation 60→44%, 0.90→0.77×, 7→6; postcard 2.6 min / 18% / `N/A`; no errors |
 | Python recovery artifact | controlled Qwen3-VL 4B run | **PASS** — hard gates rejected the 18/24 original (43.492 s) and selected the eligible 15/24 fallback (37.550 s) |
 | Adversarial Safety Probe | clean contract mode | **PASS** — 332 probes: 302 defended, 30 honored, 0 breaches, 0 over-rejections, 0 inconclusive; 20 controls; 7 frontiers |
-| Current strict CodeBuddy scene check | localhost service plus bounded adapter request | **BLOCKED EXTERNALLY** — health true; labelled deterministic fallback after 45 s; sanitized log recorded HTTP 429 before generation on all 8 upstream retries; **not a live pass** |
+| Current strict CodeBuddy check | isolated localhost service plus bounded adapter/browser requests | **MIXED / NOT A LIVE PASS** — one tight-room scene → plan → adapt loop passed with CodeBuddy provenance; the next strict matrix collapsed all 3 rooms to one signature; later browser/fixture retries fell back at 45 s; explicit vision models timed out |
 
 The Python artifact SHA-256 is
 `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029`; it records shared
@@ -66,7 +66,11 @@ candidate-context SHA-256 `502824677434c6c6d0196d367ecdcfdde1f8aaa84138f1fe97685
 The Safety Probe report SHA-256 values are
 `df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5` (JSON) and
 `e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` (Markdown).
-The sanitized CodeBuddy blocker is
+The newest sanitized CodeBuddy observation is
+[`codebuddy-current-vision-instability-2026-08-14.json`](codebuddy-current-vision-instability-2026-08-14.json),
+SHA-256 `6acfa59a47552c0b0c0334c4c9c627949ae4c65aa09d1eeeaa8064864d283fda`.
+It records the one strict pass and the subsequent matrix/browser/model failures without raw prompts,
+responses, paths, images, credentials, or participant data. The earlier sanitized 429 blocker is
 [`codebuddy-upstream-blocker-2026-08-14.json`](codebuddy-upstream-blocker-2026-08-14.json), SHA-256
 `961f9ad01e1932d2f93b53d0e3c593cce97b290169c10f195bc757df0d6319a9`. It records that the
 availability observation occurred before the source was frozen and while the worktree was dirty;
@@ -146,8 +150,8 @@ inference. See [`docs/EVALUATION.md`](../../docs/EVALUATION.md).
 Those 8B open/tight reports are frozen predecessor `7fe9009` evaluator snapshots. Their candidate
 JSON does not pass the newer `cf15709` canonical-presentation gates and is not current-candidate pass
 evidence. The clean candidate is supported by the current tests/probe, Python uncertain-room
-recovery, and full browser smokes above; a current live open/tight matrix is blocked by CodeBuddy's
-external 429 response.
+recovery, and full browser smokes above; the attempted current live matrix failed its differentiation
+gate and is not a pass.
 
 An ephemeral current-source compatibility check reconstructed open/tight/uncertain candidates from
 the preserved matrix into `/tmp` and ran `npm run eval -- --judge none`; all three deterministic
@@ -252,8 +256,9 @@ rate 7→5 while keeping the next squat. Its inputs were explicitly synthetic ke
 - real-person time to first accepted movement target below 45 seconds;
 - browser network inspection during a real-person camera session;
 - three consenting user trials;
-- a successful strict current-candidate CodeBuddy generation; localhost connectivity and safe
-  fallback passed, but the external 429 blocker remains;
+- a stable strict current-candidate CodeBuddy run that both generates scene/plan/adaptation output
+  and materially differentiates all three rooms; one loop passed, but the matrix and later retries
+  did not;
 - authorization to push and deploy the current local branch, whose application source is frozen at
   `cf157093ff3dab7b3598387d68973f82a3e364c2`, followed by exact verification of the resulting
   public build and pushed branch HEAD;
