@@ -106,6 +106,7 @@ class CdpClient {
 
 let page;
 const consoleErrors = [];
+const networkRequests = [];
 
 async function evaluate(expression) {
   const response = await page.send("Runtime.evaluate", {
@@ -206,9 +207,14 @@ try {
     );
     if (entry?.level === "error" && !isTensorFlowStartupNotice) consoleErrors.push(entry.text);
   });
+  page.on("Network.requestWillBeSent", ({ request }) => {
+    if (!request?.url || !request?.method) return;
+    networkRequests.push({ method: request.method, url: request.url });
+  });
   await page.send("Runtime.enable");
   await page.send("Page.enable");
   await page.send("Log.enable");
+  await page.send("Network.enable");
 
   await waitFor('document.readyState === "complete" && !!document.querySelector(".landing")');
   const landingTitle = await evaluate('document.querySelector("h1")?.innerText');
@@ -347,6 +353,25 @@ try {
     await waitFor('!!document.querySelector(".landing")', 8_000);
   }
 
+  const apiPostRequests = networkRequests
+    .filter((request) => request.method === "POST")
+    .map((request) => {
+      const url = new URL(request.url);
+      return url.pathname;
+    });
+  const allowedApiPosts = new Set(["/api/scene/analyze", "/api/quest/plan", "/api/quest/adapt"]);
+  const unexpectedPosts = apiPostRequests.filter((path) => !allowedApiPosts.has(path));
+  if (unexpectedPosts.length) {
+    throw new Error(`Unexpected browser POST requests: ${unexpectedPosts.join(", ")}`);
+  }
+  if (testCapture) {
+    const sceneUploads = apiPostRequests.filter((path) => path === "/api/scene/analyze");
+    if (sceneUploads.length !== 1) {
+      throw new Error(`Captured-room flow sent ${sceneUploads.length} room stills instead of one.`);
+    }
+  } else if (apiPostRequests.length) {
+    throw new Error(`Guided flow unexpectedly sent API POST requests: ${apiPostRequests.join(", ")}`);
+  }
   if (consoleErrors.length) throw new Error(`Browser errors: ${consoleErrors.join(" | ")}`);
   console.log(
     JSON.stringify(
@@ -358,6 +383,7 @@ try {
         score: { before: beforeScore, after: afterScore },
         roundScores,
         cameraReady: testCamera,
+        apiPostRequests,
         adaptation,
         postcard,
         screenshots: [

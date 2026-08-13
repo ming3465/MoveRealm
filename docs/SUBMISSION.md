@@ -32,9 +32,10 @@ The short blurb is eight words, below the handbook's hard limit of ten words.
 
 The public URL is a static GitHub Pages deployment of the complete guided-demo path. It visibly
 labels guided and deterministic decisions and does not claim to host the live CodeBuddy server
-adapter. Baseline [Pages run 31673855670](https://github.com/ming3465/MoveRealm/actions/runs/31673855670)
-passed all 53 tests, the production build, artifact upload, and deployment. The final
-favicon-inclusive deployment run ID is **[PENDING FROM RELEASE OWNER]**.
+adapter. Release-application
+[Pages run 31675892852](https://github.com/ming3465/MoveRealm/actions/runs/31675892852) for commit
+[`d640de4`](https://github.com/ming3465/MoveRealm/commit/d640de4) passed all 55 tests across 7 files,
+the production build, artifact upload, and deployment.
 
 ## Project description
 
@@ -108,6 +109,9 @@ Required proof before submission:
 
 - [x] Sanitized runtime artifacts record `/api/health` with `codeBuddyConnected: true` for the three
   controlled room-matrix runs.
+- [x] Two synthetic fake-camera UI captures record health connectivity, visible `CodeBuddy live`
+  scene/adaptation provenance, the bounded adaptation, and empty temporary-upload cleanup. They are
+  controlled evidence, not a real-person run or final-video proof.
 - [ ] Screenshot or recording of `/api/health` showing `codeBuddyConnected: true` in the final video.
 - [ ] Visible `CodeBuddy live` badge in the demo.
 - [ ] Redacted CodeBuddy task/history or usage screenshot proving product use.
@@ -122,7 +126,7 @@ items are disclosure and evidence tasks, not claims that the criterion has alrea
 | Official dimension | Weight | MoveRealm evidence to put on screen | Repository evidence | Gap before submit |
 |---|---:|---|---|---|
 | AI innovation — scenario insight and depth of AI utilization | 30% | One approved still becomes a constrained plan; missed targets plus explicit feedback produce a visible next-round change | [`server/codebuddy.ts`](../server/codebuddy.ts), [`server/prompts.ts`](../server/prompts.ts), [`src/components/GameScreen.tsx`](../src/components/GameScreen.tsx), and the [live room matrix](../artifacts/README.md) | Show live CodeBuddy provenance in the video and do not describe deterministic fallback as live AI |
-| Technical excellence — implementation, AI-tool mastery, completeness, stability | 20% | Show source badge, safety rejection boundary, local pose Worker, low-confidence pause, and fallback recovery | [`src/shared/contracts.ts`](../src/shared/contracts.ts), [`server/app.ts`](../server/app.ts), [`src/pose/pose.worker.ts`](../src/pose/pose.worker.ts), 53/53 current tests, and successful Pages build/deploy run 31673855670 | Save the final audit/smoke logs and complete remaining real-person measurements |
+| Technical excellence — implementation, AI-tool mastery, completeness, stability | 20% | Show source badge, safety rejection boundary, local pose Worker, low-confidence pause, and fallback recovery | [`src/shared/contracts.ts`](../src/shared/contracts.ts), [`server/app.ts`](../server/app.ts), [`src/pose/pose.worker.ts`](../src/pose/pose.worker.ts), 55/55 current tests across 7 files, 0 audit vulnerabilities, and successful Pages run 31675892852 | Cite [`release-checks.md`](../artifacts/validation/release-checks.md) and complete remaining real-person measurements |
 | User experience and demo — smoothness, interaction thoughtfulness, friendliness | 25% | Three-minute setup, room confirmation, calibration, visible adaptation trace, pause/resume, result postcard, guided backup | [`docs/DEMO.md`](DEMO.md), [`src/App.tsx`](../src/App.tsx), [`src/components/`](../src/components) | Record a clean 3–5 minute take; user trials remain pending |
 | Business value and viability — real problem and commercial rollout potential | 25% | Explain the time/space/motivation problem, target user, short-session value, and licensing hypothesis | Project description above and [`README.md`](../README.md) | Keep commercial statements as hypotheses until user and market evidence exists |
 
@@ -168,20 +172,22 @@ active minutes inside the 3.0-minute adventure. `MOVEREALM_CAMERA_SMOKE=1` check
 and MediaPipe Worker readiness with Chrome's fake stream; it is not a real-person FPS, visible
 latency, or TTFF measurement.
 
-Do not mark a gate passed from an earlier estimate. Record the date, environment, exit code, and log
-path after the final artifact build.
+Do not mark a gate passed from an estimate. Record commands, provenance, date, environment, and
+results in [`artifacts/validation/release-checks.md`](../artifacts/validation/release-checks.md).
 
 | Gate | Result | Evidence path |
 |---|---|---|
-| Unit/contracts/adapter tests | **PASS — 53/53 tests** | [Pages run 31673855670](https://github.com/ming3465/MoveRealm/actions/runs/31673855670); current local run on 13 August 2026 |
-| Strict client/server build | **PASS** | [Pages run 31673855670](https://github.com/ming3465/MoveRealm/actions/runs/31673855670) |
-| Baseline GitHub Pages deployment | **PASS** | [run 31673855670](https://github.com/ming3465/MoveRealm/actions/runs/31673855670), <https://ming3465.github.io/MoveRealm/> |
-| Final favicon-inclusive Pages deployment | **[PENDING FINAL RUN ID]** | **[PENDING FROM RELEASE OWNER]** |
-| Dependency audit | **[PENDING FINAL RUN]** | **[PENDING]** |
-| Guided browser smoke | recorded automated evidence on 13 August; **final log pending** | [`VALIDATION.md`](VALIDATION.md) |
-| Full three-round browser smoke | **[PENDING FINAL LOG]** | command above; asserts 2.6 active / 3.0 adventure |
-| Camera/Worker smoke | recorded synthetic-camera evidence on 13 August; **final log pending** | [`VALIDATION.md`](VALIDATION.md) |
-| Timed adaptation smoke | **[PENDING FINAL RUN]** | **[PENDING]** |
+| Unit/contracts/adapter tests | **PASS — 55/55 tests across 7 files** | [Pages run 31675892852](https://github.com/ming3465/MoveRealm/actions/runs/31675892852); [`release-checks.md`](../artifacts/validation/release-checks.md) |
+| Strict client/server build | **PASS** | [Pages run 31675892852](https://github.com/ming3465/MoveRealm/actions/runs/31675892852) |
+| Release-application GitHub Pages deployment, commit `d640de4` | **PASS** | [run 31675892852](https://github.com/ming3465/MoveRealm/actions/runs/31675892852), <https://ming3465.github.io/MoveRealm/> |
+| Dependency audit | **PASS — 0 vulnerabilities** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
+| Public basic browser smoke | **PASS** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
+| Public adaptation smoke | **PASS — `Guided demo` provenance** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
+| Docker captured-room fallback adaptation | **PASS — `Safe fallback` provenance** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
+| Controlled captured-room request audit | **PASS — one still POST; only plan/adaptation POSTs afterward** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
+| Exact-release public full smoke, commit `d640de4` / run 31675892852 | **PASS — 3 rounds, adaptation, honest postcard, replay/stop, no console errors** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
+| Camera/Worker smoke | recorded synthetic-camera evidence on 13 August | [`VALIDATION.md`](VALIDATION.md) |
+| Synthetic fake-camera live CodeBuddy UI | **PASS — health true, scene/adaptation `CodeBuddy live`, bounded adaptation, empty temporary upload directory** | [`VALIDATION.md`](VALIDATION.md); [`artifacts/README.md`](../artifacts/README.md) |
 | Public HTTPS real-person camera flow | **[PENDING DEVICE RUN]** | **[PENDING]** |
 | Live CodeBuddy open/tight/uncertain fixture matrix | **PASS — controlled evidence** | [`artifacts/README.md`](../artifacts/README.md) |
 | Real-person FPS / visible latency / TTFF | **[PENDING ALL MEASUREMENTS]** | [`VALIDATION.md`](VALIDATION.md) |
@@ -201,9 +207,10 @@ Finalize artifacts first, then compute checksums. Any subsequent edit invalidate
 | Project description export | Required portal copy | [`docs/SUBMISSION.md`](SUBMISSION.md) | `<SHA256-PENDING-AFTER-FREEZE>` |
 | CodeBuddy usage proof | Required for scoring eligibility | **[PENDING REDACTED FILE]** | `<SHA256-PENDING>` |
 | Sanitized live-agent evidence | Supporting evidence | [`artifacts/validation/`](../artifacts/validation/) | see [`artifacts/README.md`](../artifacts/README.md) |
+| Guided UI screenshot set | Supporting evidence | [`assets/submission/screenshots/`](../assets/submission/screenshots/) — 6 consent-free PNGs | see [`artifacts/README.md`](../artifacts/README.md) |
+| Synthetic fake-camera CodeBuddy UI captures | Supporting controlled evidence, not real-person evidence | [`assets/submission/screenshots/`](../assets/submission/screenshots/) — 2 consent-free PNGs | see [`artifacts/README.md`](../artifacts/README.md) |
 | Final validation record | Supporting evidence | `docs/VALIDATION.md` | `<SHA256-PENDING>` |
-| Test/build/audit log bundle | Supporting evidence | **[PENDING FILE]** | `<SHA256-PENDING>` |
-| Consented screenshots | Supporting evidence | **[PENDING FILES]** | `<SHA256-PENDING>` |
+| Test/build/audit/smoke record | Supporting evidence | [`artifacts/validation/release-checks.md`](../artifacts/validation/release-checks.md) | `<SHA256-PENDING-AFTER-FREEZE>` |
 
 Example checksum commands, run only against the final files:
 
@@ -222,7 +229,11 @@ shasum -a 256 path/to/moverealm-cover.png
   defined or measured impact without converting targets into results.
 - [ ] Demo URL opens in a signed-out browser and is 3–5 minutes long.
 - [x] Public URL is populated and the HTTPS endpoint returns HTTP 200.
-- [ ] Final favicon-inclusive Pages run ID replaces its pending placeholder.
+- [x] Release-application Pages run 31675892852 for commit `d640de4` passed 55/55 tests across 7
+  files, the build, and deployment.
+- [x] Six consent-free guided screenshots exist under `assets/submission/screenshots/`.
+- [x] Two additional consent-free synthetic fake-camera CodeBuddy UI captures exist under
+  `assets/submission/screenshots/`; they are not real-person evidence.
 - [ ] Product-sharing paragraph includes truthful CodeBuddy development-use proof.
 - [ ] All secrets and participant-identifying material are redacted or consented.
 - [ ] Artifact hashes match the uploaded final files.

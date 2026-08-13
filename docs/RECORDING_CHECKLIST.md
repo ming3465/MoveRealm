@@ -19,10 +19,17 @@ CodeBuddy development tip.
 
 ### Release and evidence
 
-- [x] Confirm baseline [Pages run 31673855670](https://github.com/ming3465/MoveRealm/actions/runs/31673855670)
-  passed all 53 tests, the production build, and deployment.
-- [ ] Replace the pending final favicon-inclusive Pages run ID in [SUBMISSION.md](SUBMISSION.md).
-- [ ] Complete the remaining release gates in [SUBMISSION.md](SUBMISSION.md) and save their logs.
+- [x] Confirm release-application
+  [Pages run 31675892852](https://github.com/ming3465/MoveRealm/actions/runs/31675892852) for commit
+  `d640de4` passed all 55 tests across 7 files, the production build, and deployment.
+- [x] Confirm `npm audit --audit-level=low` reports 0 vulnerabilities.
+- [x] Confirm the public basic smoke passed.
+- [x] Confirm the public adaptation smoke passed with `Guided demo` provenance.
+- [x] Confirm the Docker captured-room fallback adaptation passed with `Safe fallback` provenance.
+- [x] Confirm the exact-release public full smoke against commit `d640de4` / run 31675892852 passed
+  all three rounds, adaptation, postcard accounting, replay/stop, and the no-console-error check.
+- [ ] Complete remaining checks in [SUBMISSION.md](SUBMISSION.md); cite
+  [`artifacts/validation/release-checks.md`](../artifacts/validation/release-checks.md).
 - [ ] Keep [VALIDATION.md](VALIDATION.md) open; do not quote pending human/device values as results.
 - [ ] Open <https://ming3465.github.io/MoveRealm/> in a signed-out browser and verify the guided flow.
 - [ ] Keep <https://github.com/ming3465/MoveRealm> ready as the source link.
@@ -30,6 +37,10 @@ CodeBuddy development tip.
   any segment presented as live CodeBuddy.
 - [ ] Verify the demo video destination is **[PENDING YOUTUBE OR GOOGLE DRIVE URL]**.
 - [x] Prepare the 16:9 cover image at `assets/submission/moverealm-cover-380x216.png`.
+- [x] Confirm six consent-free guided screenshots exist at `assets/submission/screenshots/*.png`.
+- [x] Confirm two additional synthetic fake-camera CodeBuddy UI captures show health connectivity,
+  visible `CodeBuddy live` scene/adaptation provenance, and empty temporary-upload cleanup. Treat
+  them as controlled evidence, not as a real-person run or final-video proof.
 
 Still explicitly pending before a final evidence-complete submission: the 3–5 minute video, all
 three user trials, real-person pose FPS, real-person visible response latency, and real-person time

@@ -16,9 +16,12 @@ GitHub Pages hosts the static client, so the public link is the complete guided-
 visibly labelled deterministic decisions. The live CodeBuddy Movement Director requires the local or
 production Node adapter described below; the public demo does not impersonate that integration.
 
-The baseline Pages deployment [run 31673855670](https://github.com/ming3465/MoveRealm/actions/runs/31673855670)
-passed all 53 tests, the production build, artifact upload, and deployment. A newer
-favicon-inclusive deployment is awaiting its final release run ID.
+The release-application Pages deployment
+[run 31675892852](https://github.com/ming3465/MoveRealm/actions/runs/31675892852) for commit
+[`d640de4`](https://github.com/ming3465/MoveRealm/commit/d640de4) passed all 55 tests across 7 files,
+the production build, artifact upload, and deployment. Six consent-free guided screenshots and two
+controlled synthetic fake-camera CodeBuddy UI captures are available under
+[`assets/submission/screenshots/`](assets/submission/screenshots/).
 
 ## Run it
 
@@ -90,9 +93,9 @@ deterministic path. A production Node deployment serves both the Vite bundle and
 ## Verification
 
 ```bash
-npm test             # current release: 53/53 tests pass
+npm test             # current release: 55/55 tests pass across 7 files
 npm run build        # strict client/server typecheck and production bundle
-npm audit --audit-level=low
+npm audit --audit-level=low  # current release: 0 vulnerabilities
 ```
 
 Start `npm run dev` in one terminal, then use a second terminal for the browser checks:
@@ -104,6 +107,21 @@ MOVEREALM_CAMERA_SMOKE=1 npm run smoke:browser
 MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
 MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
 ```
+
+Recorded release checks include a passing public basic smoke, a passing public adaptation smoke with
+`Guided demo` provenance, and a passing Docker-packaged captured-room fallback adaptation with
+`Safe fallback` provenance. The exact-release public full smoke against commit `d640de4` and Pages
+run 31675892852 also passed: all three rounds scored, the adaptation exposed its before/after
+change, the postcard reported 2.6 active minutes and a 3.0-minute adventure with tracking `N/A`,
+replay/stop completed, and no console errors appeared. See
+[`artifacts/validation/release-checks.md`](artifacts/validation/release-checks.md) for the command and
+result record.
+
+Separate controlled UI evidence used Chrome's synthetic fake-camera stream: health reported
+`codeBuddyConnected: true`; the scene and adaptation screens visibly showed `CodeBuddy live` with
+34.826 s and 12.438 s source latencies; adaptation changed range 60 → 45%, tempo 0.90 → 0.70×,
+and target rate 7 → 5; and the temporary upload directory was empty afterward. This is agent/UI and
+cleanup evidence, not real-person FPS, visible response latency, TTFF, or usability evidence.
 
 The full guided smoke checks the honest result accounting: three 52-second movement rounds are
 **2.6 active minutes**, and two 12-second rests bring the complete adventure to **3.0 minutes**.

@@ -16,17 +16,25 @@ dash (`—`) means **not measured**; it is not a zero and must never be replaced
 
 | Check | Observed | Evidence status |
 |---|---|---|
-| Vitest suite | 6 files, **53/53 tests passed** | recorded automated evidence |
-| Production build | strict client/server checks and Vite build passed | recorded in Pages run 31673855670 |
-| GitHub Pages deployment | successful | recorded in Pages run 31673855670 |
+| Vitest suite | 7 files, **55/55 tests passed** | recorded automated evidence |
+| Production build | strict client/server checks and Vite build passed | recorded in Pages run 31675892852 |
+| npm dependency audit | **0 vulnerabilities** | recorded automated evidence |
+| GitHub Pages deployment | successful for release commit `d640de4` | recorded in Pages run 31675892852 |
 | Public guided demo | <https://ming3465.github.io/MoveRealm/> returned HTTP 200 | recorded deployment check |
 | Source repository | <https://github.com/ming3465/MoveRealm> | recorded release location |
-| Final favicon-inclusive Pages run ID | — | pending release bookkeeping |
+| Public basic browser smoke | passed | recorded automated release evidence |
+| Public adaptation browser smoke | passed with `Guided demo` provenance | recorded automated release evidence |
+| Docker packaged captured-room fallback adaptation | passed with `Safe fallback` provenance | recorded automated release evidence |
+| Controlled captured-room request audit | one still POST followed only by plan and adaptation POSTs | recorded automated release evidence |
+| Exact-release public full smoke | passed against commit `d640de4` / run 31675892852 | recorded automated release evidence |
+| Guided screenshot set | 6 consent-free PNGs | recorded submission artifacts |
+| Synthetic fake-camera CodeBuddy UI set | 2 consent-free PNGs; live source badges and upload cleanup recorded | recorded controlled evidence |
 
-[GitHub Pages run 31673855670](https://github.com/ming3465/MoveRealm/actions/runs/31673855670)
-completed `npm ci`, all 53 tests, `npm run build`, artifact upload, and deployment successfully. A
-newer favicon-inclusive deployment must replace the pending run-ID row once the release owner sends
-the final run ID.
+[GitHub Pages run 31675892852](https://github.com/ming3465/MoveRealm/actions/runs/31675892852)
+completed `npm ci`, all 55 tests across 7 files, `npm run build`, artifact upload, and deployment
+successfully for release commit
+[`d640de4`](https://github.com/ming3465/MoveRealm/commit/d640de4). The release command and
+result record belongs in [`artifacts/validation/release-checks.md`](../artifacts/validation/release-checks.md).
 
 ## Recorded automated browser evidence — 13 August 2026
 
@@ -37,6 +45,21 @@ calibration, Phaser gameplay, keyboard scoring, pause, and resume without an app
 Chrome's fake stream does not contain a trackable person, so this evidence does **not** establish
 real-person pose FPS, camera-to-visual response latency, movement accuracy, time to first movement,
 or usability.
+
+The public application passed its basic smoke. Its public adaptation smoke also passed and showed
+`Guided demo` provenance. Separately, the packaged Docker path captured a room, exercised the
+fallback adaptation, and showed `Safe fallback` provenance. These checks verify source labelling;
+they do not turn guided or fallback output into live CodeBuddy output. The exact-release public full
+smoke against commit `d640de4` / run 31675892852 also passed: the three round scores advanced
+0 → 145 → 290 → 435; adaptation displayed
+64 → 48% range, 0.90 → 0.77× tempo, and 7 → 6 target rate; the postcard displayed 2.6 active
+minutes, a 3.0-minute adventure clock, and tracking `N/A`; replay and stop passed; and no console
+errors were recorded.
+
+The packaged captured-room smoke also recorded browser requests. It observed exactly one
+`POST /api/scene/analyze`, followed by `POST /api/quest/plan` and `POST /api/quest/adapt`, with no
+unexpected POST destination. This is controlled fake-camera evidence that frames were not repeatedly
+uploaded in that run; the real-camera network inspection remains pending.
 
 The current full guided-smoke oracle also checks the result card's time accounting:
 
@@ -55,8 +78,39 @@ MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
 MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
 ```
 
-These commands document how to reproduce each path. Preserve a fresh final-run log before citing a
-specific command as submission evidence.
+These commands document how to reproduce each path. Cite the preserved command and result entries in
+[`artifacts/validation/release-checks.md`](../artifacts/validation/release-checks.md); do not infer a
+passing human/device measurement from the successful guided smoke.
+
+## Consent-free guided screenshots
+
+The release includes six 1440×913 guided-flow PNGs under
+[`assets/submission/screenshots/`](../assets/submission/screenshots/): landing, room confirmation,
+calibration, gameplay, adaptation, and postcard. They contain no participant or retained webcam
+frame and are submission UI artifacts, not human/device evidence.
+
+## Recorded synthetic fake-camera CodeBuddy UI evidence — 13 August 2026
+
+This controlled browser flow used Chrome's synthetic fake-camera stream; it did not contain a
+trackable or identifiable person. Health reported `codeBuddyConnected: true`, and the temporary
+upload directory was empty after scene analysis.
+
+| UI state | Visible provenance | Displayed source latency | Visible result |
+|---|---|---:|---|
+| Scene | `CodeBuddy live` | 34.826 s | conservative uncertain-room result |
+| Adaptation | `CodeBuddy live` | 12.438 s | range 60 → 45%, tempo 0.90 → 0.70×, target rate 7 → 5 |
+
+The displayed seconds are CodeBuddy request/source latencies, not camera-to-visual movement latency.
+The two consent-free captures are:
+
+| File | SHA-256 |
+|---|---|
+| [`07-live-codebuddy-scene.png`](../assets/submission/screenshots/07-live-codebuddy-scene.png) | `48e0e5f0fd8bd402f8550021b3ca338034414d7a9ad6acc2252ff0c68889fc4a` |
+| [`08-live-codebuddy-adaptation.png`](../assets/submission/screenshots/08-live-codebuddy-adaptation.png) | `06c00b49384d72ee83f0ada2d8a476e486f7a189020ac5bf68ce28949dbfce40` |
+
+This proves controlled agent connectivity, visible live provenance, adaptation output, and cleanup.
+It does **not** establish real-person pose FPS, visible movement latency, TTFF, movement accuracy,
+usability, or a participant result.
 
 ## Recorded controlled live-CodeBuddy room matrix — 13 August 2026
 
@@ -120,7 +174,7 @@ Measurement method:
 | Check | Observation | Status |
 |---|---|---|
 | Browser camera frames produce no outbound requests | — | pending real-camera network inspection |
-| Server temporary room still is removed after analysis | empty after all three controlled matrix runs | recorded controlled evidence |
+| Server temporary room still is removed after analysis | empty after all three controlled matrix runs and the synthetic fake-camera UI flow | recorded controlled evidence |
 | Participant consent for retained stills or recordings | — | pending per participant |
 
 Use browser network tooling during the real-camera run to check that live frames are not uploaded.
