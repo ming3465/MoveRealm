@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.0.0",
-  "observedAt": "2026-08-13T14:37:34.807Z",
+  "observedAt": "2026-08-13T15:13:56.834Z",
   "inputSha256": "06e546751cdc075f6e94ce51c58236df4b1ed4eab2c316c6fc7bf00ed2f3dac5",
   "fixtureId": "uncertain-room",
   "source": "codebuddy",
   "deterministic": {
-    "passed": true,
+    "passed": false,
     "checks": [
       {
         "id": "fixture-hash",
@@ -25,12 +25,12 @@
       {
         "id": "request-consistency",
         "status": "pass",
-        "detail": "The plan request is anchored to the judged scene."
+        "detail": "The plan request and confirmed constraints stay inside the judged scene envelope."
       },
       {
         "id": "plan-safety",
-        "status": "pass",
-        "detail": "Plan passes the authoritative production duration, movement, and room-envelope gates."
+        "status": "fail",
+        "detail": "An uncertain room permits in-place reach rounds only."
       }
     ]
   },
@@ -39,7 +39,7 @@
     "provider": "ollama",
     "model": "qwen3-vl:8b-instruct-q4_K_M",
     "modelDigest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
-    "latencyMs": 79126,
+    "latencyMs": 79390,
     "verdict": {
       "schemaVersion": "1.0.0",
       "scene": {
@@ -126,6 +126,6 @@
   "totals": {
     "advisoryEarned": 19,
     "advisoryPossible": 24,
-    "eligible": true
+    "eligible": false
   }
 }

@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0.0",
+  "fixtureId": "uncertain-room",
+  "source": "codebuddy",
+  "scene": {
+    "spaceClass": "uncertain",
+    "obstacles": [
+      {
+        "label": "door frame left",
+        "zone": "left",
+        "severity": "medium"
+      },
+      {
+        "label": "door/wall right",
+        "zone": "right",
+        "severity": "medium"
+      },
+      {
+        "label": "curtain and window",
+        "zone": "center",
+        "severity": "low"
+      }
+    ],
+    "permittedDirections": [
+      "vertical",
+      "center"
+    ],
+    "confidence": 0.35,
+    "summary": "View through a doorway; floor and lateral space not visible. Only upright reach and forward center movement tentatively permitted. Conservative profile applied."
+  },
+  "planRequest": {
+    "scene": {
+      "spaceClass": "uncertain",
+      "obstacles": [
+        {
+          "label": "door frame left",
+          "zone": "left",
+          "severity": "medium"
+        },
+        {
+          "label": "door/wall right",
+          "zone": "right",
+          "severity": "medium"
+        },
+        {
+          "label": "curtain and window",
+          "zone": "center",
+          "severity": "low"
+        }
+      ],
+      "permittedDirections": [
+        "vertical",
+        "center"
+      ],
+      "confidence": 0.35,
+      "summary": "View through a doorway; floor and lateral space not visible. Only upright reach and forward center movement tentatively permitted. Conservative profile applied."
+    },
+    "constraints": {
+      "floorClear": true,
+      "noJumping": true,
+      "sideStepRange": "none",
+      "permittedDirections": [
+        "vertical",
+        "center"
+      ]
+    },
+    "intent": {
+      "durationSeconds": 180,
+      "energy": "balanced",
+      "noJumping": true
+    }
+  },
+  "plan": {
+    "theme": "neon_rainforest",
+    "title": "Canopy Glow: Neon Rainforest Quest",
+    "requestedDurationSeconds": 180,
+    "restBetweenRoundsSeconds": 12,
+    "rounds": [
+      {
+        "id": "round-1",
+        "movementId": "reach",
+        "durationSeconds": 52,
+        "targetRate": 10,
+        "rangeScale": 0.6,
+        "tempo": 0.9,
+        "mechanic": "collect_fireflies",
+        "prompt": "Reach up through the canopy and capture glowing fireflies above you.",
+        "accent": "mint"
+      },
+      {
+        "id": "round-2",
+        "movementId": "squat",
+        "durationSeconds": 52,
+        "targetRate": 8,
+        "rangeScale": 0.58,
+        "tempo": 0.85,
+        "mechanic": "shelter_seedlings",
+        "prompt": "Lower down to cover the neon seedlings as the jungle rain begins.",
+        "accent": "orchid"
+      },
+      {
+        "id": "round-3",
+        "movementId": "reach",
+        "durationSeconds": 52,
+        "targetRate": 12,
+        "rangeScale": 0.62,
+        "tempo": 1,
+        "mechanic": "collect_fireflies",
+        "prompt": "Stretch tall and gather the last fireflies flickering in the canopy light.",
+        "accent": "amber"
+      }
+    ],
+    "safetyNote": "Stay centered; do not reach toward doorframes or side walls. Move only within a comfortable upright vertical range."
+  },
+  "adaptations": []
+}

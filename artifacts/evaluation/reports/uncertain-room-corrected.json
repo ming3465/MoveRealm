@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "observedAt": "2026-08-13T14:41:32.955Z",
+  "observedAt": "2026-08-13T15:15:16.478Z",
   "inputSha256": "437e086069dde4be73d2828a5961fa8cdb55bfe45d9df99f7491d5b91d61d1ce",
   "fixtureId": "uncertain-room",
   "source": "fallback",
@@ -25,7 +25,7 @@
       {
         "id": "request-consistency",
         "status": "pass",
-        "detail": "The plan request is anchored to the judged scene."
+        "detail": "The plan request and confirmed constraints stay inside the judged scene envelope."
       },
       {
         "id": "plan-safety",
@@ -39,7 +39,7 @@
     "provider": "ollama",
     "model": "qwen3-vl:8b-instruct-q4_K_M",
     "modelDigest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
-    "latencyMs": 82078,
+    "latencyMs": 73674,
     "verdict": {
       "schemaVersion": "1.0.0",
       "scene": {

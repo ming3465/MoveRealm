@@ -64,7 +64,30 @@ export async function evaluateHardGates(
         JSON.stringify(candidate.planRequest.scene) === JSON.stringify(candidate.scene),
         "The plan request scene differs from the judged scene.",
       );
-      return "The plan request is anchored to the judged scene.";
+      const sceneDirections = new Set(candidate.scene.permittedDirections);
+      const confirmedDirections = candidate.planRequest.constraints.permittedDirections;
+      assert(
+        new Set(confirmedDirections).size === confirmedDirections.length,
+        "Confirmed movement directions must be unique.",
+      );
+      for (const direction of confirmedDirections) {
+        assert(
+          sceneDirections.has(direction),
+          `Confirmed ${direction} movement exceeds the judged scene envelope.`,
+        );
+      }
+      const hasConfirmedLateral = confirmedDirections.some(
+        (direction) => direction === "left" || direction === "right",
+      );
+      assert(
+        hasConfirmedLateral || candidate.planRequest.constraints.sideStepRange === "none",
+        "A side-step range cannot be confirmed without a judged lateral lane.",
+      );
+      assert(
+        candidate.scene.spaceClass === "open" || candidate.planRequest.constraints.sideStepRange !== "wide",
+        "Only a judged open room can confirm a wide side-step range.",
+      );
+      return "The plan request and confirmed constraints stay inside the judged scene envelope.";
     }),
     check("plan-safety", () => {
       validatePlanSafety(candidate.plan, candidate.planRequest);
@@ -72,6 +95,37 @@ export async function evaluateHardGates(
     }),
     ...candidate.adaptations.map((adaptation, index) =>
       check(`adaptation-${index + 1}-safety`, () => {
+        assert(
+          JSON.stringify(adaptation.request.constraints) ===
+            JSON.stringify(candidate.planRequest.constraints),
+          "Adaptation constraints differ from the validated plan request.",
+        );
+        assert(
+          JSON.stringify(adaptation.request.intent) === JSON.stringify(candidate.planRequest.intent),
+          "Adaptation intent differs from the validated plan request.",
+        );
+        const plannedRound = candidate.plan.rounds.find(
+          (round) => round.id === adaptation.request.nextRoundSeed.id,
+        );
+        assert(plannedRound, "Adaptation seed is not a round in the validated plan.");
+        assert(
+          JSON.stringify(adaptation.request.nextRoundSeed) === JSON.stringify(plannedRound),
+          "Adaptation seed differs from the validated plan round.",
+        );
+        const telemetryRound = candidate.plan.rounds.find(
+          (round) => round.id === adaptation.request.telemetry.roundId,
+        );
+        assert(telemetryRound, "Adaptation telemetry is not attached to a validated plan round.");
+        assert(
+          telemetryRound.movementId === adaptation.request.telemetry.movementId,
+          "Adaptation telemetry movement differs from the validated plan round.",
+        );
+        const telemetryRoundNumber = Number(adaptation.request.telemetry.roundId.slice("round-".length));
+        const seedRoundNumber = Number(adaptation.request.nextRoundSeed.id.slice("round-".length));
+        assert(
+          seedRoundNumber === telemetryRoundNumber + 1,
+          "Adaptation seed must be the round immediately after its telemetry.",
+        );
         validateAdaptationSafety(adaptation.decision, adaptation.request);
         const telemetry = adaptation.request.telemetry;
         const expectedRate = telemetry.targetsPresented

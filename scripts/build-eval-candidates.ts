@@ -16,12 +16,15 @@ import { createFallbackPlan } from "../src/shared/fallbacks.js";
 interface MatrixObservation {
   fixture: string;
   scene: unknown;
+  sceneSource?: "codebuddy" | "fallback" | "demo";
   plan?: unknown;
+  planSource?: "codebuddy" | "fallback" | "demo";
 }
 
 interface MatrixEvidence {
   observations?: MatrixObservation[];
   adaptation?: {
+    source?: "codebuddy" | "fallback" | "demo";
     syntheticTelemetry?: unknown;
     before?: unknown;
     decision?: unknown;
@@ -59,6 +62,11 @@ for (const observation of matrix.observations) {
     );
   }
   const scene = validateSceneSafety(observation.scene);
+  if (observation.sceneSource !== "codebuddy" || observation.planSource !== "codebuddy") {
+    throw new Error(
+      `Matrix observation ${observation.fixture} must preserve CodeBuddy scene and plan provenance for this evaluation set.`,
+    );
+  }
   const planRequest: PlanRequest = {
     scene,
     constraints: constraintsFor(scene),
@@ -77,6 +85,9 @@ for (const observation of matrix.observations) {
   }
   const adaptations = [];
   if (observation.fixture === "tight-room.png" && matrix.adaptation) {
+    if (matrix.adaptation.source !== "codebuddy") {
+      throw new Error("The tight-room adaptation must preserve CodeBuddy provenance for this evaluation set.");
+    }
     const request: AdaptRequest = {
       telemetry: matrix.adaptation.syntheticTelemetry as AdaptRequest["telemetry"],
       nextRoundSeed: matrix.adaptation.before as AdaptRequest["nextRoundSeed"],

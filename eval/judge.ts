@@ -120,7 +120,7 @@ List invented fatigue, form, diagnosis, or room claims in unsupportedClaims. Ret
       detail: "Advisory local vision judgment completed; raw model output is intentionally omitted.",
       rawOmitted: true,
     };
-  } catch (error) {
+  } catch {
     return {
       status: "invalid",
       provider: "ollama",
@@ -128,7 +128,7 @@ List invented fatigue, form, diagnosis, or room claims in unsupportedClaims. Ret
       modelDigest: installed.digest ?? null,
       latencyMs: Math.round(performance.now() - startedAt),
       verdict: null,
-      detail: error instanceof Error ? error.message.slice(0, 300) : "The local judge failed.",
+      detail: "The local judge response was unavailable or failed schema validation; response content was omitted.",
       rawOmitted: true,
     };
   }

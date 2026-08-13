@@ -157,6 +157,69 @@ describe("offline agent evaluation", () => {
     expect(result.checks.find((item) => item.id === "scene-oracle")?.detail).toMatch(/unexpected permitted left/i);
   });
 
+  it("rejects confirmed constraints that expand beyond the judged scene", async () => {
+    const candidate = candidateFor("tight-room");
+    candidate.planRequest.constraints.permittedDirections = ["vertical", "left", "right", "center"];
+    candidate.planRequest.constraints.sideStepRange = "wide";
+    const openRequest = candidateFor("open-room").planRequest;
+    candidate.plan = createFallbackPlan({
+      ...openRequest,
+      scene: candidate.scene,
+      constraints: candidate.planRequest.constraints,
+    });
+
+    const result = await evaluateHardGates(candidate, fixture("tight-room"));
+
+    expect(result.passed).toBe(false);
+    expect(result.checks.find((item) => item.id === "request-consistency")?.detail).toMatch(
+      /exceeds the judged scene envelope/i,
+    );
+  });
+
+  it("rejects adaptation inputs that are detached from the validated plan", async () => {
+    const candidate = candidateFor("tight-room");
+    candidate.adaptations[0].request.constraints.permittedDirections = [
+      "vertical",
+      "left",
+      "right",
+      "center",
+    ];
+    candidate.adaptations[0].request.constraints.sideStepRange = "wide";
+
+    const result = await evaluateHardGates(candidate, fixture("tight-room"));
+
+    expect(result.passed).toBe(false);
+    expect(result.checks.find((item) => item.id === "adaptation-1-safety")?.detail).toMatch(
+      /constraints differ/i,
+    );
+  });
+
+  it("rejects adaptation telemetry that contradicts its validated plan round", async () => {
+    const candidate = candidateFor("tight-room");
+    candidate.adaptations[0].request.telemetry.roundId = "round-3";
+    candidate.adaptations[0].request.telemetry.movementId = "side_step";
+
+    const result = await evaluateHardGates(candidate, fixture("tight-room"));
+
+    expect(result.passed).toBe(false);
+    expect(result.checks.find((item) => item.id === "adaptation-1-safety")?.detail).toMatch(
+      /telemetry movement differs/i,
+    );
+  });
+
+  it("requires an adaptation to tune the round immediately after its telemetry", async () => {
+    const candidate = candidateFor("tight-room");
+    candidate.adaptations[0].request.telemetry.roundId = "round-2";
+    candidate.adaptations[0].request.telemetry.movementId = candidate.plan.rounds[1].movementId;
+
+    const result = await evaluateHardGates(candidate, fixture("tight-room"));
+
+    expect(result.passed).toBe(false);
+    expect(result.checks.find((item) => item.id === "adaptation-1-safety")?.detail).toMatch(
+      /immediately after/i,
+    );
+  });
+
   it("fails when fixture bytes do not match the independent hash", async () => {
     const badOracle = { ...fixture("open-room"), sha256: "0".repeat(64) };
     const result = await evaluateHardGates(candidateFor("open-room"), badOracle);
@@ -230,6 +293,27 @@ describe("offline agent evaluation", () => {
     expect(result.status).toBe("invalid");
     expect(result.verdict).toBeNull();
     expect(result.detail).not.toContain("raw output");
+  });
+
+  it("never copies unparseable model content into an invalid report", async () => {
+    vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ models: [{ name: "qwen3-vl:8b-instruct-q4_K_M" }] }), { status: 200 }),
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ message: { content: "TOP_SECRET_RAW_NOT_JSON" } }), { status: 200 }),
+      );
+
+    const result = await runOllamaJudge(candidateFor("open-room"), fixture("open-room"), {
+      baseUrl: "http://127.0.0.1:11434",
+      model: "qwen3-vl:8b-instruct-q4_K_M",
+    });
+
+    expect(result.status).toBe("invalid");
+    expect(result.detail).toBe(
+      "The local judge response was unavailable or failed schema validation; response content was omitted.",
+    );
+    expect(JSON.stringify(result)).not.toContain("TOP_SECRET_RAW_NOT_JSON");
   });
 
   it("tracks the exact candidate bytes used for evaluation", async () => {
