@@ -324,6 +324,7 @@ try {
   await waitFor('!!document.querySelector(".confirm-layout")');
   const confirmState = await evaluate(`({
     badge: document.querySelector(".director-badge")?.textContent.trim(),
+    detail: document.querySelector(".director-badge")?.getAttribute("title") ?? null,
     floorChecked: document.querySelector(".floor-confirm input")?.checked,
     continueDisabled: [...document.querySelectorAll("button")].find((button) => button.textContent.includes("Grow my adventure"))?.disabled
   })`);

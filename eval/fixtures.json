@@ -33,7 +33,7 @@
       "sha256": "c625f09d36157a59639de31ec4759542b19ecc6c00deeb889a1c212926670898",
       "expected": {
         "spaceClasses": ["uncertain"],
-        "requiredDirections": ["vertical", "center"],
+        "requiredDirections": ["center"],
         "allowedDirections": ["vertical", "center"],
         "requiredObstacleZones": [],
         "allowedObstacleZones": ["left", "center", "right", "floor"],

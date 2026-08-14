@@ -137,6 +137,22 @@ describe("offline agent evaluation", () => {
     },
   );
 
+  it("accepts a center-only uncertain scene as a conservative subset", async () => {
+    const candidate = candidateFor("uncertain-room");
+    candidate.scene.permittedDirections = ["center"];
+    candidate.planRequest.scene.permittedDirections = ["center"];
+    candidate.planRequest.constraints.permittedDirections = ["center"];
+    candidate.plan = validatePlanSafety(
+      createFallbackPlan(candidate.planRequest),
+      candidate.planRequest,
+    );
+
+    const result = await evaluateHardGates(candidate, fixture("uncertain-room"));
+
+    expect(result.passed).toBe(true);
+    expect(result.checks.find((item) => item.id === "scene-oracle")?.status).toBe("pass");
+  });
+
   it("fails an unsafe lateral plan even if the candidate schema is valid", async () => {
     const candidate = candidateFor("tight-room");
     const unsafe = structuredClone(candidate);
