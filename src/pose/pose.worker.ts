@@ -13,6 +13,7 @@ import type {
   PoseWorkerResponse,
 } from "./types";
 import { RELIABLE_POSE_CONFIDENCE } from "./movementDetectors";
+import { confidenceOf } from "./confidence";
 
 const workerScope: DedicatedWorkerGlobalScope = self as unknown as DedicatedWorkerGlobalScope;
 let landmarker: PoseLandmarker | undefined;
@@ -27,12 +28,6 @@ function normalizeLandmark(landmark: NormalizedLandmark): PoseLandmark {
     z: landmark.z ?? 0,
     visibility: landmark.visibility ?? 0,
   };
-}
-
-function confidenceOf(landmarks: PoseLandmark[]): number {
-  const important = [0, 11, 12, 15, 16, 23, 24, 25, 26, 27, 28];
-  const visible = important.map((index) => landmarks[index]?.visibility ?? 0);
-  return visible.reduce((sum, value) => sum + value, 0) / visible.length;
 }
 
 function copyMask(result: PoseLandmarkerResult): PoseMask | undefined {

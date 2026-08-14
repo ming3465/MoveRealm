@@ -138,6 +138,30 @@ describe("assisted movement controls", () => {
     expect(hint).toContain("↑");
   });
 
+  it("offers a way out of a round the player cannot perform", async () => {
+    await renderGame(root, "squat");
+    const skip = container.querySelector(".game-skip-button");
+    expect(skip).not.toBeNull();
+    expect(skip?.getAttribute("aria-label")).toContain("next stage");
+  });
+
+  it("leaves the round for the feedback step when the player skips", async () => {
+    await renderGame(root, "reach");
+    expect(container.querySelector(".assist-key")).not.toBeNull();
+
+    await act(async () => {
+      (container.querySelector(".game-skip-button") as HTMLButtonElement).click();
+    });
+
+    // Play is over: the movement controls and the skip control both retire, and the
+    // round-end feedback question takes over.
+    expect(container.querySelector(".assist-key")).toBeNull();
+    expect(container.querySelector(".game-skip-button")).toBeNull();
+    expect(container.textContent).toContain("Round 1 complete");
+    expect(container.textContent).toContain("How did that feel?");
+    expect(container.textContent).toContain("Let the world adapt");
+  });
+
   it("hides the controls in camera mode, where the body is the controller", async () => {
     const plan = planFor("reach");
     await act(async () => {

@@ -129,6 +129,8 @@ export function GameScreen({
   >(undefined);
   const roundStartedAtRef = useRef(performance.now());
   const endedRef = useRef(false);
+  // Seconds actually spent in a playing round, accumulated as each round closes.
+  const activeSecondsRef = useRef(0);
   const overlayRef = useRef<HTMLDivElement>(null);
 
   const currentRound = rounds[roundIndex];
@@ -274,20 +276,41 @@ export function GameScreen({
     gameRef.current?.setTrackingPaused(globallyPaused);
   }, [globallyPaused]);
 
+  // Close the current round and move to the feedback step, recording only the
+  // seconds actually played. Used by the round clock and by the skip control.
+  const endRound = useCallback(
+    (secondsRemaining: number) => {
+      activeSecondsRef.current += Math.max(
+        0,
+        currentRound.durationSeconds - Math.max(0, secondsRemaining),
+      );
+      setSecondsLeft(0);
+      setPhase("feedback");
+    },
+    [currentRound.durationSeconds],
+  );
+
+  const skipRound = useCallback(() => {
+    if (phase !== "playing") return;
+    setManualPaused(false);
+    setTrackingPaused(false);
+    endRound(secondsLeft);
+  }, [endRound, phase, secondsLeft]);
+
   useEffect(() => {
     if (globallyPaused) return;
     const timer = window.setInterval(() => {
-      setSecondsLeft((value) => {
-        if (value <= 1) {
-          window.clearInterval(timer);
-          setPhase("feedback");
-          return 0;
-        }
-        return value - 1;
-      });
+      setSecondsLeft((value) => (value <= 1 ? 0 : value - 1));
     }, 1_000);
     return () => window.clearInterval(timer);
   }, [globallyPaused, roundIndex]);
+
+  // Closing the round is a side effect, so it runs here rather than inside the
+  // countdown updater, which must stay pure.
+  useEffect(() => {
+    if (phase !== "playing" || secondsLeft > 0) return;
+    endRound(0);
+  }, [endRound, phase, secondsLeft]);
 
   useEffect(() => {
     if (phase !== "rest") return;
@@ -382,11 +405,11 @@ export function GameScreen({
         plan: { ...plan, rounds },
         telemetry: allTelemetry,
         adaptations: allAdaptations,
-        activeSeconds: allTelemetry.length
-          ? rounds
-              .slice(0, allTelemetry.length)
-              .reduce((sum, round) => sum + round.durationSeconds, 0)
-          : 0,
+        // Time actually spent moving, not time the plan asked for. A skipped round
+        // must shorten this: the evidence exporter deliberately refuses a session
+        // that did not complete its full active duration, and quietly reporting the
+        // planned figure would turn a partial run into false trial evidence.
+        activeSeconds: Math.round(activeSecondsRef.current),
         totalTargets: allTelemetry.reduce((sum, round) => sum + round.targetsPresented, 0),
         completedTargets: allTelemetry.reduce((sum, round) => sum + round.targetsCompleted, 0),
         timeToFirstMovementMs: firstMovementAtRef.current == null
@@ -497,6 +520,16 @@ export function GameScreen({
           </div>
           <div className="game-actions">
             <div className="game-score" aria-live="polite"><small>Garden glow</small><strong>{score.toLocaleString()}</strong></div>
+            {phase === "playing" && (
+              <button
+                className="game-skip-button"
+                type="button"
+                onClick={skipRound}
+                aria-label={`Skip ${formatMovementName(currentRound.movementId).toLowerCase()} and go to the next stage`}
+              >
+                Skip round <span aria-hidden="true">→</span>
+              </button>
+            )}
             <button className="game-icon-button" type="button" onClick={() => setManualPaused((value) => !value)} aria-label={manualPaused ? "Resume adventure" : "Pause adventure"}>{manualPaused ? "▶" : "Ⅱ"}</button>
             <button className="game-icon-button" type="button" onClick={onExit} aria-label="Stop adventure">×</button>
           </div>
@@ -551,7 +584,14 @@ export function GameScreen({
       {trackingPaused && phase === "playing" && (
         <div ref={overlayRef} tabIndex={-1} className="tracking-pause" role="alertdialog" aria-modal="true" aria-labelledby="tracking-title">
           <span className="tracking-pause__figure">◌</span>
-          <div><strong id="tracking-title">Step back into view</strong><p>{poseError ?? "The world is paused because your pose is not reliably visible."}</p><button className="text-button" type="button" onClick={onUseKeyboard}>Continue with keyboard controls</button></div>
+          <div>
+            <strong id="tracking-title">Step back into view</strong>
+            <p>{poseError ?? "The world is paused because your pose is not reliably visible. Move back so your head and shoulders are in frame."}</p>
+            <div className="tracking-pause__actions">
+              <button className="text-button" type="button" onClick={onUseKeyboard}>Continue with tap or keyboard controls</button>
+              <button className="text-button" type="button" onClick={skipRound}>Skip this round</button>
+            </div>
+          </div>
         </div>
       )}
 
