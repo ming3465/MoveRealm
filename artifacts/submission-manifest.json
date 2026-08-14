@@ -1,19 +1,23 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-08-14T01:41:22+08:00",
+  "generatedAt": "2026-08-14T10:09:19+08:00",
   "product": "MoveRealm",
   "applicationSource": {
-    "commit": "cf157093ff3dab7b3598387d68973f82a3e364c2",
-    "tree": "404fdc889cabc0212a6fd2197102eff7da5abde6"
+    "commit": "9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90",
+    "tree": "7815bcec16105bd30d87e7f1036ac8a02fee613a"
+  },
+  "implementationCheckpoint": {
+    "commit": "de0b2defc22f524e29bc4ea1019e86c4d31aa915",
+    "tree": "25b1f5b728a0b2baaf0ba39bb5a9087e7906d998"
   },
   "documentationSnapshot": {
-    "commit": "c4254bf52c99e9551d75c4c915dfd4ca829d9be7",
-    "tree": "25652fd52a289d6db21b4040d2c8446d7a3d46a1"
+    "commit": "8fe9022a0a5fd1257679adbc966db25bff640788",
+    "tree": "cfc59e4dcc503548f85edaee31ffc3a127143922"
   },
-  "publicPredecessor": {
-    "commit": "7fe9009728d545798c1b5efd7b367d4f54264eaf",
-    "buildId": "build-31714506917",
-    "pagesRunId": 31714506917,
+  "publicRelease": {
+    "commit": "9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90",
+    "buildId": "build-31762210597",
+    "pagesRunId": 31762210597,
     "url": "https://ming3465.github.io/MoveRealm/"
   },
   "artifacts": [
@@ -74,7 +78,7 @@
     },
     {
       "path": "docs/SUBMISSION.md",
-      "sha256": "848e1adc32b96e8e448d176d4b9c7d12c134cefeb53858bedddb9dad40e227f9",
+      "sha256": "95c0c9d1b5630776345e2432036904f83ac05b20a9fffe67ff2eba5316932275",
       "classification": "portal copy and submission checklist"
     },
     {
@@ -84,17 +88,17 @@
     },
     {
       "path": "docs/EVALUATION.md",
-      "sha256": "08cd42bb22e6e49a60315fad79fa83e1b0d2e66f69b8f80d42d6eb13eabab007",
+      "sha256": "7a822a5e2aa9942f1595d227439ac66fa844bdce7118fc7c2650d0236b791268",
       "classification": "offline advisory-model evaluation record"
     },
     {
       "path": "docs/VALIDATION.md",
-      "sha256": "d7f60c28579024dadd05589a21de52ffa1fd52328f5a7508aa3f944137cf2520",
+      "sha256": "593ed76c60a11d094972d41a4bcdb48d14cc29e277e3e6de861eb3bd3cd1c0fc",
       "classification": "validation and pending-action record"
     },
     {
       "path": "artifacts/validation/release-checks.md",
-      "sha256": "847ad00857b1cd9f8d09dd3d5c04c5695bb04a457ed647bcfe9c3a90de302661",
+      "sha256": "965be2d62ee4373e3591252a5f656ed0d8e13b93ee4c1db786281afd3676035c",
       "classification": "test, build, audit, Docker, and smoke record"
     },
     {
@@ -120,7 +124,7 @@
     {
       "path": "artifacts/validation/codebuddy-current-vision-instability-2026-08-14.json",
       "sha256": "6acfa59a47552c0b0c0334c4c9c627949ae4c65aa09d1eeeaa8064864d283fda",
-      "classification": "mixed current CodeBuddy loop and vision-instability evidence; not a live-agent pass"
+      "classification": "earlier signed-in CodeBuddy loop and vision-instability evidence; not the local-4B pass"
     },
     {
       "path": "artifacts/validation/local-guided-keyboard-session-cf15709.json",
@@ -131,6 +135,21 @@
       "path": "artifacts/validation/local-captured-fallback-keyboard-session-cf15709.json",
       "sha256": "ebaa8c4cb97ef91e79c72a81f9f356beaeae04bb89c52bf98cf5e60232cc5b8d",
       "classification": "exact-source fake-camera fallback smoke; not human evidence"
+    },
+    {
+      "path": "artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json",
+      "sha256": "75ce775069d32867d2e7dc6d56fa4030d3bd3e0f13409eef9c64217ba807bf35",
+      "classification": "current controlled local CodeBuddy/Qwen3-VL 4B strict matrix; synthetic fixtures"
+    },
+    {
+      "path": "artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json",
+      "sha256": "a83a93d33ce203eccd750a39ca0985af897cf6aee4c10200c07640929b593cba",
+      "classification": "current controlled fake-camera CodeBuddy/Qwen3-VL 4B UI adaptation"
+    },
+    {
+      "path": "artifacts/validation/public-guided-keyboard-session-9f2710f.json",
+      "sha256": "a9a676b0b16843ef4f883f33ed20738de2b9c204bbabed5ca44ae39a86b7224d",
+      "classification": "current exact-release guided keyboard export; not human evidence"
     },
     {
       "path": "artifacts/validation/public-guided-keyboard-session-7fe9009.json",
@@ -144,8 +163,6 @@
     }
   ],
   "pendingExternalActions": [
-    "Obtain explicit authorization to push and deploy the current local branch, then verify the resulting public build and pushed branch HEAD.",
-    "Obtain one stable strict CodeBuddy run that generates scene, plan, and adaptation output and materially differentiates all three room fixtures.",
     "Run three consenting real-person M1 Pro webcam trials and record FPS, visible response latency, time to first movement, completion, and privacy observations.",
     "Upload the 4:58.834 backup video or a preferred live take to YouTube or Google Drive and verify signed-out access.",
     "Enter team members, registered contact email, video URL, and remaining portal fields, then submit."
@@ -160,6 +177,7 @@
   "notes": [
     "The application-source and documentation-snapshot commits are intentionally separate.",
     "The manifest is generated after the documentation snapshot and therefore does not hash itself.",
-    "Synthetic, keyboard, fake-camera, fallback, and predecessor artifacts do not satisfy pending human or current live-agent requirements."
+    "Synthetic, keyboard, fake-camera, fallback, and predecessor artifacts do not satisfy pending human requirements.",
+    "The current local 4B agent evidence is controlled synthetic evidence, while the current public Pages release is the labelled static guided-demo path."
   ]
 }
