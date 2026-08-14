@@ -3,22 +3,22 @@
   "tool": "moverealm-safety-probe",
   "toolVersion": "1.0.0",
   "mode": "contracts",
-  "commit": "cf157093ff3dab7b3598387d68973f82a3e364c2",
+  "commit": "4df7cd03114a47e059bc5f03bdb98af3a8f21385",
   "repository": {
-    "commit": "cf157093ff3dab7b3598387d68973f82a3e364c2",
-    "headTree": "404fdc889cabc0212a6fd2197102eff7da5abde6",
+    "commit": "4df7cd03114a47e059bc5f03bdb98af3a8f21385",
+    "headTree": "f3e56cbe041b143837fbbbeb1d87c7d00d771ced",
     "dirty": false,
     "statusEntryCount": 0,
     "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   },
   "scope": "Synthetic adversarial candidates evaluated against MoveRealm's production safety contracts. This is contract-behaviour evidence only: it is not a human trial, a pose or latency measurement, a security audit, a certification, or an assessment of CodeBuddy's output quality.",
   "privacy": "No participant data, camera frame, pose landmark, room still, identity, or health inference is read or written. Every room in this report is a synthetic fixture defined in the tool itself.",
-  "observedAt": "2026-08-13T17:01:24Z",
-  "finishedAt": "2026-08-13T17:01:25Z",
+  "observedAt": "2026-08-14T02:31:06Z",
+  "finishedAt": "2026-08-14T02:31:06Z",
   "gate": {
     "kind": "production-contracts",
     "bridgeVersion": "1.0.0",
-    "node": "v24.10.0"
+    "node": "v24.12.0"
   },
   "planner": {
     "label": "deterministic",

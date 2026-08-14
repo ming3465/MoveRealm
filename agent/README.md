@@ -88,7 +88,7 @@ The run stops when consecutive rounds produce nothing new, not after a fixed cou
 Catalogue probes prove a rule fires. The measurement phase bisects *where* it fires, which is
 something you cannot read off the source without running it:
 
-| Boundary | Documented | Observed (frozen contracts run `cf15709`) |
+| Boundary | Documented | Observed (frozen contracts run `4df7cd0`) |
 |---|---:|---|
 | Narrow-room side-step envelope | 0.62 | accepted ≤ 0.6156, refused ≥ 0.6203 |
 | Reach without a vertical lane | 0.62 | accepted ≤ 0.6156, refused ≥ 0.6203 |
@@ -127,14 +127,16 @@ Question 2 covers the deterministic fallback today and live CodeBuddy output whe
 
 ## Frozen contracts-only observation — 14 August 2026
 
-Against clean commit `cf157093ff3dab7b3598387d68973f82a3e364c2`, tree
-`404fdc889cabc0212a6fd2197102eff7da5abde6`:
+Against clean commit `4df7cd03114a47e059bc5f03bdb98af3a8f21385`, tree
+`f3e56cbe041b143837fbbbeb1d87c7d00d771ced`:
 
 - **Contracts mode:** 332 candidates over 6 rounds, terminated `no_new_probes`. 302 defended,
   30 honored, **0 breaches, 0 over-rejections, 0 inconclusive**. All 20 controls accepted. All seven
   measured frontiers agreed with the documented thresholds.
 The contracts-only record is [`evidence/safety-probe.json`](evidence/safety-probe.json) and
 [`evidence/safety-probe.md`](evidence/safety-probe.md).
+Their SHA-256 values are `099383377d19483a10256ad5a9bef7789be06d02dad2395dfe5a48275e484bdd`
+and `a0b17057adb890a0e0f6b51d8f96959642c1c8d04e440e97611eab909c0dd164`.
 No live-mode result is stored in those files; run `--mode live` against the intended adapter and
 preserve a separate report before citing a live probe count.
 

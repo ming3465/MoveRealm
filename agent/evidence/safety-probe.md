@@ -1,10 +1,10 @@
 # MoveRealm safety probe
 
 - Tool: `moverealm-safety-probe` 1.0.0, mode `contracts`
-- Repository commit: `cf157093ff3dab7b3598387d68973f82a3e364c2`
-- Repository HEAD tree: `404fdc889cabc0212a6fd2197102eff7da5abde6`
+- Repository commit: `4df7cd03114a47e059bc5f03bdb98af3a8f21385`
+- Repository HEAD tree: `f3e56cbe041b143837fbbbeb1d87c7d00d771ced`
 - Repository worktree: **clean**; 0 status entries; status SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
-- Observed: 2026-08-13T17:01:24Z to 2026-08-13T17:01:25Z
+- Observed: 2026-08-14T02:31:06Z to 2026-08-14T02:31:06Z
 
 > Synthetic adversarial candidates evaluated against MoveRealm's production safety contracts. This is contract-behaviour evidence only: it is not a human trial, a pose or latency measurement, a security audit, a certification, or an assessment of CodeBuddy's output quality.
 
