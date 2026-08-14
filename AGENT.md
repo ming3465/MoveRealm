@@ -46,6 +46,72 @@ green test card rather than a room; its invalid empty-direction result was corre
 visibly fell back. That record is
 [`artifacts/validation/codebuddy-local-synthetic-camera-fallback-5b77105.json`](artifacts/validation/codebuddy-local-synthetic-camera-fallback-5b77105.json).
 
+## Adversarial Safety Probe (`agent/`)
+
+A Python agent that red-teams the Movement Director contracts. It invents quests a careless or
+adversarial director might emit, asks the **real** production gates to rule on them through
+`agent/bridge/contract_bridge.ts`, and compares each verdict against `agent/moverealm_probe/oracle.py`
+— an independent restatement of the documented rules, deliberately **not** translated from
+`src/shared/contracts.ts`. It never approves, rewrites, blocks, or executes a quest.
+
+```bash
+npm run probe                                  # attack the production contracts
+npm run probe -- --mode live                   # audit a running adapter (needs npm run dev)
+npm run probe -- --mode both --out-dir agent/evidence
+npm run probe -- --planner ollama              # optional local model proposals
+npm run probe:tests                            # 82 tests, standard library only
+```
+
+Exit codes: `0` clean, `1` findings or live-check failures, `2` the gate was unreachable.
+`npm run test:all` already includes `probe:tests`.
+
+Five outcomes; only two are findings:
+
+| Outcome | Oracle | Gate | Meaning |
+|---|---|---|---|
+| `defended` | refuse | refuse | The gate caught the attack. |
+| `honored` | allow | allow | A compliant quest is still planned. |
+| **`breach`** | refuse | allow | Something the documented rules forbid got through. |
+| **`over_rejection`** | allow | refuse | A legitimate quest was refused. |
+| `inconclusive` | — | unreachable | Never counted as a pass. |
+
+A finding is a genuine three-way disagreement between the docs, the oracle, and the gate. Investigate
+which of the three is wrong; do not assume the probe is at fault and do not relax the oracle to make a
+run go green.
+
+### Verified
+
+Contracts mode against clean commit `4df7cd03114a47e059bc5f03bdb98af3a8f21385`: 332 candidates over
+6 rounds, terminated `no_new_probes`; 302 defended, 30 honored, **0 breaches, 0 over-rejections,
+0 inconclusive**; all 20 compliant controls accepted; all 7 bisected envelope frontiers agreed with
+the documented thresholds. Record: [`agent/evidence/safety-probe.json`](agent/evidence/safety-probe.json)
+and [`agent/evidence/safety-probe.md`](agent/evidence/safety-probe.md). The stub gates in
+`agent/tests/stubs.py` prove a permissive, paranoid, or single-rule-missing gate *would* be reported,
+so a clean run is falsifiable rather than vacuous.
+
+### Open follow-ups
+
+1. **Live mode has only ever run against the forced deterministic fallback.** Run it with the local
+   CodeBuddy director connected and preserve a separate privacy-reviewed report — see
+   [`CODEBUDDY.md`](CODEBUDDY.md). The stored evidence file is contracts-only and carries no `live`
+   block; do not cite a live probe count from it.
+2. Live mode does not yet check the newer request rule that an adaptation seed must be the round
+   immediately after the telemetry round (`src/shared/contracts.ts`). Add it to
+   `_request_refusals` in `agent/moverealm_probe/live.py`.
+3. `--planner ollama` observations are development diagnostics unless their own report is preserved.
+
+### Rules for continuing
+
+- Keep the oracle independent. If it ever becomes a port of `contracts.ts`, every run agrees with
+  itself and the tool stops producing information.
+- Keep the controls. Without them a gate that refuses everything scores a perfect zero breaches.
+- Keep `inconclusive` distinct from `defended`. An unreachable gate is not a defence.
+- The probe reads no participant data and every room is a synthetic fixture defined in `fixtures.py`.
+  Its output is contract-behaviour evidence only — never a human trial, pose or latency measurement,
+  security audit, or certification.
+- `agent/**` is **not** in the Pages `paths-ignore` list, so a probe change triggers a redeploy and a
+  new build identity. Batch probe-only edits accordingly.
+
 ## The only required work still pending
 
 These steps require a person, physical device session, credentials, or authenticated portal access.

@@ -164,6 +164,42 @@ npm run agent:python -- \
 It implements `observe → evaluate → recover → verify`, only accepts a fallback sharing the exact
 candidate context, and never becomes a second runtime safety authority.
 
+## Audit live director output with the Safety Probe
+
+The evaluator above judges frozen candidates. The Safety Probe in [`agent/`](agent/README.md) asks a
+different question of a **running** director: does every plan and adaptation it actually returns
+satisfy the documented rules, checked by an independent Python oracle that does not trust the
+server's own validation?
+
+With Ollama, CodeBuddy, and the app running:
+
+```bash
+npm run probe -- --mode live --base-url http://127.0.0.1:4173
+```
+
+It walks five synthetic rooms and, for each, audits the returned plan (documented rules, the exact
+180-second budget, visible director provenance) and the returned `too_hard` adaptation (documented
+rules, and that the round visibly gets easier). It then sends six adversarial requests the adapter
+must refuse before any director is consulted: unconfirmed floor, opted-out jumping, an over-long
+session, an undeclared request field, an invented direction, and impossible telemetry counts.
+
+Read the results carefully:
+
+- Every check records `directorSource`. A run in which those read `fallback` is **fallback evidence,
+  not CodeBuddy evidence** — expected whenever a call exceeds the 45-second cap or returns invalid
+  output. Check the source column before describing a live probe result as a model observation.
+- Live mode issues about ten director calls, so at observed 20–48 s latencies budget several minutes.
+- A `Returned plan satisfies the documented rules` failure means the director produced something the
+  documentation forbids *and* the server let it through. Treat it as a contract gap, not a probe bug.
+
+**Nothing is preserved for this path yet.** The stored record in `agent/evidence/` is contracts-only
+and carries no `live` block. Running live mode against a connected CodeBuddy director and preserving
+a separate privacy-reviewed report is the open follow-up; the report already omits image bytes, raw
+model output, credentials, attachment paths, and identity.
+
+The probe never approves, rewrites, blocks, or executes a quest, and it is not a second runtime
+safety authority.
+
 ## Last verified local-model observation
 
 Record:
