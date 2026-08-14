@@ -8,6 +8,8 @@ on:
       - "artifacts/**"
       - "README.md"
       - "assets/README.md"
+      - "AGENT.md"
+      - "CODEBUDDY.md"
   workflow_dispatch:
 
 permissions:
