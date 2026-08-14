@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "local-browser-synthetic-camera-safe-fallback",
+  "recordedAt": "2026-08-14T03:11:00Z",
+  "applicationSourceCommit": "5b77105ac4813df7f2f270ccb07f054550533008",
+  "applicationSourceTree": "dde0b8571c091a3028b1c05d505cb5eeb25efdbb",
+  "worktreeDirty": false,
+  "runtime": {
+    "orchestrator": "CodeBuddy Code 2.136.0",
+    "provider": "Ollama 0.23.1 loopback",
+    "model": "moverealm-director:4b",
+    "modelManifestSha256": "5e041b6a9a2057628a7e5ba3de78e130ef3e7800163d85bcc0db3385d186fc75"
+  },
+  "input": {
+    "camera": "Chromium built-in synthetic fake-camera stream",
+    "visualDescription": "green test card with a bright green circle; not a room",
+    "cameraFrameSha256": "a70d088704ac269ad1685654077a46f9a2a4812d35b977769049ff9d5661b084"
+  },
+  "result": {
+    "ok": true,
+    "cameraReady": true,
+    "confirmationBadge": "Safe fallback",
+    "sceneElapsedMs": 39682,
+    "fallbackCause": "CodeBuddy returned an empty permittedDirections array after the one repair attempt; SceneProfile validation rejected it.",
+    "floorCheckedByDefault": false,
+    "continueDisabledByDefault": true,
+    "scoreBefore": 0,
+    "scoreAfter": 145,
+    "apiPostRequests": [
+      "/api/scene/analyze",
+      "/api/quest/plan"
+    ],
+    "consoleErrors": [],
+    "temporaryUploadDirectoryEmptyAfterward": true
+  },
+  "interpretation": {
+    "resilienceEvidence": true,
+    "liveRoomUnderstandingEvidence": false,
+    "reason": "The synthetic input is not a usable room image. The safe response is to reject the malformed scene and visibly use the deterministic fallback."
+  },
+  "privacy": {
+    "rawImageBytesPreserved": false,
+    "rawModelOutputPreserved": false,
+    "humanTrial": false,
+    "realPosePerformanceEvidence": false
+  }
+}

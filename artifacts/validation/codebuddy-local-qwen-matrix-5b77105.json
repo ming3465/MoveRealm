@@ -1,0 +1,321 @@
+{
+  "schemaVersion": "1.1.0",
+  "kind": "local-codebuddy-ollama-strict-room-matrix",
+  "applicationSourceCommit": "5b77105ac4813df7f2f270ccb07f054550533008",
+  "applicationSourceTree": "dde0b8571c091a3028b1c05d505cb5eeb25efdbb",
+  "worktreeDirty": false,
+  "runtime": {
+    "orchestrator": "CodeBuddy Code 2.136.0",
+    "provider": "Ollama 0.23.1 loopback",
+    "model": "moverealm-director:4b",
+    "modelManifestSha256": "5e041b6a9a2057628a7e5ba3de78e130ef3e7800163d85bcc0db3385d186fc75",
+    "baseModel": "qwen3-vl:4b-instruct-q4_K_M",
+    "baseModelManifestSha256": "ee4b975b58c17ce268cd19d40db35d5edc64603035d2ffc1fee1968eb0947f7b",
+    "modelLicense": "Apache-2.0",
+    "allowedTools": [
+      "Read"
+    ],
+    "maxAgentTurns": 2,
+    "fallbackAllowed": false
+  },
+  "observation": {
+    "observedAt": "2026-08-14T03:14:50.241Z",
+    "baseUrl": "http://127.0.0.1:4187",
+    "health": {
+      "ok": true,
+      "product": "MoveRealm",
+      "movementDirector": "codebuddy",
+      "codeBuddyConnected": true
+    },
+    "allowFallback": false,
+    "roomMatrix": true,
+    "observations": [
+      {
+        "fixture": "open-room.png",
+        "fixtureSha256": "ac9bf9aa222fac44e1ed192a5e2bd2d21902cb63c74f3968f2dfbc3a7b3386b3",
+        "scene": {
+          "spaceClass": "open",
+          "obstacles": [],
+          "permittedDirections": [
+            "vertical",
+            "left",
+            "right",
+            "center"
+          ],
+          "confidence": 0.95,
+          "summary": "Clear open space with visible central and lateral movement lanes. No obstacles. Safe for low-impact standing movements."
+        },
+        "sceneSource": "codebuddy",
+        "sceneLatencyMs": 24264,
+        "sceneClientElapsedMs": 24284,
+        "planSource": "codebuddy",
+        "planLatencyMs": 20375,
+        "planClientElapsedMs": 20386,
+        "plan": {
+          "theme": "neon_rainforest",
+          "title": "Neon Rainforest: Firefly, Seedling, River Quest",
+          "requestedDurationSeconds": 180,
+          "restBetweenRoundsSeconds": 12,
+          "rounds": [
+            {
+              "id": "round-1",
+              "movementId": "reach",
+              "durationSeconds": 52,
+              "targetRate": 8,
+              "rangeScale": 1,
+              "tempo": 1,
+              "mechanic": "collect_fireflies",
+              "prompt": "Reach softly to wake the fireflies",
+              "accent": "mint"
+            },
+            {
+              "id": "round-2",
+              "movementId": "squat",
+              "durationSeconds": 52,
+              "targetRate": 10,
+              "rangeScale": 1,
+              "tempo": 1,
+              "mechanic": "shelter_seedlings",
+              "prompt": "Lower gently to shelter the seedlings",
+              "accent": "orchid"
+            },
+            {
+              "id": "round-3",
+              "movementId": "side_step",
+              "durationSeconds": 52,
+              "targetRate": 12,
+              "rangeScale": 1,
+              "tempo": 1,
+              "mechanic": "redirect_river",
+              "prompt": "Step side to side and guide the river",
+              "accent": "amber"
+            }
+          ],
+          "safetyNote": "Move only inside the clear area you confirmed. Pause whenever you need to."
+        },
+        "planSignature": "reach:1|squat:1|side_step:1",
+        "planTotalSeconds": 180
+      },
+      {
+        "fixture": "tight-room.png",
+        "fixtureSha256": "c896462d2205f92270992c9edb9013ab578b58e5e734d6a63f954877a43c9068",
+        "scene": {
+          "spaceClass": "tight",
+          "obstacles": [
+            {
+              "label": "desk",
+              "zone": "left",
+              "severity": "low"
+            },
+            {
+              "label": "chair",
+              "zone": "right",
+              "severity": "low"
+            }
+          ],
+          "permittedDirections": [
+            "vertical",
+            "center"
+          ],
+          "confidence": 0.95,
+          "summary": "Central standing lane is clear for vertical movement. Lateral lanes are partially obstructed by desk and chair. No jumping or equipment required."
+        },
+        "sceneSource": "codebuddy",
+        "sceneLatencyMs": 25974,
+        "sceneClientElapsedMs": 25987,
+        "planSource": "codebuddy",
+        "planLatencyMs": 21150,
+        "planClientElapsedMs": 21156,
+        "plan": {
+          "theme": "neon_rainforest",
+          "title": "Neon Rainforest: Firefly Waking",
+          "requestedDurationSeconds": 180,
+          "restBetweenRoundsSeconds": 12,
+          "rounds": [
+            {
+              "id": "round-1",
+              "movementId": "reach",
+              "durationSeconds": 52,
+              "targetRate": 8,
+              "rangeScale": 0.7,
+              "tempo": 0.95,
+              "mechanic": "collect_fireflies",
+              "prompt": "Reach softly to wake the fireflies",
+              "accent": "mint"
+            },
+            {
+              "id": "round-2",
+              "movementId": "squat",
+              "durationSeconds": 52,
+              "targetRate": 10,
+              "rangeScale": 0.62,
+              "tempo": 1,
+              "mechanic": "shelter_seedlings",
+              "prompt": "Lower gently to shelter the seedlings",
+              "accent": "orchid"
+            },
+            {
+              "id": "round-3",
+              "movementId": "reach",
+              "durationSeconds": 52,
+              "targetRate": 8,
+              "rangeScale": 0.7,
+              "tempo": 0.95,
+              "mechanic": "collect_fireflies",
+              "prompt": "Reach softly to wake the fireflies",
+              "accent": "mint"
+            }
+          ],
+          "safetyNote": "Move only inside the clear area you confirmed. Pause whenever you need to."
+        },
+        "planSignature": "reach:0.7|squat:0.62|reach:0.7",
+        "planTotalSeconds": 180
+      },
+      {
+        "fixture": "uncertain-room.png",
+        "fixtureSha256": "c625f09d36157a59639de31ec4759542b19ecc6c00deeb889a1c212926670898",
+        "scene": {
+          "spaceClass": "uncertain",
+          "obstacles": [],
+          "permittedDirections": [
+            "center"
+          ],
+          "confidence": 0.6,
+          "summary": "View is limited to doorway frame; central standing lane may be usable but lateral lanes are obscured. Conservative movement: center only."
+        },
+        "sceneSource": "codebuddy",
+        "sceneLatencyMs": 47784,
+        "sceneClientElapsedMs": 47805,
+        "planSource": "codebuddy",
+        "planLatencyMs": 20864,
+        "planClientElapsedMs": 20881,
+        "plan": {
+          "theme": "neon_rainforest",
+          "title": "Neon Rainforest: Firefly Waking",
+          "requestedDurationSeconds": 180,
+          "restBetweenRoundsSeconds": 12,
+          "rounds": [
+            {
+              "id": "round-1",
+              "movementId": "reach",
+              "durationSeconds": 52,
+              "targetRate": 8,
+              "rangeScale": 0.48,
+              "tempo": 0.95,
+              "mechanic": "collect_fireflies",
+              "prompt": "Reach softly to wake the fireflies",
+              "accent": "mint"
+            },
+            {
+              "id": "round-2",
+              "movementId": "reach",
+              "durationSeconds": 52,
+              "targetRate": 9,
+              "rangeScale": 0.52,
+              "tempo": 0.95,
+              "mechanic": "collect_fireflies",
+              "prompt": "Reach softly to wake the fireflies",
+              "accent": "mint"
+            },
+            {
+              "id": "round-3",
+              "movementId": "reach",
+              "durationSeconds": 52,
+              "targetRate": 10,
+              "rangeScale": 0.56,
+              "tempo": 0.95,
+              "mechanic": "collect_fireflies",
+              "prompt": "Reach softly to wake the fireflies",
+              "accent": "mint"
+            }
+          ],
+          "safetyNote": "Move only inside the clear area you confirmed. Pause whenever you need to."
+        },
+        "planSignature": "reach:0.48|reach:0.52|reach:0.56",
+        "planTotalSeconds": 180
+      }
+    ],
+    "adaptation": {
+      "source": "codebuddy",
+      "latencyMs": 6867,
+      "clientElapsedMs": 6878,
+      "syntheticTelemetry": {
+        "roundId": "round-1",
+        "movementId": "reach",
+        "completionRate": 0.3333333333333333,
+        "movementRange": 0.54,
+        "poseConfidence": 0,
+        "trackingFps": 0,
+        "trackingMode": "keyboard",
+        "targetsPresented": 12,
+        "targetsCompleted": 4,
+        "feedback": "too_hard"
+      },
+      "before": {
+        "id": "round-2",
+        "movementId": "squat",
+        "durationSeconds": 52,
+        "targetRate": 10,
+        "rangeScale": 0.62,
+        "tempo": 1,
+        "mechanic": "shelter_seedlings",
+        "prompt": "Lower gently to shelter the seedlings",
+        "accent": "orchid"
+      },
+      "decision": {
+        "nextRound": {
+          "id": "round-2",
+          "movementId": "squat",
+          "durationSeconds": 52,
+          "targetRate": 9,
+          "rangeScale": 0.46,
+          "tempo": 0.87,
+          "mechanic": "shelter_seedlings",
+          "prompt": "Lower gently to shelter the seedlings",
+          "accent": "orchid"
+        },
+        "reason": "4/12 targets; keyboard range 54%; you chose Too hard. Next: closer, slower, fewer targets.",
+        "adjustments": [
+          "target_envelope",
+          "tempo",
+          "target_rate"
+        ]
+      }
+    },
+    "localUploadDirectoryEmpty": true
+  },
+  "independentHardGateEvaluation": {
+    "judge": "none",
+    "allEligible": true,
+    "reportsPreserved": false,
+    "cases": [
+      {
+        "fixtureId": "open-room",
+        "inputSha256": "b3c31f9453fccefb8a9c728d6bf011024ccc0576f48ba07614effbab3730741c",
+        "passed": true,
+        "adaptationEvaluated": false
+      },
+      {
+        "fixtureId": "tight-room",
+        "inputSha256": "ba90d6f3cd470fc6dd6a84ac1125c673583aec5f48c535f372cb0921834dbe04",
+        "passed": true,
+        "adaptationEvaluated": true
+      },
+      {
+        "fixtureId": "uncertain-room",
+        "inputSha256": "fa2298993a12bf66426f7ba35ed02a5382dd178158fb654d99a2f3fc1d41d3d1",
+        "passed": true,
+        "adaptationEvaluated": false
+      }
+    ]
+  },
+  "privacy": {
+    "liveVideoSentToServer": false,
+    "capturedFixtureStillSentForSceneAnalysis": true,
+    "temporaryUploadDirectoryEmpty": true,
+    "rawImageBytesPreserved": false,
+    "rawModelOutputPreserved": false,
+    "humanTrial": false,
+    "realPosePerformanceEvidence": false
+  }
+}

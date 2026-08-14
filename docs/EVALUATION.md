@@ -13,13 +13,14 @@ post-hoc Shadow Judge below: CodeBuddy remains the runtime orchestrator, uses `R
 explicit room-still attachment, and the production contracts still reject unsafe or malformed
 scene, plan, and adaptation output.
 
-Exact clean source `de0b2defc22f524e29bc4ea1019e86c4d31aa915` passed the fallback-forbidden
-three-room matrix and a controlled fake-camera browser adaptation smoke. The preserved matrix is
-[`codebuddy-local-qwen-matrix-de0b2de.json`](../artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json);
-the visible UI observation is
-[`codebuddy-local-ui-adaptation-de0b2de.json`](../artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json).
-They are synthetic/controlled agent-loop evidence, not real-person pose, latency, TTFF, or usability
-evidence.
+Exact clean source `5b77105ac4813df7f2f270ccb07f054550533008` passed the fallback-forbidden
+three-room matrix. The preserved
+[`matrix`](../artifacts/validation/codebuddy-local-qwen-matrix-5b77105.json) contains the full
+structured observations and records that the current independent hard gates accepted all three.
+The separate
+[`synthetic-camera fallback`](../artifacts/validation/codebuddy-local-synthetic-camera-fallback-5b77105.json)
+records the correctly rejected green Chrome test card. These are synthetic/controlled agent-loop
+and resilience evidence, not real-person pose, latency, TTFF, or usability evidence.
 
 ## Model and scope
 
@@ -80,21 +81,22 @@ The clean released application is commit `49dadbee7bf106b9434cae5a992d456d3cac14
 [Pages run 31764155833](https://github.com/ming3465/MoveRealm/actions/runs/31764155833), build
 `build-31764155833`.
 
-The preserved fallback-forbidden local CodeBuddy/Qwen3-VL observations themselves were captured
-at clean checkpoint `de0b2defc22f524e29bc4ea1019e86c4d31aa915`, tree
-`25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`. Later release work changed evidence thresholds,
-accessibility, captions, and documentation rather than rerunning the expensive local model matrix.
+The current fallback-forbidden local CodeBuddy/Qwen3-VL observations were captured at clean
+checkpoint `5b77105ac4813df7f2f270ccb07f054550533008`, tree
+`dde0b8571c091a3028b1c05d505cb5eeb25efdbb`.
 
 The predecessor `cf15709` candidate's two production-mode full browser smokes passed using local
 audit build identifier `build-20260814`—not a GitHub Actions run. Their exact behavior and checksums
 remain recorded in
 [`release-checks.md`](../artifacts/validation/release-checks.md).
 
-The recommended free local CodeBuddy check is now **passing**. With fallback forbidden, the 4B model
+The recommended free local CodeBuddy check is **passing**. With fallback forbidden, the 4B model
 produced distinct open/tight/uncertain profiles, compatible distinct 180-second plans, and a live
-`too_hard` adaptation. A separate fake-camera browser run reached the visible `CodeBuddy live`
-adaptation trace with no console errors. Earlier signed-in/upstream 429 and timeout records remain
-useful recovery evidence, but no longer describe this local route.
+`too_hard` adaptation. Its largest observed scene latency was 47.784 seconds; planning ranged from
+20.375 to 21.150 seconds and adaptation took 6.867 seconds. A separate green-test-card browser run
+correctly reached `Safe fallback` after the agent returned an empty direction list twice. Earlier
+signed-in/upstream 429 and timeout records remain useful recovery evidence, but no longer describe
+the recommended local route.
 
 ## Preserved evaluator/predecessor observation — 13 August 2026
 
@@ -123,7 +125,7 @@ The final records are
 [`uncertain-room-corrected.json`](../artifacts/evaluation/reports/uncertain-room-corrected.json).
 
 These 8B reports and their source candidate bundles are frozen predecessor `7fe9009` evaluator
-snapshots. In particular, the predecessor open/tight candidates do not satisfy the newer `de0b2de`
+snapshots. In particular, the predecessor open/tight candidates do not satisfy the newer current
 canonical-presentation and required-variety gates and must not be described as passing the current
 evaluator. Current runtime proof comes from the 128-test Vitest layer and the two local 4B artifacts
 linked above; the predecessor 8B model reports remain historical evaluator evidence only.

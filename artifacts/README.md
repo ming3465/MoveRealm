@@ -11,7 +11,7 @@ Deterministic fixture, contract, consistency, and movement-feasibility gates run
 authoritative. In the recorded uncertain-room case, they rejected an occluded-floor squat even
 though the advisory model scored that plan positively; the reach-only validated fallback passed.
 The 8B open/tight candidate/report files are frozen predecessor `7fe9009` evaluator snapshots. Their
-candidate JSON does not satisfy the newer `de0b2de` canonical-presentation gates; do not cite those
+candidate JSON does not satisfy the newer current canonical-presentation gates; do not cite those
 old open/tight results as current-candidate passes.
 
 [`evaluation/python-agent-qwen3-vl-4b.json`](evaluation/python-agent-qwen3-vl-4b.json) is the
@@ -39,19 +39,19 @@ judge latencies were 43.492 and 37.550 seconds respectively.
   temporary audit container stopped after escalation with exit 137, not gracefully.
 - Free local CodeBuddy/Qwen3-VL 4B strict matrix: **passed** with fallback forbidden. Open, tight,
   and uncertain rooms produced materially different profiles and safe 180-second plans; the live
-  adaptation reduced range 0.62→0.46, tempo 0.90→0.77, and target rate 8→7.
-- Exact-source fake-camera UI smoke: **passed** with visible `CodeBuddy live` scene and adaptation
-  provenance, camera ready, exact scene/plan/adapt POSTs, score 0→145, an 8.895-second adaptation,
-  and no console errors.
+  adaptation reduced squat range 0.62→0.46, tempo 1.00→0.87, and target rate 10→9.
+- Synthetic-camera invalid-room recovery: **passed** with visible `Safe fallback`, camera ready,
+  safe confirmation defaults, exact scene/plan POSTs, score 0→145, and no console errors. Chrome's
+  green test card is not a room, so this is resilience—not live scene-understanding—evidence.
 - Release: shipped in application commit `49dadbee7bf106b9434cae5a992d456d3cac1433`, Pages run
   31764155833, build `build-31764155833`.
 
 Current live evidence is
-[`validation/codebuddy-local-qwen-matrix-de0b2de.json`](validation/codebuddy-local-qwen-matrix-de0b2de.json)
-(SHA-256 `75ce775069d32867d2e7dc6d56fa4030d3bd3e0f13409eef9c64217ba807bf35`)
+[`validation/codebuddy-local-qwen-matrix-5b77105.json`](validation/codebuddy-local-qwen-matrix-5b77105.json)
+(SHA-256 `8ac958431bd25c0ec9947a295656a17f083f7df3878cca8abd26f141b79215f6`)
 and
-[`validation/codebuddy-local-ui-adaptation-de0b2de.json`](validation/codebuddy-local-ui-adaptation-de0b2de.json)
-(SHA-256 `a83a93d33ce203eccd750a39ca0985af897cf6aee4c10200c07640929b593cba`).
+[`validation/codebuddy-local-synthetic-camera-fallback-5b77105.json`](validation/codebuddy-local-synthetic-camera-fallback-5b77105.json)
+(SHA-256 `248df0f0fd5868b293500bb9e71406766a91f0847c09bd98d3af6100d6792a49`).
 They contain structured synthetic-fixture or controlled fake-camera results only—no image bytes,
 raw model output, credentials, participant data, or real-person pose measurements.
 
@@ -99,11 +99,12 @@ deterministic path and must not be described as live CodeBuddy.
 ## Sanitized live-agent evidence
 
 The current recommended runtime evidence is the local CodeBuddy/Qwen3-VL 4B
-[`strict matrix`](validation/codebuddy-local-qwen-matrix-de0b2de.json) plus the controlled
-[`browser adaptation smoke`](validation/codebuddy-local-ui-adaptation-de0b2de.json). The matrix
-records clean source/tree provenance, exact model-manifest hashes, three differentiated room/plan
-pairs, live adaptation, and an empty upload directory. The browser record separately proves the
-visible `CodeBuddy live` UI path. Both remain synthetic/controlled evidence, not human trials.
+[`strict matrix`](validation/codebuddy-local-qwen-matrix-5b77105.json) plus the controlled
+[`synthetic-camera fallback`](validation/codebuddy-local-synthetic-camera-fallback-5b77105.json).
+The matrix records clean source/tree provenance, exact model-manifest hashes, three differentiated
+room/plan pairs, live adaptation, current hard-gate eligibility, and an empty upload directory. The
+browser record separately proves visible safe recovery from a non-room input. Both remain
+synthetic/controlled evidence, not human trials.
 
 The newest signed-in/upstream mixed result is
 [`validation/codebuddy-current-vision-instability-2026-08-14.json`](validation/codebuddy-current-vision-instability-2026-08-14.json),
@@ -244,8 +245,8 @@ MOVEREALM_ROOM_MATRIX=1 \
 | File | SHA-256 |
 |---|---|
 | `validation/public-guided-keyboard-session-49dadbe.json` | `f003b7eb3015f426125725237c90dccd2128198ba599f069fcaec0f7e3e78c93` |
-| `validation/codebuddy-local-qwen-matrix-de0b2de.json` | `75ce775069d32867d2e7dc6d56fa4030d3bd3e0f13409eef9c64217ba807bf35` |
-| `validation/codebuddy-local-ui-adaptation-de0b2de.json` | `a83a93d33ce203eccd750a39ca0985af897cf6aee4c10200c07640929b593cba` |
+| `validation/codebuddy-local-qwen-matrix-5b77105.json` | `8ac958431bd25c0ec9947a295656a17f083f7df3878cca8abd26f141b79215f6` |
+| `validation/codebuddy-local-synthetic-camera-fallback-5b77105.json` | `248df0f0fd5868b293500bb9e71406766a91f0847c09bd98d3af6100d6792a49` |
 | `evaluation/python-agent-qwen3-vl-4b.json` | `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029` |
 | `../agent/evidence/safety-probe.json` | `099383377d19483a10256ad5a9bef7789be06d02dad2395dfe5a48275e484bdd` |
 | `../agent/evidence/safety-probe.md` | `a0b17057adb890a0e0f6b51d8f96959642c1c8d04e440e97611eab909c0dd164` |
@@ -301,8 +302,8 @@ flow. They are separate from the six guided screenshots and are controlled, non-
 - **Pending:** real-person time to first accepted movement (TTFF).
 - **Pending:** all three qualitative user trials.
 - **Complete controlled agent evidence:** the current local CodeBuddy/Qwen3-VL 4B strict matrix
-  generated the full loop and materially differentiated all three rooms; the fake-camera browser
-  smoke separately displayed live scene and adaptation provenance.
+  generated the full loop and materially differentiated all three rooms; the synthetic-camera
+  smoke separately proved labelled recovery from a non-room input.
 - **Complete release evidence:** application commit `49dadbe`, Pages run 31764155833, exact public
   camera and full-session smokes, pushed `origin/main`, and the preserved anonymous export all
   passed their identity checks.

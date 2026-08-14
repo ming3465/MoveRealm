@@ -61,15 +61,16 @@ image `sha256:4119e32ef7f0145daa53a6669259fe0cbf81324b682689651cdc97003d3c7c15`
 smoke, the exact scene/plan request audit, and zero-upload cleanup. Its temporary container stopped
 after escalation with exit 137, so the stop is not described as graceful.
 
-The recommended live path is now free and local: CodeBuddy Code 2.136.0 orchestrates Apache-2.0
-Qwen3-VL 4B through loopback Ollama. With fallback forbidden, the exact clean candidate produced
+The recommended live path is free and local: CodeBuddy Code 2.136.0 orchestrates Apache-2.0
+Qwen3-VL 4B through loopback Ollama. With fallback forbidden, clean checkpoint `5b77105` produced
 three materially different room profiles and safe 180-second plans plus a live grounded adaptation.
-A separate fake-camera browser run visibly showed `CodeBuddy live`, made exactly scene/plan/adapt
-POSTs, scored 0→145, and rendered an 8.895-second adaptation with no console errors. The controlled
-records are the
-[`strict matrix`](../artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json) and
-[`UI observation`](../artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json). They do not
-replace the pending real-person pose and usability evidence.
+All three candidates passed the current independent deterministic evaluator. The controlled
+[`strict matrix`](../artifacts/validation/codebuddy-local-qwen-matrix-5b77105.json) records the full
+structured outputs. A separate
+[`synthetic-camera record`](../artifacts/validation/codebuddy-local-synthetic-camera-fallback-5b77105.json)
+shows that Chrome's green test card was rejected and visibly switched to `Safe fallback`; it is not
+presented as live room analysis. Neither record replaces pending real-person pose and usability
+evidence.
 
 The current release retains the anonymous evidence boundary introduced in `2ab9584`: only trials
 1–3 are accepted; an exact
@@ -128,7 +129,7 @@ deterministic fixture and production-contract gates. It cannot approve, rewrite,
 quest; CodeBuddy remains the only runtime Movement Director and deterministic contracts remain the
 sole automated safety authority. The recorded model/hard-gate disagreement and limitations are in
 [`EVALUATION.md`](EVALUATION.md). Its 8B open/tight reports are predecessor `7fe9009` snapshots; the
-old candidate JSON is not current `de0b2de` pass evidence.
+old candidate JSON is not current `5b77105` pass evidence.
 
 A small standard-library Python agent wraps the same evaluator with an explicit
 `observe → evaluate → recover → verify` loop and the free local Qwen3-VL 4B model. Its recorded run
@@ -165,12 +166,12 @@ Use this paragraph in the portal:
 Evidence supporting this sharing:
 
 - [x] The current local 4B
-  [`strict matrix`](../artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json) records three
+  [`strict matrix`](../artifacts/validation/codebuddy-local-qwen-matrix-5b77105.json) records three
   materially different room profiles/plans with `codebuddy` provenance, exact 180-second totals,
   live adaptation, exact model/source provenance, and empty upload cleanup.
 - [x] The current controlled
-  [`browser smoke`](../artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json) records the
-  visible `CodeBuddy live` scene and adaptation path with fallback forbidden and no console errors.
+  [`browser smoke`](../artifacts/validation/codebuddy-local-synthetic-camera-fallback-5b77105.json)
+  records visible labelled fallback when a synthetic non-room image produces invalid agent output.
 - [x] The predecessor
   [`live-agent-room-matrix-2ab9584.json`](../artifacts/validation/live-agent-room-matrix-2ab9584.json)
   records `/api/health` with `codeBuddyConnected: true`, three materially different room
@@ -270,8 +271,8 @@ results in [`artifacts/validation/release-checks.md`](../artifacts/validation/re
 | Anonymous guided-keyboard evidence export | **PASS — preserved JSON; SHA-256 `f003b7eb…` and exact build/commit matched; pose gates `not_evaluated`** | [`public-guided-keyboard-session-49dadbe.json`](../artifacts/validation/public-guided-keyboard-session-49dadbe.json); [`release-checks.md`](../artifacts/validation/release-checks.md) |
 | Camera/Worker smoke | recorded synthetic-camera evidence on 13 August | [`VALIDATION.md`](VALIDATION.md) |
 | Synthetic fake-camera live CodeBuddy UI | **PASS — health true, scene/adaptation `CodeBuddy live`, bounded adaptation, empty temporary upload directory** | [`VALIDATION.md`](VALIDATION.md); [`artifacts/README.md`](../artifacts/README.md) |
-| Current local CodeBuddy/Qwen3-VL 4B strict matrix | **PASS — fallback forbidden; 3 distinct scenes/plans; exact 180-second totals; live adaptation; empty uploads** | [`codebuddy-local-qwen-matrix-de0b2de.json`](../artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json) |
-| Current local CodeBuddy/Qwen3-VL 4B browser adaptation | **PASS — fake camera; visible live badges; exact scene/plan/adapt POSTs; score 0→145; adaptation 52→40%, 1.05→0.92×, 9→8; no console errors** | [`codebuddy-local-ui-adaptation-de0b2de.json`](../artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json) |
+| Current local CodeBuddy/Qwen3-VL 4B strict matrix | **PASS — clean `5b77105`; fallback forbidden; 3 distinct scenes/plans; exact 180-second totals; live adaptation; all current hard gates eligible; empty uploads** | [`codebuddy-local-qwen-matrix-5b77105.json`](../artifacts/validation/codebuddy-local-qwen-matrix-5b77105.json) |
+| Synthetic-camera invalid-room recovery | **PASS — green test card rejected; visible `Safe fallback`; safe defaults; score 0→145; no console errors** | [`codebuddy-local-synthetic-camera-fallback-5b77105.json`](../artifacts/validation/codebuddy-local-synthetic-camera-fallback-5b77105.json) |
 | Public HTTPS real-person camera flow | **[PENDING DEVICE RUN]** | **[PENDING]** |
 | Predecessor live CodeBuddy open/tight/uncertain matrix | **PASS for `2ab9584` evidence; synthetic adaptation telemetry is not human evidence** | [`live-agent-room-matrix-2ab9584.json`](../artifacts/validation/live-agent-room-matrix-2ab9584.json); [`release-checks.md`](../artifacts/validation/release-checks.md) |
 | Offline Shadow Judge | **PASS as controlled advisory evaluation — hard gates rejected an unsafe plan the model scored positively** | [`EVALUATION.md`](EVALUATION.md) |
@@ -302,8 +303,8 @@ Finalize artifacts first, then compute checksums. Any subsequent edit invalidate
 | 16:9 cover image, 380×216 px | Required | [`assets/submission/moverealm-cover-380x216.png`](../assets/submission/moverealm-cover-380x216.png) | `38637377111cffc7dce5c45ab3e9c0c3591fc55ce692f9af811940880b1dcf2c` |
 | Project description export | Required portal copy | [`docs/SUBMISSION.md`](SUBMISSION.md) | see the [post-freeze manifest](../artifacts/submission-manifest.json) |
 | Controlled CodeBuddy live-use proof | Supporting scoring evidence | [`assets/submission/screenshots/07-live-codebuddy-scene.png`](../assets/submission/screenshots/07-live-codebuddy-scene.png), [`08-live-codebuddy-adaptation.png`](../assets/submission/screenshots/08-live-codebuddy-adaptation.png), and [`artifacts/validation/`](../artifacts/validation/) | see [`artifacts/README.md`](../artifacts/README.md) |
-| Current local 4B strict room matrix | Supporting runtime agent-loop evidence; synthetic fixtures, not a human trial | [`codebuddy-local-qwen-matrix-de0b2de.json`](../artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json) | `75ce775069d32867d2e7dc6d56fa4030d3bd3e0f13409eef9c64217ba807bf35` |
-| Current local 4B browser adaptation | Supporting controlled UI evidence; fake camera/keyboard, not pose evidence | [`codebuddy-local-ui-adaptation-de0b2de.json`](../artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json) | `a83a93d33ce203eccd750a39ca0985af897cf6aee4c10200c07640929b593cba` |
+| Current local 4B strict room matrix | Supporting runtime agent-loop evidence; synthetic fixtures, not a human trial | [`codebuddy-local-qwen-matrix-5b77105.json`](../artifacts/validation/codebuddy-local-qwen-matrix-5b77105.json) | `8ac958431bd25c0ec9947a295656a17f083f7df3878cca8abd26f141b79215f6` |
+| Synthetic-camera fallback | Supporting controlled resilience evidence; non-room fake camera/keyboard, not pose evidence | [`codebuddy-local-synthetic-camera-fallback-5b77105.json`](../artifacts/validation/codebuddy-local-synthetic-camera-fallback-5b77105.json) | `248df0f0fd5868b293500bb9e71406766a91f0847c09bd98d3af6100d6792a49` |
 | Predecessor sanitized live-agent matrix | Supporting `2ab9584` controlled evidence; synthetic telemetry is not human evidence | [`live-agent-room-matrix-2ab9584.json`](../artifacts/validation/live-agent-room-matrix-2ab9584.json) | `e4dabc45278f5be9d177c1c8d1282337d432a5cba3cbe8ebdc4c7008bfb05787` |
 | Guided UI screenshot set | Supporting evidence | [`assets/submission/screenshots/`](../assets/submission/screenshots/) — 6 consent-free PNGs | see [`artifacts/README.md`](../artifacts/README.md) |
 | Synthetic fake-camera CodeBuddy UI captures | Supporting controlled evidence, not real-person evidence | [`assets/submission/screenshots/`](../assets/submission/screenshots/) — 2 consent-free PNGs | see [`artifacts/README.md`](../artifacts/README.md) |
@@ -352,8 +353,8 @@ shasum -a 256 path/to/moverealm-cover.png
   metrics unevaluated.
 - [x] Pushed the current branch, waited for CI, and verified the exact public camera and full-session
   paths against the embedded commit/build identity.
-- [x] The free local CodeBuddy/Qwen3-VL 4B route passed the strict differentiated room matrix and a
-  visible fake-camera adaptation smoke with fallback forbidden.
+- [x] The free local CodeBuddy/Qwen3-VL 4B route passed the strict differentiated room matrix with
+  fallback forbidden; the separate fake-camera test proved visibly labelled safe recovery.
 - [x] Exact-release full smoke verified the anonymous keyboard export's visible SHA-256,
   `N/A`/`not_evaluated` pose semantics, exact build identity, three rounds and adaptation,
   no API POSTs, and no console errors.

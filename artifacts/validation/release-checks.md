@@ -62,7 +62,7 @@ source-bearing path changes or the workflow is manually dispatched.
 | Python recovery artifact | controlled Qwen3-VL 4B run | **PASS** — hard gates rejected the 18/24 original (43.492 s) and selected the eligible 15/24 fallback (37.550 s) |
 | Adversarial Safety Probe | clean contract mode | **PASS** — 332 probes: 302 defended, 30 honored, 0 breaches, 0 over-rejections, 0 inconclusive; 20 controls; 7 frontiers |
 | Free local CodeBuddy/Qwen3-VL 4B strict matrix | isolated localhost service; fallback forbidden | **PASS** — open/tight/uncertain produced three materially different safe 180-second plans; adaptation reduced range/tempo/rate; uploads empty |
-| Free local CodeBuddy browser adaptation | fake camera plus production UI | **PASS** — visible `CodeBuddy live` scene/adaptation, exact scene/plan/adapt POSTs, camera ready, score 0→145, no errors |
+| Synthetic-camera invalid-room recovery | Chrome fake camera plus production UI | **PASS** — non-room green test card produced invalid empty directions twice; validation rejected both; visible `Safe fallback`; safe defaults; scene/plan POSTs; camera ready; score 0→145; no errors |
 
 The Python artifact SHA-256 is
 `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029`; it records shared
@@ -83,14 +83,14 @@ the application source was subsequently frozen as `cf15709`. It is not clean-sou
 evidence.
 
 The current local-model evidence is
-[`codebuddy-local-qwen-matrix-de0b2de.json`](codebuddy-local-qwen-matrix-de0b2de.json), SHA-256
-`75ce775069d32867d2e7dc6d56fa4030d3bd3e0f13409eef9c64217ba807bf35`, and
-[`codebuddy-local-ui-adaptation-de0b2de.json`](codebuddy-local-ui-adaptation-de0b2de.json), SHA-256
-`a83a93d33ce203eccd750a39ca0985af897cf6aee4c10200c07640929b593cba`. The first records clean
-source/tree provenance, exact local model-manifest digests, three distinct safe plans, a grounded
-adaptation, and zero retained uploads. The second records the visible controlled UI path. Neither
-contains room image bytes, raw model output, credentials, participant data, or real-person pose
-measurements.
+[`codebuddy-local-qwen-matrix-5b77105.json`](codebuddy-local-qwen-matrix-5b77105.json), SHA-256
+`8ac958431bd25c0ec9947a295656a17f083f7df3878cca8abd26f141b79215f6`, and
+[`codebuddy-local-synthetic-camera-fallback-5b77105.json`](codebuddy-local-synthetic-camera-fallback-5b77105.json),
+SHA-256 `248df0f0fd5868b293500bb9e71406766a91f0847c09bd98d3af6100d6792a49`. The first records clean
+source/tree provenance, exact local model-manifest digests, three distinct safe plans, current
+hard-gate eligibility, a grounded adaptation, and zero retained uploads. The second records visible
+safe recovery from Chrome's non-room green test card. Neither contains room image bytes, raw model
+output, credentials, participant data, or real-person pose measurements.
 
 The two privacy-reviewed local browser exports are:
 

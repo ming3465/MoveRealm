@@ -46,14 +46,18 @@ commit/build assertions, the scene/plan request audit, and zero-upload cleanup. 
 container stopped after escalation with exit 137, so that stop is not described as graceful.
 
 The free local runtime path uses CodeBuddy Code 2.136.0 to orchestrate Apache-2.0 Qwen3-VL 4B
-through loopback Ollama 0.23.1. With fallback forbidden, the preserved `de0b2de` checkpoint produced distinct
-open, tight, and uncertain scene profiles and distinct safe 180-second plans; its live adaptation
-changed range `0.62→0.46`, tempo `0.90→0.77`, and target rate `8→7`. A separate fake-camera browser
-smoke visibly showed `CodeBuddy live`, made exactly scene/plan/adapt POSTs, scored 0→145, and rendered
-an 8.895-second adaptation with no console errors. See the sanitized
-[`strict matrix`](artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json) and
-[`UI observation`](artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json). These controlled
-runs are agent-loop evidence, not real-person pose, latency, TTFF, or usability evidence.
+through loopback Ollama 0.23.1. From clean checkpoint `5b77105`, fallback was forbidden while the
+model produced materially different open, tight, and uncertain profiles plus safe 180-second plans.
+The live `too_hard` adaptation changed squat range `0.62→0.46`, tempo `1.00→0.87`, and target rate
+`10→9`; the independent deterministic evaluator accepted all three candidates. See the sanitized
+[`strict matrix`](artifacts/validation/codebuddy-local-qwen-matrix-5b77105.json).
+
+A separate browser run intentionally used Chrome's green synthetic test card, which is not a room.
+The model twice returned no safe direction; schema validation rejected it and the UI visibly used
+the labelled deterministic fallback. That honest resilience result is preserved as the
+[`synthetic-camera fallback`](artifacts/validation/codebuddy-local-synthetic-camera-fallback-5b77105.json),
+not presented as live room-understanding evidence. Neither controlled run is real-person pose,
+latency, TTFF, or usability evidence.
 
 Earlier signed-in CodeBuddy 429/time-out records remain preserved as recovery evidence; they no
 longer describe the recommended local 4B route.

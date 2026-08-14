@@ -39,10 +39,11 @@ CodeBuddy development tip.
   keyboard pose metrics unevaluated.
 - [x] Push/deploy completed. `origin/main`, successful CI, and both exact public browser smokes
   matched the release commit/build.
-- [x] Confirm the free local CodeBuddy/Qwen3-VL 4B route passed both the fallback-forbidden strict
-  three-room matrix and the visible fake-camera adaptation smoke. Use the preserved
-  [`matrix`](../artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json) and
-  [`UI record`](../artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json).
+- [x] Confirm the free local CodeBuddy/Qwen3-VL 4B route passed the fallback-forbidden strict
+  three-room matrix at clean `5b77105`. Use the preserved
+  [`matrix`](../artifacts/validation/codebuddy-local-qwen-matrix-5b77105.json). The separate
+  [`synthetic-camera record`](../artifacts/validation/codebuddy-local-synthetic-camera-fallback-5b77105.json)
+  proves labelled recovery from a non-room green test card; do not narrate it as live scene success.
 - [x] Confirm `npm audit --audit-level=low` reports 0 vulnerabilities.
 - [x] Confirm the exact-release public camera basic smoke passed with Chrome's fake camera:
   `cameraReady=true`, score 0→145, API POSTs `[]`, and no console errors. This is controlled,

@@ -15,9 +15,9 @@ dash (`—`) means **not measured**; it is not a zero and must never be replaced
 ## Current release verification — 14 August 2026
 
 Exact released source: commit `49dadbee7bf106b9434cae5a992d456d3cac1433`, tree
-`cb5f6e024784156864c8fc4acf7af7673c3f49d4`. The preserved local 4B strict matrix was produced
-earlier from clean checkpoint `de0b2de`; its scope remains explicitly controlled. The current
-application shipped in Pages run 31764155833 and build `build-31764155833`.
+`cb5f6e024784156864c8fc4acf7af7673c3f49d4`. The refreshed local 4B strict matrix was produced from
+clean checkpoint `5b77105`; its scope remains explicitly controlled. The current application
+shipped in Pages run 31764155833 and build `build-31764155833`.
 
 | Check | Observed | Evidence status |
 |---|---|---|
@@ -30,8 +30,8 @@ application shipped in Pages run 31764155833 and build `build-31764155833`.
 | Predecessor `cf15709` captured-room full fallback smoke | production mode; camera ready; exact scene/plan/adapt/adapt POSTs; scores to 435; `Safe fallback`; adaptation 60→44%, 0.90→0.77×, 7→6; 2.6 min / 18% / `N/A`; no errors | recorded synthetic-camera predecessor-candidate evidence; audit ID is not a CI run |
 | Python Qwen3-VL 4B recovery | unsafe original 18/24 in 43.492 s; eligible fallback 15/24 in 37.550 s; hard gates selected fallback | recorded controlled synthetic evidence |
 | Safety Probe | 332 candidates: 302 defended, 30 honored, 0 breaches, 0 over-rejections, 0 inconclusive; 20/20 controls and 7/7 frontiers | recorded controlled synthetic evidence |
-| Free local CodeBuddy/Qwen3-VL 4B strict loop | **PASS**: fallback forbidden; 3 distinct room profiles and 3 distinct safe 180-second plans; live adaptation reduced range/tempo/rate; uploads empty | recorded controlled synthetic agent evidence |
-| Free local CodeBuddy browser adaptation | **PASS**: fake camera ready; visible `CodeBuddy live`; exact scene/plan/adapt POSTs; score 0→145; adaptation 52→40%, 1.05→0.92×, 9→8 in 8.895 s; no console errors | recorded controlled UI evidence |
+| Free local CodeBuddy/Qwen3-VL 4B strict loop | **PASS** at clean `5b77105`: fallback forbidden; 3 distinct room profiles and 3 distinct safe 180-second plans; current hard gates accepted all 3; live adaptation reduced range/tempo/rate; uploads empty | recorded controlled synthetic agent evidence |
+| Synthetic-camera invalid-room recovery | **PASS**: Chrome green test card was not treated as a room; both invalid empty-direction results were rejected; visible `Safe fallback`; safe confirmation defaults; score 0→145; no console errors | recorded controlled resilience evidence, not live room understanding |
 | Current Pages deployment | **PASS**: full test gate, build, artifact upload, and deployment; exact commit/build injected | recorded in run 31764155833 |
 | Current public camera + full smoke | **PASS**: exact identity, fake camera ready, pause/focus containment, all three rounds, adaptation, postcard, replay/stop, API POSTs `[]`, no errors | recorded automated release evidence |
 | Current public anonymous export | **PASS**: byte-identical visible/downloaded checksum; exact `49dadbe` / `build-31764155833`; keyboard pose gates remained `not_evaluated` | recorded automated release evidence |
@@ -55,11 +55,12 @@ inference, visible latency, and TTFF thresholds `not_evaluated` because controls
 
 The current local 4B route supports a controlled live-agent claim, within its recorded scope. Its
 privacy-safe records are
-[`codebuddy-local-qwen-matrix-de0b2de.json`](../artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json),
-SHA-256 `75ce775069d32867d2e7dc6d56fa4030d3bd3e0f13409eef9c64217ba807bf35`, and
-[`codebuddy-local-ui-adaptation-de0b2de.json`](../artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json),
-SHA-256 `a83a93d33ce203eccd750a39ca0985af897cf6aee4c10200c07640929b593cba`.
-Earlier upstream 429/time-out evidence remains preserved and still proves labelled recovery.
+[`codebuddy-local-qwen-matrix-5b77105.json`](../artifacts/validation/codebuddy-local-qwen-matrix-5b77105.json),
+SHA-256 `8ac958431bd25c0ec9947a295656a17f083f7df3878cca8abd26f141b79215f6`, and
+[`codebuddy-local-synthetic-camera-fallback-5b77105.json`](../artifacts/validation/codebuddy-local-synthetic-camera-fallback-5b77105.json),
+SHA-256 `248df0f0fd5868b293500bb9e71406766a91f0847c09bd98d3af6100d6792a49`.
+The second record is deliberately fallback evidence, not a successful room-analysis claim. Earlier
+upstream 429/time-out evidence remains preserved and still proves labelled recovery.
 
 ## Previous deployed verification — 13 August 2026
 
@@ -252,7 +253,7 @@ media, webcam stream, landmarks, identity, or health inference. See
 definitions, recorded scores, and limitations.
 
 The 8B open/tight reports are frozen predecessor `7fe9009` evaluator snapshots. Their predecessor
-candidate JSON does not pass the newer `de0b2de` canonical-presentation and required-variety gates,
+candidate JSON does not pass the newer current canonical-presentation and required-variety gates,
 so those scores are not current-candidate pass evidence. Current runtime evidence is the passing
 local 4B strict matrix and browser adaptation record linked above.
 
