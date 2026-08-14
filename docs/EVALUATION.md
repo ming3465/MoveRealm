@@ -74,12 +74,12 @@ the model response is invalid. Without it, hard gates still run and the judge is
 
 ## Released application and local-director evidence — 14 August 2026
 
-The clean released application is commit `49dadbee7bf106b9434cae5a992d456d3cac1433`, tree
-`cb5f6e024784156864c8fc4acf7af7673c3f49d4`. It passed 128/128 Vitest tests across 16 files,
+The clean released application is commit `cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62`, tree
+`f4fa9f40ed7b2ee15092fba8e3072ed1a91c5a0e`. It passed 129/129 Vitest tests across 16 files,
 13/13 Python recovery-agent tests, 82/82 safety-probe tests, the strict production build, and a
 0-vulnerability dependency audit. It shipped in
-[Pages run 31764155833](https://github.com/ming3465/MoveRealm/actions/runs/31764155833), build
-`build-31764155833`.
+[Pages run 31766511011](https://github.com/ming3465/MoveRealm/actions/runs/31766511011), build
+`build-31766511011`.
 
 The current fallback-forbidden local CodeBuddy/Qwen3-VL observations were captured at clean
 checkpoint `5b77105ac4813df7f2f270ccb07f054550533008`, tree
@@ -127,7 +127,7 @@ The final records are
 These 8B reports and their source candidate bundles are frozen predecessor `7fe9009` evaluator
 snapshots. In particular, the predecessor open/tight candidates do not satisfy the newer current
 canonical-presentation and required-variety gates and must not be described as passing the current
-evaluator. Current runtime proof comes from the 128-test Vitest layer and the two local 4B artifacts
+evaluator. Current runtime proof comes from the 129-test Vitest layer and the two local 4B artifacts
 linked above; the predecessor 8B model reports remain historical evaluator evidence only.
 
 As a separate ephemeral compatibility check, `cf15709` reconstructed open, tight, and uncertain

@@ -26,15 +26,15 @@ judge latencies were 43.492 and 37.550 seconds respectively.
 
 ## Released implementation checkpoint — 14 August 2026
 
-- Exact source commit: `49dadbee7bf106b9434cae5a992d456d3cac1433`
-- Exact source tree: `cb5f6e024784156864c8fc4acf7af7673c3f49d4`
-- `npm run test:all`: **128/128 Vitest tests across 16 files**, **13/13 Python recovery-agent tests**,
+- Exact source commit: `cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62`
+- Exact source tree: `f4fa9f40ed7b2ee15092fba8e3072ed1a91c5a0e`
+- `npm run test:all`: **129/129 Vitest tests across 16 files**, **13/13 Python recovery-agent tests**,
   and **82/82 safety-probe tests**.
 - Strict production build: **passed**.
 - Dependency audit: **0 vulnerabilities**.
 - Exact-source Docker image:
-  `sha256:4119e32ef7f0145daa53a6669259fe0cbf81324b682689651cdc97003d3c7c15`
-  (343,108,191 bytes); health before/after, exact `build-20260814`/commit assertions,
+  `sha256:1e15b02099608930674d565c431942b1f9234e2a7ef365bb3ab8d18c2112156c`
+  (343,108,983 bytes); health before/after, exact `build-31766511011`/commit assertions,
   captured-room basic fallback smoke, scene/plan request audit, and zero-upload cleanup passed. The
   temporary audit container stopped after escalation with exit 137, not gracefully.
 - Free local CodeBuddy/Qwen3-VL 4B strict matrix: **passed** with fallback forbidden. Open, tight,
@@ -43,8 +43,8 @@ judge latencies were 43.492 and 37.550 seconds respectively.
 - Synthetic-camera invalid-room recovery: **passed** with visible `Safe fallback`, camera ready,
   safe confirmation defaults, exact scene/plan POSTs, score 0→145, and no console errors. Chrome's
   green test card is not a room, so this is resilience—not live scene-understanding—evidence.
-- Release: shipped in application commit `49dadbee7bf106b9434cae5a992d456d3cac1433`, Pages run
-  31764155833, build `build-31764155833`.
+- Release: shipped in application commit `cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62`, Pages run
+  31766511011, build `build-31766511011`.
 
 Current live evidence is
 [`validation/codebuddy-local-qwen-matrix-5b77105.json`](validation/codebuddy-local-qwen-matrix-5b77105.json)
@@ -67,25 +67,25 @@ for [`../agent/evidence/safety-probe.json`](../agent/evidence/safety-probe.json)
 - Public guided demo: <https://ming3465.github.io/MoveRealm/>
 - Source repository: <https://github.com/ming3465/MoveRealm>
 - Release-application deployment:
-  [GitHub Pages run 31764155833](https://github.com/ming3465/MoveRealm/actions/runs/31764155833)
+  [GitHub Pages run 31766511011](https://github.com/ming3465/MoveRealm/actions/runs/31766511011)
   for commit
-  [`49dadbe`](https://github.com/ming3465/MoveRealm/commit/49dadbee7bf106b9434cae5a992d456d3cac1433)
-  completed `npm ci`, **128/128 Vitest**, **13/13 Python recovery-agent**, and **82/82 safety-probe
+  [`cf2ea8b`](https://github.com/ming3465/MoveRealm/commit/cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62)
+  completed `npm ci`, **129/129 Vitest**, **13/13 Python recovery-agent**, and **82/82 safety-probe
   tests**, the production build, artifact upload, and deployment. The deployed client carries build
-  `build-31764155833` and the exact full commit SHA.
+  `build-31766511011` and the exact full commit SHA.
 - Dependency audit: **0 vulnerabilities**.
 - Exact-release public camera/full smoke: **passed** with Chrome's fake camera,
   `cameraReady=true`, pause/focus containment, and no console errors. It is controlled, non-human
   evidence and was run separately from CI.
-- That same full smoke against commit `49dadbe` / run 31764155833 / build
-  `build-31764155833`: **passed** with `Guided demo` provenance. Round scores were
+- That same full smoke against commit `cf2ea8b` / run 31766511011 / build
+  `build-31766511011`: **passed** with `Guided demo` provenance. Round scores were
   0 → 145 → 290 → 435; adaptation
   64 → 48%, 0.90 → 0.77×, and 7 → 6; postcard 2.6 active minutes / 3.0-minute adventure /
   18% completion / tracking `N/A`; API POSTs `[]`; no console errors. The visible and downloaded
   SHA-256 both matched
-  `f003b7eb3015f426125725237c90dccd2128198ba599f069fcaec0f7e3e78c93` for
-  [`validation/public-guided-keyboard-session-49dadbe.json`](validation/public-guided-keyboard-session-49dadbe.json).
-- The exact release Docker image `sha256:4119e32e…` passed health,
+  `a2de638243c753c57b470be869507342bd2794ec88ab8d1bd7091134d1fc7040` for
+  [`validation/public-guided-keyboard-session-cf2ea8b.json`](validation/public-guided-keyboard-session-cf2ea8b.json).
+- The exact release Docker image `sha256:1e15b020…` passed health,
   captured-room basic fallback, exact identity, and zero-upload cleanup before release. Earlier
   `2ab9584` packaged/full-session results remain predecessor-only evidence.
 
@@ -186,7 +186,7 @@ This supports the wording “2.6 active minutes within a 3.0-minute adventure.�
 claim of three active minutes or any real-person tracking result.
 
 The current exact-release guided keyboard record is preserved at
-[`validation/public-guided-keyboard-session-49dadbe.json`](validation/public-guided-keyboard-session-49dadbe.json).
+[`validation/public-guided-keyboard-session-cf2ea8b.json`](validation/public-guided-keyboard-session-cf2ea8b.json).
 Its pose metrics and real-camera thresholds are explicitly `null` / `not_evaluated`; it validates
 the exporter and release identity but is not a human trial.
 
@@ -215,8 +215,8 @@ MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
 MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
 MOVEREALM_URL=https://ming3465.github.io/MoveRealm/ MOVEREALM_CAMERA_SMOKE=1 \
   MOVEREALM_FULL_SMOKE=1 \
-  MOVEREALM_EXPECT_COMMIT=49dadbee7bf106b9434cae5a992d456d3cac1433 \
-  MOVEREALM_EXPECT_BUILD_ID=build-31764155833 npm run smoke:browser
+  MOVEREALM_EXPECT_COMMIT=cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62 \
+  MOVEREALM_EXPECT_BUILD_ID=build-31766511011 npm run smoke:browser
 ```
 
 The camera smoke uses Chrome's fake media stream to check permission and Worker readiness. It does
@@ -244,7 +244,7 @@ MOVEREALM_ROOM_MATRIX=1 \
 
 | File | SHA-256 |
 |---|---|
-| `validation/public-guided-keyboard-session-49dadbe.json` | `f003b7eb3015f426125725237c90dccd2128198ba599f069fcaec0f7e3e78c93` |
+| `validation/public-guided-keyboard-session-cf2ea8b.json` | `a2de638243c753c57b470be869507342bd2794ec88ab8d1bd7091134d1fc7040` |
 | `validation/codebuddy-local-qwen-matrix-5b77105.json` | `8ac958431bd25c0ec9947a295656a17f083f7df3878cca8abd26f141b79215f6` |
 | `validation/codebuddy-local-synthetic-camera-fallback-5b77105.json` | `248df0f0fd5868b293500bb9e71406766a91f0847c09bd98d3af6100d6792a49` |
 | `evaluation/python-agent-qwen3-vl-4b.json` | `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029` |
@@ -304,7 +304,7 @@ flow. They are separate from the six guided screenshots and are controlled, non-
 - **Complete controlled agent evidence:** the current local CodeBuddy/Qwen3-VL 4B strict matrix
   generated the full loop and materially differentiated all three rooms; the synthetic-camera
   smoke separately proved labelled recovery from a non-room input.
-- **Complete release evidence:** application commit `49dadbe`, Pages run 31764155833, exact public
+- **Complete release evidence:** application commit `cf2ea8b`, Pages run 31766511011, exact public
   camera and full-session smokes, pushed `origin/main`, and the preserved anonymous export all
   passed their identity checks.
 - **Complete local artifact:** 4:58 camera-free backup video, transcript, and timed captions; see below.

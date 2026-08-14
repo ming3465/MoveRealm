@@ -14,17 +14,17 @@ dash (`—`) means **not measured**; it is not a zero and must never be replaced
 
 ## Current release verification — 14 August 2026
 
-Exact released source: commit `49dadbee7bf106b9434cae5a992d456d3cac1433`, tree
-`cb5f6e024784156864c8fc4acf7af7673c3f49d4`. The refreshed local 4B strict matrix was produced from
+Exact released source: commit `cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62`, tree
+`f4fa9f40ed7b2ee15092fba8e3072ed1a91c5a0e`. The refreshed local 4B strict matrix was produced from
 clean checkpoint `5b77105`; its scope remains explicitly controlled. The current application
-shipped in Pages run 31764155833 and build `build-31764155833`.
+shipped in Pages run 31766511011 and build `build-31766511011`.
 
 | Check | Observed | Evidence status |
 |---|---|---|
-| Complete automated test gate | `npm run test:all`: **128/128 Vitest tests across 16 files**, **13/13 Python recovery-agent tests**, **82/82 safety-probe tests** | recorded automated release evidence |
+| Complete automated test gate | `npm run test:all`: **129/129 Vitest tests across 16 files**, **13/13 Python recovery-agent tests**, **82/82 safety-probe tests** | recorded automated release evidence |
 | Production build | strict client/server checks and Vite build passed | recorded automated local-candidate evidence |
 | npm dependency audit | **0 vulnerabilities** | recorded automated local-candidate evidence |
-| Exact-source Docker identity | `sha256:4119e32ef7f0145daa53a6669259fe0cbf81324b682689651cdc97003d3c7c15` (343,108,191 bytes); local audit build `build-20260814`; embedded `49dadbe` commit matched | recorded packaged release evidence |
+| Exact-source Docker identity | `sha256:1e15b02099608930674d565c431942b1f9234e2a7ef365bb3ab8d18c2112156c` (343,108,983 bytes); embedded `build-31766511011` / `cf2ea8b` identity matched | recorded packaged release evidence |
 | Exact-source Docker health, captured-room basic smoke, and cleanup | health passed before/after; camera ready, score 0→145, exact scene/plan POSTs, zero retained uploads; audit container stop escalated to exit 137 | recorded packaged synthetic-camera evidence; stop was not graceful |
 | Predecessor `cf15709` guided full browser smoke | production mode; local audit ID `build-20260814`; three mechanics; scores 0→145→290→435; adaptation 64→48%, 0.90→0.77×, 7→6; 2.6 min / 18% / `N/A`; no POSTs/errors | recorded automated predecessor-candidate evidence; audit ID is not a CI run |
 | Predecessor `cf15709` captured-room full fallback smoke | production mode; camera ready; exact scene/plan/adapt/adapt POSTs; scores to 435; `Safe fallback`; adaptation 60→44%, 0.90→0.77×, 7→6; 2.6 min / 18% / `N/A`; no errors | recorded synthetic-camera predecessor-candidate evidence; audit ID is not a CI run |
@@ -32,9 +32,9 @@ shipped in Pages run 31764155833 and build `build-31764155833`.
 | Safety Probe | 332 candidates: 302 defended, 30 honored, 0 breaches, 0 over-rejections, 0 inconclusive; 20/20 controls and 7/7 frontiers | recorded controlled synthetic evidence |
 | Free local CodeBuddy/Qwen3-VL 4B strict loop | **PASS** at clean `5b77105`: fallback forbidden; 3 distinct room profiles and 3 distinct safe 180-second plans; current hard gates accepted all 3; live adaptation reduced range/tempo/rate; uploads empty | recorded controlled synthetic agent evidence |
 | Synthetic-camera invalid-room recovery | **PASS**: Chrome green test card was not treated as a room; both invalid empty-direction results were rejected; visible `Safe fallback`; safe confirmation defaults; score 0→145; no console errors | recorded controlled resilience evidence, not live room understanding |
-| Current Pages deployment | **PASS**: full test gate, build, artifact upload, and deployment; exact commit/build injected | recorded in run 31764155833 |
+| Current Pages deployment | **PASS**: full test gate, build, artifact upload, and deployment; exact commit/build injected | recorded in run 31766511011 |
 | Current public camera + full smoke | **PASS**: exact identity, fake camera ready, pause/focus containment, all three rounds, adaptation, postcard, replay/stop, API POSTs `[]`, no errors | recorded automated release evidence |
-| Current public anonymous export | **PASS**: byte-identical visible/downloaded checksum; exact `49dadbe` / `build-31764155833`; keyboard pose gates remained `not_evaluated` | recorded automated release evidence |
+| Current public anonymous export | **PASS**: byte-identical visible/downloaded checksum; exact `cf2ea8b` / `build-31766511011`; keyboard pose gates remained `not_evaluated` | recorded automated release evidence |
 
 The Python recovery artifact SHA-256 is
 `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029`; both evaluations share
@@ -93,7 +93,7 @@ and result record belongs in
 
 The Pages workflow excludes docs-only changes under `docs/**`, `artifacts/**`, `README.md`, and
 `assets/README.md` from its push trigger. This documentation follow-up does not imply a newer
-application deployment; the current application release identity remains run 31764155833.
+application deployment; the current application release identity remains run 31766511011.
 
 The current release retains the evidence-integrity checks introduced in `2ab9584` around the local
 exporter:
@@ -120,26 +120,26 @@ Chrome's fake stream does not contain a trackable person, so this evidence does 
 real-person pose FPS, camera-to-visual response latency, movement accuracy, time to first movement,
 or usability.
 
-The deployed `49dadbe` public application passed an exact-release combined camera/full smoke as a
+The deployed `cf2ea8b` public application passed an exact-release combined camera/full smoke as a
 separate deployed-site observation, not a CI browser job. Chrome's fake camera reached
 `cameraReady: true`, the first score advanced 0 → 145, pause kept its timer fixed and contained
 keyboard focus, the request audit recorded API POSTs `[]`, and no console errors occurred. Because
 the stream was synthetic, this does not close any real-person camera gate.
 
-The exact release Docker image `sha256:4119e32e…` has the separate current-source
+The exact release Docker image `sha256:1e15b020…` has the separate current-source
 basic captured-room/fallback evidence recorded above. The older `2ab9584` package/full-session
 scopes remain predecessor-only evidence.
 
 The exact-release full browser smoke also passed against commit
-`49dadbee7bf106b9434cae5a992d456d3cac1433`, Pages run 31764155833, and build
-`build-31764155833`. Scores advanced 0 → 145 → 290 → 435. The visible `Guided demo`
+`cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62`, Pages run 31766511011, and build
+`build-31766511011`. Scores advanced 0 → 145 → 290 → 435. The visible `Guided demo`
 adaptation changed range 64 → 48%, tempo 0.90 → 0.77×, and target rate 7 → 6. The postcard
 displayed 2.6 active minutes, 18% completion, and tracking `N/A`; the request audit recorded API
 POSTs `[]`; and no console errors occurred.
 
 That smoke downloaded anonymous keyboard evidence. The privacy-reviewed copy is preserved as
-[`public-guided-keyboard-session-49dadbe.json`](../artifacts/validation/public-guided-keyboard-session-49dadbe.json).
-Its SHA-256 `f003b7eb3015f426125725237c90dccd2128198ba599f069fcaec0f7e3e78c93`
+[`public-guided-keyboard-session-cf2ea8b.json`](../artifacts/validation/public-guided-keyboard-session-cf2ea8b.json).
+Its SHA-256 `a2de638243c753c57b470be869507342bd2794ec88ab8d1bd7091134d1fc7040`
 matched the preserved file, and its product identity exactly matched the deployed release commit and
 build. The export records three rounds, two adaptations, 156 completed active seconds within the
 planned 180-second adventure, and keyboard tracking. Tracking FPS, inference, and visible-response
@@ -173,11 +173,11 @@ MOVEREALM_CAMERA_SMOKE=1 npm run smoke:browser
 MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
 MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
 MOVEREALM_URL=https://ming3465.github.io/MoveRealm/ MOVEREALM_CAMERA_SMOKE=1 \
-  MOVEREALM_EXPECT_COMMIT=49dadbee7bf106b9434cae5a992d456d3cac1433 \
-  MOVEREALM_EXPECT_BUILD_ID=build-31764155833 npm run smoke:browser
+  MOVEREALM_EXPECT_COMMIT=cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62 \
+  MOVEREALM_EXPECT_BUILD_ID=build-31766511011 npm run smoke:browser
 MOVEREALM_URL=https://ming3465.github.io/MoveRealm/ MOVEREALM_FULL_SMOKE=1 \
-  MOVEREALM_EXPECT_COMMIT=49dadbee7bf106b9434cae5a992d456d3cac1433 \
-  MOVEREALM_EXPECT_BUILD_ID=build-31764155833 npm run smoke:browser
+  MOVEREALM_EXPECT_COMMIT=cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62 \
+  MOVEREALM_EXPECT_BUILD_ID=build-31766511011 npm run smoke:browser
 ```
 
 These commands document how to reproduce each path. Cite the preserved command and result entries in

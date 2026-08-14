@@ -17,31 +17,31 @@ visibly labelled deterministic decisions. The live CodeBuddy Movement Director r
 production Node adapter described below; the public demo does not impersonate that integration.
 
 The release-application Pages deployment
-[run 31764155833](https://github.com/ming3465/MoveRealm/actions/runs/31764155833) for commit
-[`49dadbe`](https://github.com/ming3465/MoveRealm/commit/49dadbee7bf106b9434cae5a992d456d3cac1433)
-passed the complete 128-test Vitest, 13-test Python recovery-agent, and 82-test safety-probe gate,
+[run 31766511011](https://github.com/ming3465/MoveRealm/actions/runs/31766511011) for commit
+[`cf2ea8b`](https://github.com/ming3465/MoveRealm/commit/cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62)
+passed the complete 129-test Vitest, 13-test Python recovery-agent, and 82-test safety-probe gate,
 the production build, artifact upload, and deployment. The deployed client identifies itself as
-build `build-31764155833` at full commit
-`49dadbee7bf106b9434cae5a992d456d3cac1433`. Six consent-free guided screenshots and two controlled
+build `build-31766511011` at full commit
+`cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62`. Six consent-free guided screenshots and two controlled
 synthetic fake-camera CodeBuddy UI captures are available under
 [`assets/submission/screenshots/`](assets/submission/screenshots/).
 
 The Pages workflow ignores changes limited to `docs/**`, `artifacts/**`, `README.md`, and
 `assets/README.md`. Documentation-only release follow-ups therefore do not redeploy the application;
-run 31764155833 remains the exact application release until source-bearing paths change or the
+run 31766511011 remains the exact application release until source-bearing paths change or the
 workflow is manually dispatched.
 
 ## Released implementation checkpoint — 14 August 2026
 
 The released implementation and refreshed contract evidence were frozen at clean commit
-`49dadbee7bf106b9434cae5a992d456d3cac1433`, tree
-`cb5f6e024784156864c8fc4acf7af7673c3f49d4`, which is the release commit above.
+`cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62`, tree
+`f4fa9f40ed7b2ee15092fba8e3072ed1a91c5a0e`, which is the release commit above.
 
-The exact clean candidate passed `npm run test:all`: **128/128 Vitest tests across 16 files**, **13/13
+The exact clean candidate passed `npm run test:all`: **129/129 Vitest tests across 16 files**, **13/13
 Python recovery-agent tests**, and **82/82 Python safety-probe tests**. The strict production build
 passed and `npm audit --audit-level=low` reported **0 vulnerabilities**. The exact-source Docker image
-`sha256:4119e32ef7f0145daa53a6669259fe0cbf81324b682689651cdc97003d3c7c15`
-(343,108,191 bytes) passed health before and after the captured-room basic smoke, exact
+`sha256:1e15b02099608930674d565c431942b1f9234e2a7ef365bb3ab8d18c2112156c`
+(343,108,983 bytes) passed health before and after the captured-room basic smoke, exact
 commit/build assertions, the scene/plan request audit, and zero-upload cleanup. Its temporary audit
 container stopped after escalation with exit 137, so that stop is not described as graceful.
 
@@ -160,25 +160,25 @@ MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
 MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
 ```
 
-The current `49dadbe` public camera/full smoke was a separate deployed-site observation, not a CI
+The current `cf2ea8b` public camera/full smoke was a separate deployed-site observation, not a CI
 job. With Chrome's fake camera it reported `cameraReady: true`, scored 0 → 145, recorded API POSTs
 `[]`, and produced no console errors. It is camera-startup and basic-flow evidence, not a real-person
 FPS, latency, TTFF, or usability measurement.
 
-The same exact-release public run completed against `49dadbe` / run 31764155833 / build
-`build-31764155833`: scores advanced 0 → 145 → 290 → 435; `Guided demo` adaptation showed
+The same exact-release public run completed against `cf2ea8b` / run 31766511011 / build
+`build-31766511011`: scores advanced 0 → 145 → 290 → 435; `Guided demo` adaptation showed
 range 64 → 48%, tempo 0.90 → 0.77×, and target rate 7 → 6; and the postcard reported 2.6 active
 minutes, 18% completion, and tracking `N/A`. The request audit recorded API POSTs `[]`, and no
 console errors appeared. The preserved anonymous keyboard JSON matched SHA-256
-`f003b7eb3015f426125725237c90dccd2128198ba599f069fcaec0f7e3e78c93` and the exact
+`a2de638243c753c57b470be869507342bd2794ec88ab8d1bd7091134d1fc7040` and the exact
 build/commit identity. Its keyboard timing and `N/A`/`not_evaluated` pose fields are exporter
 evidence, not human TTFF or pose evidence. See
 [`artifacts/validation/release-checks.md`](artifacts/validation/release-checks.md) for the command and
 result record and
-[`public-guided-keyboard-session-49dadbe.json`](artifacts/validation/public-guided-keyboard-session-49dadbe.json)
+[`public-guided-keyboard-session-cf2ea8b.json`](artifacts/validation/public-guided-keyboard-session-cf2ea8b.json)
 for the privacy-reviewed export.
 
-The exact release Docker image `sha256:4119e32e…` passed the captured-room basic
+The exact release Docker image `sha256:1e15b020…` passed the captured-room basic
 path before release. Older `2ab9584` packaged/full-session results remain predecessor evidence and
 must not be cited as current-release execution.
 

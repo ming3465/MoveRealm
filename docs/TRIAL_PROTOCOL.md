@@ -69,8 +69,8 @@ For every trial:
    [`release-checks.md`](../artifacts/validation/release-checks.md):
 
    ```bash
-   VITE_BUILD_ID=build-31764155833 \
-   VITE_COMMIT_SHA=49dadbee7bf106b9434cae5a992d456d3cac1433 \
+   VITE_BUILD_ID=build-31766511011 \
+   VITE_COMMIT_SHA=cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62 \
    npm run dev
    ```
 

@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "1.0.0",
+  "trialId": "trial-1",
+  "product": {
+    "name": "MoveRealm",
+    "appVersion": "0.1.0",
+    "buildId": "build-31766511011",
+    "commitSha": "cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62"
+  },
+  "context": {
+    "roomSpaceClass": "tight",
+    "trackingMode": "keyboard"
+  },
+  "duration": {
+    "plannedAdventureSeconds": 180,
+    "plannedActiveSeconds": 156,
+    "plannedRestSeconds": 24,
+    "completedActiveSeconds": 156,
+    "observedAdventureSeconds": 185.8
+  },
+  "metrics": {
+    "completionRate": 0.176,
+    "timeToFirstMovementMs": 3715,
+    "trackingFps": null,
+    "inferenceMs": null,
+    "visibleResponseLatencyMs": null
+  },
+  "measurementEvidence": {
+    "timeToFirstMovementMs": {
+      "threshold": {
+        "status": "not_evaluated",
+        "comparator": "under",
+        "target": 45000,
+        "basis": null,
+        "evaluatedValue": null
+      }
+    },
+    "trackingFps": {
+      "summary": null,
+      "threshold": {
+        "status": "not_evaluated",
+        "comparator": "at_least",
+        "target": 20,
+        "basis": null,
+        "evaluatedValue": null
+      }
+    },
+    "inferenceMs": {
+      "summary": null,
+      "threshold": {
+        "status": "not_evaluated",
+        "comparator": "at_most",
+        "target": 50,
+        "basis": null,
+        "evaluatedValue": null
+      }
+    },
+    "visibleResponseLatencyMs": {
+      "summary": null,
+      "threshold": {
+        "status": "not_evaluated",
+        "comparator": "under",
+        "target": 100,
+        "basis": null,
+        "evaluatedValue": null
+      }
+    }
+  },
+  "director": {
+    "scene": {
+      "source": "demo",
+      "latencyMs": 36
+    },
+    "plan": {
+      "source": "demo",
+      "latencyMs": 0
+    },
+    "adaptations": [
+      {
+        "source": "demo",
+        "latencyMs": 0
+      },
+      {
+        "source": "demo",
+        "latencyMs": 0
+      }
+    ],
+    "sourcesUsed": [
+      "demo"
+    ],
+    "sessionPlanAndAdaptationLatencyMs": 0
+  },
+  "rounds": [
+    {
+      "roundId": "round-1",
+      "movementId": "reach",
+      "durationSeconds": 52,
+      "trackingMode": "keyboard",
+      "completionRate": 0.143,
+      "movementRange": 0.82,
+      "poseConfidence": null,
+      "trackingFps": null,
+      "targetsPresented": 7,
+      "targetsCompleted": 1,
+      "feedback": "too_hard"
+    },
+    {
+      "roundId": "round-2",
+      "movementId": "squat",
+      "durationSeconds": 52,
+      "trackingMode": "keyboard",
+      "completionRate": 0.2,
+      "movementRange": 0.82,
+      "poseConfidence": null,
+      "trackingFps": null,
+      "targetsPresented": 5,
+      "targetsCompleted": 1,
+      "feedback": "just_right"
+    },
+    {
+      "roundId": "round-3",
+      "movementId": "side_step",
+      "durationSeconds": 52,
+      "trackingMode": "keyboard",
+      "completionRate": 0.2,
+      "movementRange": 0.82,
+      "poseConfidence": null,
+      "trackingFps": null,
+      "targetsPresented": 5,
+      "targetsCompleted": 1,
+      "feedback": "just_right"
+    }
+  ],
+  "adaptations": [
+    {
+      "afterRoundId": "round-1",
+      "appliesToRoundId": "round-2",
+      "adjustments": [
+        "target_envelope",
+        "tempo",
+        "target_rate"
+      ],
+      "nextRoundParameters": {
+        "rangeScale": 0.48,
+        "tempo": 0.77,
+        "targetRate": 6
+      },
+      "director": {
+        "source": "demo",
+        "latencyMs": 0
+      }
+    },
+    {
+      "afterRoundId": "round-2",
+      "appliesToRoundId": "round-3",
+      "adjustments": [
+        "target_envelope",
+        "tempo",
+        "target_rate"
+      ],
+      "nextRoundParameters": {
+        "rangeScale": 0.4,
+        "tempo": 0.77,
+        "targetRate": 6
+      },
+      "director": {
+        "source": "demo",
+        "latencyMs": 0
+      }
+    }
+  ],
+  "privacy": {
+    "liveCameraHandlingDesign": "browser_only",
+    "liveCameraNetworkAuditIncluded": false,
+    "personalIdentifiersIncluded": false,
+    "imagesOrVideoIncluded": false,
+    "rawPoseLandmarksIncluded": false,
+    "capturedRoomStillIncluded": false,
+    "uploadPathsIncluded": false,
+    "statement": "By design live camera frames stay in the browser. This local evidence is not a network audit and contains aggregate measurements only; it excludes names, media, room stills, pose landmarks, and upload paths."
+  }
+}
