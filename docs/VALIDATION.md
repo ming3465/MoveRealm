@@ -12,12 +12,13 @@ dash (`—`) means **not measured**; it is not a zero and must never be replaced
 - **Pending human/device evidence** — requires a real person, real webcam, and target device.
 - **Pending submission evidence** — requires a finished, accessible recording or artifact.
 
-## Clean local candidate verification — 14 August 2026
+## Current release verification — 14 August 2026
 
 Exact source: commit `de0b2defc22f524e29bc4ea1019e86c4d31aa915`, tree
 `25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`. The strict matrix record was produced from a clean
-tracked checkout. This candidate has not been pushed or deployed; the public site remains the
-`7fe9009` deployed predecessor.
+tracked checkout. That implementation checkpoint shipped in release commit
+`9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90`, Pages run 31762210597, and build
+`build-31762210597`.
 
 | Check | Observed | Evidence status |
 |---|---|---|
@@ -32,6 +33,9 @@ tracked checkout. This candidate has not been pushed or deployed; the public sit
 | Safety Probe | 332 candidates: 302 defended, 30 honored, 0 breaches, 0 over-rejections, 0 inconclusive; 20/20 controls and 7/7 frontiers | recorded controlled synthetic evidence |
 | Free local CodeBuddy/Qwen3-VL 4B strict loop | **PASS**: fallback forbidden; 3 distinct room profiles and 3 distinct safe 180-second plans; live adaptation reduced range/tempo/rate; uploads empty | recorded controlled synthetic agent evidence |
 | Free local CodeBuddy browser adaptation | **PASS**: fake camera ready; visible `CodeBuddy live`; exact scene/plan/adapt POSTs; score 0→145; adaptation 52→40%, 1.05→0.92×, 9→8 in 8.895 s; no console errors | recorded controlled UI evidence |
+| Current Pages deployment | **PASS**: full test gate, build, artifact upload, and deployment; exact commit/build injected | recorded in run 31762210597 |
+| Current public camera basic smoke | **PASS**: exact identity, fake camera ready, score 0→145, API POSTs `[]`, no errors | recorded automated release evidence |
+| Current public full smoke/export | **PASS**: all three rounds, adaptation, postcard, exact identity/checksum, API POSTs `[]`, no errors | recorded automated release evidence |
 
 The Python recovery artifact SHA-256 is
 `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029`; both evaluations share
@@ -57,7 +61,7 @@ SHA-256 `75ce775069d32867d2e7dc6d56fa4030d3bd3e0f13409eef9c64217ba807bf35`, and
 SHA-256 `a83a93d33ce203eccd750a39ca0985af897cf6aee4c10200c07640929b593cba`.
 Earlier upstream 429/time-out evidence remains preserved and still proves labelled recovery.
 
-## Deployed predecessor verification — 13 August 2026
+## Previous deployed verification — 13 August 2026
 
 | Check | Observed | Evidence status |
 |---|---|---|
@@ -88,9 +92,9 @@ and result record belongs in
 
 The Pages workflow excludes docs-only changes under `docs/**`, `artifacts/**`, `README.md`, and
 `assets/README.md` from its push trigger. This documentation follow-up does not imply a newer
-application deployment; run 31714506917 remains the exact application release.
+application deployment; the current application release identity remains run 31762210597.
 
-The deployed predecessor retains the evidence-integrity checks introduced in `2ab9584` around the local
+The current release retains the evidence-integrity checks introduced in `2ab9584` around the local
 exporter:
 
 - anonymous trial IDs are limited to `trial-1`, `trial-2`, and `trial-3`;
@@ -102,10 +106,10 @@ exporter:
 - the UI prevents duplicate downloads, clamps the trial input to 1–3, removes its temporary anchor,
   delays object-URL cleanup, and presents sanitized success, hash-unavailable, or failure status.
 
-These are automated integrity controls covered by the deployed predecessor's 100-test suite. They do not complete a
+These are automated integrity controls covered by the current complete test gate. They do not complete a
 human trial or measure pose performance.
 
-## Recorded automated browser evidence — 13 August 2026
+## Current automated browser evidence — 14 August 2026
 
 Environment: Apple M1 Pro, Chrome 151, and Node 24.12.
 
@@ -115,39 +119,30 @@ Chrome's fake stream does not contain a trackable person, so this evidence does 
 real-person pose FPS, camera-to-visual response latency, movement accuracy, time to first movement,
 or usability.
 
-The deployed `7fe9009` public application passed an exact-release camera basic smoke as a separate
+The deployed `9f2710f` public application passed an exact-release camera basic smoke as a separate
 deployed-site observation, not a CI browser job. Chrome's fake camera reached `cameraReady: true`,
 the first score advanced 0 → 145, the request audit recorded API POSTs `[]`, and no console errors
 occurred. Because the stream was synthetic, this does not close any real-person camera gate.
 
-No Docker run was performed for `7fe9009`. The Docker image tagged `moverealm:2ab9584` is
-predecessor evidence:
-`sha256:a205205819345589179d079656e0afefb38887b8b460a2c00d942dc0a11e47b6` (343,057,128 bytes)
-and embeds predecessor commit `2ab9584cff8d98bbfb41b1d7f8b9fa821257ac52` / build
-`build-31682611174`.
-In forced-fallback mode, health reported true with CodeBuddy disconnected. Its controlled
-fake-camera basic path reached camera readiness, preserved safe defaults, showed `Safe fallback`,
-scored 0 → 145, sent exactly scene and plan POSTs, left the temporary-upload directory empty, and
-the container was stopped and its port freed after stop escalation. Exit 137 means this is not
-recorded as a graceful stop. The earlier packaged full fallback adaptation also remains predecessor
-evidence. Those older Docker scopes were not rerun for `7fe9009`; the clean local candidate has the
-separate packaged evidence recorded above.
+The exact implementation-checkpoint Docker image `sha256:f1ac14aa…` has the separate current-source
+basic captured-room/fallback evidence recorded above. The older `2ab9584` package/full-session
+scopes remain predecessor-only evidence.
 
 The exact-release full browser smoke also passed against commit
-`7fe9009728d545798c1b5efd7b367d4f54264eaf`, Pages run 31714506917, and build
-`build-31714506917`. Scores advanced 0 → 145 → 290 → 435. The visible `Guided demo`
+`9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90`, Pages run 31762210597, and build
+`build-31762210597`. Scores advanced 0 → 145 → 290 → 435. The visible `Guided demo`
 adaptation changed range 64 → 48%, tempo 0.90 → 0.77×, and target rate 7 → 6. The postcard
 displayed 2.6 active minutes, 18% completion, and tracking `N/A`; the request audit recorded API
 POSTs `[]`; and no console errors occurred.
 
 That smoke downloaded anonymous keyboard evidence. The privacy-reviewed copy is preserved as
-[`public-guided-keyboard-session-7fe9009.json`](../artifacts/validation/public-guided-keyboard-session-7fe9009.json).
-Its SHA-256 `5a3da763a925d02c4152cd305587c3d60e20bb261e354f6372b59fb797ba4620`
-matched the preserved file, and its product identity exactly matched the deployed predecessor commit and
+[`public-guided-keyboard-session-9f2710f.json`](../artifacts/validation/public-guided-keyboard-session-9f2710f.json).
+Its SHA-256 `a9a676b0b16843ef4f883f33ed20738de2b9c204bbabed5ca44ae39a86b7224d`
+matched the preserved file, and its product identity exactly matched the deployed release commit and
 build. The export records three rounds, two adaptations, 156 completed active seconds within the
 planned 180-second adventure, and keyboard tracking. Tracking FPS, inference, and visible-response
 values are `null`/`N/A`; the FPS, inference, visible-latency, and TTFF gates are `not_evaluated`.
-Its 3.803-second first movement was keyboard input, so it is not evidence for the pending real-person
+Its 3.689-second first movement was keyboard input, so it is not evidence for the pending real-person
 TTFF gate.
 
 The earlier full smoke/export remains preserved as predecessor evidence at
@@ -160,7 +155,7 @@ unexpected POST destination. The earlier full fallback adaptation evidence addit
 `POST /api/quest/adapt`; do not merge the two scopes. Both are controlled fake-camera evidence, so
 the real-camera network inspection remains pending.
 
-The deployed-predecessor full guided-smoke oracle checks the result card's time accounting:
+The current full guided-smoke oracle checks the result card's time accounting:
 
 - Three 52-second rounds = 156 seconds = **2.6 active minutes**.
 - Two 12-second rests = 24 seconds = 0.4 minutes.
@@ -176,11 +171,11 @@ MOVEREALM_CAMERA_SMOKE=1 npm run smoke:browser
 MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
 MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
 MOVEREALM_URL=https://ming3465.github.io/MoveRealm/ MOVEREALM_CAMERA_SMOKE=1 \
-  MOVEREALM_EXPECT_COMMIT=7fe9009728d545798c1b5efd7b367d4f54264eaf \
-  MOVEREALM_EXPECT_BUILD_ID=build-31714506917 npm run smoke:browser
+  MOVEREALM_EXPECT_COMMIT=9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90 \
+  MOVEREALM_EXPECT_BUILD_ID=build-31762210597 npm run smoke:browser
 MOVEREALM_URL=https://ming3465.github.io/MoveRealm/ MOVEREALM_FULL_SMOKE=1 \
-  MOVEREALM_EXPECT_COMMIT=7fe9009728d545798c1b5efd7b367d4f54264eaf \
-  MOVEREALM_EXPECT_BUILD_ID=build-31714506917 npm run smoke:browser
+  MOVEREALM_EXPECT_COMMIT=9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90 \
+  MOVEREALM_EXPECT_BUILD_ID=build-31762210597 npm run smoke:browser
 ```
 
 These commands document how to reproduce each path. Cite the preserved command and result entries in
@@ -273,7 +268,6 @@ from the finished submission artifact where specified.
 | Three-user qualitative trial | three completed observations | — | **pending all 3 user trials** |
 | Camera-free backup video file | 3–5 minutes; overview, features, reflection, tip | 4:58.834; H.264/AAC; 1440×810 | **recorded local artifact** |
 | Accepted video URL | accessible YouTube or Google Drive link | — | **pending upload and signed-out check** |
-| Local-candidate push and deployment | publish the current local branch, whose application source is checkpoint `de0b2defc22f524e29bc4ea1019e86c4d31aa915`, and verify the resulting public build plus pushed branch HEAD | — | **authorized by user; pending push and deployment verification** |
 | Team members and registered contact | completed portal fields | — | **pending user input** |
 
 Follow the repeatable, consent-first procedure in

@@ -3,19 +3,23 @@
 Recorded on 13–14 August 2026 in Asia/Singapore. This file separates automated and controlled
 observations from the real-person and submission work that is still pending.
 
-## Clean local candidate identity — 14 August 2026
+## Current release identity — 14 August 2026
 
-- Source commit: `de0b2defc22f524e29bc4ea1019e86c4d31aa915`
-- Source tree: `25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`
+- Clean implementation checkpoint: `de0b2defc22f524e29bc4ea1019e86c4d31aa915`
+- Implementation tree: `25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`
 - Source state for recorded candidate gates: clean tracked checkout
-- Push/deployment: **authorized by the user, not yet performed**; new CI and exact public
-  verification remain pending.
+- Release application commit: `9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90`
+- Application build ID: `build-31762210597`
+- Pages workflow: [run 31762210597](https://github.com/ming3465/MoveRealm/actions/runs/31762210597),
+  **success**
+- Push/public verification: **PASS** — `origin/main`, HTTP 200, exact public camera smoke, and exact
+  public full-session smoke all matched the release identity.
 - Docker image:
   `sha256:f1ac14aab1b2bf42b4a20e0ed2a53f83d74955e047d6d8560b4b76236d87dd0b`
   (343,104,634 bytes), built with exact commit `de0b2de` and local audit build
   `build-2026081402`. This build ID is **not** a GitHub Actions run or public deployment ID.
 
-## Deployed predecessor identity — 13 August 2026
+## Previous deployed identity — 13 August 2026
 
 - Application source commit: `7fe9009728d545798c1b5efd7b367d4f54264eaf`
 - Application build ID: `build-31714506917`
@@ -31,7 +35,7 @@ observations from the real-person and submission work that is still pending.
 
 The Pages workflow ignores pushes limited to `docs/**`, `artifacts/**`, `README.md`, and
 `assets/README.md`. This documentation-only follow-up therefore does not redeploy the app or create
-a newer release identity. Run 31714506917 remains the exact application deployment unless a
+a newer release identity. Run 31762210597 remains the exact application deployment unless a
 source-bearing path changes or the workflow is manually dispatched.
 
 ## Environment
@@ -41,7 +45,7 @@ source-bearing path changes or the workflow is manually dispatched.
 - Google Chrome 151.0.7922.137
 - Node.js 24.12.0; npm 11.9.0
 
-## Clean local candidate gates
+## Implementation-checkpoint gates
 
 | Check | Command or source | Observed result |
 |---|---|---|
@@ -98,16 +102,16 @@ Both embed exact commit `cf157093ff3dab7b3598387d68973f82a3e364c2` and local aud
 `build-20260814`, set personal identifiers, images/video, raw landmarks, room stills, and upload paths
 to false, and leave keyboard pose metrics `null` with human/device thresholds `not_evaluated`.
 
-## Deployed predecessor gates
+## Current public release gates
 
 | Check | Command or source | Observed result |
 |---|---|---|
-| Unit, contract, adapter, and boundary tests | `npm test` | **PASS** — 100/100 tests across 13 files in CI and locally |
+| Complete automated tests | `npm run test:all` | **PASS** — 127/127 Vitest, 13/13 Python recovery-agent, 82/82 safety-probe tests in CI and locally |
 | Strict client/server typecheck and production bundle | `npm run build` | **PASS** |
 | Dependency audit | `npm audit --audit-level=low` | **PASS** — 0 vulnerabilities |
 | Local Markdown links | resolve every local Markdown target | **PASS** — 10 files / 108 local links checked |
 | Tracked secret-pattern scan | common cloud token, private-key, API-key, and CodeBuddy-password patterns | **PASS** — no tracked match |
-| CI deployment | Pages run 31714506917 | **PASS** — commit and build identity injected into client |
+| CI deployment | Pages run 31762210597 | **PASS** — exact commit and build identity injected into client |
 | Public HTTP check | `curl -fsS https://ming3465.github.io/MoveRealm/` | **PASS** — HTTP 200 |
 | Exact-release public camera basic smoke | public URL, expected commit/build, Chrome fake camera | **PASS** — `cameraReady=true`; score 0→145; API POSTs `[]`; no console errors |
 | Exact-release public full-smoke adaptation step | full browser smoke against expected commit/build | **PASS** — `Guided demo`; range 64→48%, tempo 0.90→0.77×, rate 7→6 |
@@ -117,13 +121,14 @@ to false, and leave keyboard pose metrics `null` with human/device thresholds `n
 | Earlier packaged full fallback adaptation | predecessor Docker URL plus capture, adaptation, and expected-fallback flags | **PASS** — `Safe fallback`; range 60→44%, tempo 0.90→0.77×, rate 7→6; not rerun for `7fe9009` |
 
 The predecessor Docker smokes and request audits used Chrome's fake camera and keyboard controls.
-No Docker scope was rerun for `7fe9009`, so none of it may be cited as deployed-predecessor packaged
-evidence. These controlled checks are not real-person tracking evidence or a replacement for the
-pending real-camera network inspection.
+The implementation-checkpoint Docker image recorded above is current source evidence for the basic
+captured-room/fallback package path. The older `2ab9584` Docker scopes in this table remain
+predecessor-only. These controlled checks are not real-person tracking evidence or a replacement
+for the pending real-camera network inspection.
 
 ## Evidence-integrity hardening
 
-The deployed predecessor and clean local candidate retain the automated validation and UI safeguards
+The current release retains the automated validation and UI safeguards
 introduced in `2ab9584` for local anonymous evidence:
 
 - trial IDs are restricted to `trial-1`, `trial-2`, and `trial-3`;
@@ -137,7 +142,7 @@ introduced in `2ab9584` for local anonymous evidence:
   temporary anchor, delays object-URL revocation, and reports sanitized success, hash-unavailable, or
   failure status.
 
-The predecessor's 100-test suite and the candidate's 127-test Vitest layer cover these integrity
+The previous release's 100-test suite and the current 127-test Vitest layer cover these integrity
 boundaries. They validate exported records; they do not complete any of the pending human trials or
 measure real-person performance.
 
@@ -168,19 +173,19 @@ the preserved matrix into `/tmp` and ran `npm run eval -- --judge none`; all thr
 gates passed and were eligible (input SHA-256 prefixes `d6f66a09`, `5a0af7f7`, `437e0860`). No new
 artifact or 8B model report was frozen, and this is not fresh live CodeBuddy evidence.
 
-## Full guided session
+## Current full guided session
 
 The full public smoke runs the real configured clock; it does not accelerate rounds or rests. This
 was a separate deployed-site observation, not a browser step in CI. The exact-release command was:
 
 ```bash
 MOVEREALM_URL=https://ming3465.github.io/MoveRealm/ MOVEREALM_FULL_SMOKE=1 \
-  MOVEREALM_EXPECT_COMMIT=7fe9009728d545798c1b5efd7b367d4f54264eaf \
-  MOVEREALM_EXPECT_BUILD_ID=build-31714506917 npm run smoke:browser
+  MOVEREALM_EXPECT_COMMIT=9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90 \
+  MOVEREALM_EXPECT_BUILD_ID=build-31762210597 npm run smoke:browser
 ```
 
-It exited 0 against commit `7fe9009728d545798c1b5efd7b367d4f54264eaf`, Pages run 31714506917,
-and build `build-31714506917`, then passed:
+It exited 0 against commit `9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90`, Pages run 31762210597,
+and build `build-31762210597`, then passed:
 
 - round scores: 0→145, 145→290, 290→435;
 - all three mechanics: reach, squat, side-step;
@@ -189,12 +194,12 @@ and build `build-31714506917`, then passed:
   in keyboard mode;
 - anonymous local evidence file `moverealm-trial-1-session.json` downloaded successfully and its
   privacy-reviewed copy is preserved as
-  [`public-guided-keyboard-session-7fe9009.json`](public-guided-keyboard-session-7fe9009.json);
-- downloaded SHA-256 `5a3da763a925d02c4152cd305587c3d60e20bb261e354f6372b59fb797ba4620`
+  [`public-guided-keyboard-session-9f2710f.json`](public-guided-keyboard-session-9f2710f.json);
+- downloaded SHA-256 `a9a676b0b16843ef4f883f33ed20738de2b9c204bbabed5ca44ae39a86b7224d`
   exactly matched the checksum visible in the UI and the preserved file; it identifies this one
   observation, while later runs can differ because the JSON contains observed timing fields;
-- export identity exactly matched commit `7fe9009728d545798c1b5efd7b367d4f54264eaf` and build
-  `build-31714506917`;
+- export identity exactly matched commit `9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90` and build
+  `build-31762210597`;
 - the export recorded keyboard tracking, `null`/`N/A` tracking FPS, inference, and visible-response
   values, with FPS, inference, visible-latency, and TTFF thresholds `not_evaluated`;
 - all three rounds and both adaptation decisions were present in the export;
@@ -266,8 +271,6 @@ rate 7→5 while keeping the next squat. Its inputs were explicitly synthetic ke
 - real-person time to first accepted movement target below 45 seconds;
 - browser network inspection during a real-person camera session;
 - three consenting user trials;
-- push and deploy the authorized current branch, then verify the resulting public build and pushed
-  branch HEAD;
 - accepted YouTube or Google Drive upload URL for the completed 4:58.834 local backup (or a
   preferred live-person recording);
 - participant consent for any retained real-person media;

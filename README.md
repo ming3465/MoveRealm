@@ -17,25 +17,25 @@ visibly labelled deterministic decisions. The live CodeBuddy Movement Director r
 production Node adapter described below; the public demo does not impersonate that integration.
 
 The release-application Pages deployment
-[run 31714506917](https://github.com/ming3465/MoveRealm/actions/runs/31714506917) for commit
-[`7fe9009`](https://github.com/ming3465/MoveRealm/commit/7fe9009728d545798c1b5efd7b367d4f54264eaf)
-passed all 100 tests across 13 files, the production build, artifact upload, and deployment. The
-deployed client identifies itself as build `build-31714506917` at full commit
-`7fe9009728d545798c1b5efd7b367d4f54264eaf`. Six consent-free guided screenshots and two controlled
+[run 31762210597](https://github.com/ming3465/MoveRealm/actions/runs/31762210597) for commit
+[`9f2710f`](https://github.com/ming3465/MoveRealm/commit/9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90)
+passed the complete 127-test Vitest, 13-test Python recovery-agent, and 82-test safety-probe gate,
+the production build, artifact upload, and deployment. The deployed client identifies itself as
+build `build-31762210597` at full commit
+`9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90`. Six consent-free guided screenshots and two controlled
 synthetic fake-camera CodeBuddy UI captures are available under
 [`assets/submission/screenshots/`](assets/submission/screenshots/).
 
 The Pages workflow ignores changes limited to `docs/**`, `artifacts/**`, `README.md`, and
 `assets/README.md`. Documentation-only release follow-ups therefore do not redeploy the application;
-run 31714506917 remains the exact application release until source-bearing paths change or the
+run 31762210597 remains the exact application release until source-bearing paths change or the
 workflow is manually dispatched.
 
-## Local release candidate — 14 August 2026
+## Released implementation checkpoint — 14 August 2026
 
-The newer source candidate is clean commit
+The core implementation and local-agent evidence were frozen at clean commit
 `de0b2defc22f524e29bc4ea1019e86c4d31aa915`, tree
-`25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`. It has **not** been pushed or deployed; the public URL
-still serves the `7fe9009` predecessor above.
+`25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`, then shipped in release commit `9f2710f` above.
 
 The exact clean candidate passed `npm run test:all`: **127/127 Vitest tests across 16 files**, **13/13
 Python recovery-agent tests**, and **82/82 Python safety-probe tests**. The strict production build
@@ -155,27 +155,27 @@ MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
 MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
 ```
 
-The current `7fe9009` public camera basic smoke was a separate deployed-site observation, not a CI
+The current `9f2710f` public camera basic smoke was a separate deployed-site observation, not a CI
 job. With Chrome's fake camera it reported `cameraReady: true`, scored 0 → 145, recorded API POSTs
 `[]`, and produced no console errors. It is camera-startup and basic-flow evidence, not a real-person
 FPS, latency, TTFF, or usability measurement.
 
-The exact-release public full smoke also passed against `7fe9009` / run 31714506917 / build
-`build-31714506917`: scores advanced 0 → 145 → 290 → 435; `Guided demo` adaptation showed
+The exact-release public full smoke also passed against `9f2710f` / run 31762210597 / build
+`build-31762210597`: scores advanced 0 → 145 → 290 → 435; `Guided demo` adaptation showed
 range 64 → 48%, tempo 0.90 → 0.77×, and target rate 7 → 6; and the postcard reported 2.6 active
 minutes, 18% completion, and tracking `N/A`. The request audit recorded API POSTs `[]`, and no
 console errors appeared. The preserved anonymous keyboard JSON matched SHA-256
-`5a3da763a925d02c4152cd305587c3d60e20bb261e354f6372b59fb797ba4620` and the exact
+`a9a676b0b16843ef4f883f33ed20738de2b9c204bbabed5ca44ae39a86b7224d` and the exact
 build/commit identity. Its keyboard timing and `N/A`/`not_evaluated` pose fields are exporter
 evidence, not human TTFF or pose evidence. See
 [`artifacts/validation/release-checks.md`](artifacts/validation/release-checks.md) for the command and
 result record and
-[`public-guided-keyboard-session-7fe9009.json`](artifacts/validation/public-guided-keyboard-session-7fe9009.json)
+[`public-guided-keyboard-session-9f2710f.json`](artifacts/validation/public-guided-keyboard-session-9f2710f.json)
 for the privacy-reviewed export.
 
-No Docker run was performed for `7fe9009`. The `2ab9584` Docker image, captured-room fallback path,
-and older full-session export remain preserved predecessor evidence and must not be cited as
-current-release execution.
+The exact implementation-checkpoint Docker image `sha256:f1ac14aa…` passed the captured-room basic
+path before release. Older `2ab9584` packaged/full-session results remain predecessor evidence and
+must not be cited as current-release execution.
 
 Earlier controlled UI evidence used Chrome's synthetic fake-camera stream: health reported
 `codeBuddyConnected: true`; the scene and adaptation screens visibly showed `CodeBuddy live` with
@@ -183,7 +183,7 @@ Earlier controlled UI evidence used Chrome's synthetic fake-camera stream: healt
 and target rate 7 → 5; and the temporary upload directory was empty afterward. This is agent/UI and
 cleanup evidence, not real-person FPS, visible response latency, TTFF, or usability evidence.
 
-The deployed-predecessor full guided smoke checks the honest result accounting: three 52-second movement rounds are
+The current full guided smoke checks the honest result accounting: three 52-second movement rounds are
 **2.6 active minutes**, and two 12-second rests bring the complete adventure to **3.0 minutes**.
 Keyboard-mode tracking FPS remains `N/A`; it is not presented as a real-person pose measurement.
 
@@ -196,7 +196,7 @@ names, media, room text, agent prose, upload paths, and raw landmarks; the UI di
 SHA-256 after download. Keyboard or mixed-control exports deliberately do not evaluate real-camera
 pose gates.
 
-The deployed predecessor and clean local candidate retain the evidence boundary introduced in `2ab9584`: only anonymous trials
+The current release retains the evidence boundary introduced in `2ab9584`: only anonymous trials
 1–3 are accepted; build ID
 and exact 40-character commit provenance must be supplied together; completion counts, full
 adaptation parameters, and plan/adaptation latency totals must agree; and the sanitized download

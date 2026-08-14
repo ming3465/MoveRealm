@@ -71,13 +71,14 @@ The harness never downloads a model itself. `--strict-judge` fails when Ollama i
 the model response is invalid. Without it, hard gates still run and the judge is honestly
 `not_run`.
 
-## Local candidate status — 14 August 2026
+## Released local-director checkpoint — 14 August 2026
 
 The clean local source candidate is commit `de0b2defc22f524e29bc4ea1019e86c4d31aa915`, tree
 `25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`. It passed 127/127 Vitest tests across 16 files,
 13/13 Python recovery-agent tests, 82/82 safety-probe tests, the strict production build, and a
-0-vulnerability dependency audit. This candidate has not been pushed or deployed; the public site
-remains the `7fe9009` release described below.
+0-vulnerability dependency audit. It shipped in release commit
+[`9f2710f`](https://github.com/ming3465/MoveRealm/commit/9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90),
+Pages run 31762210597, build `build-31762210597`.
 
 The predecessor `cf15709` candidate's two production-mode full browser smokes passed using local
 audit build identifier `build-20260814`—not a GitHub Actions run. Their exact behavior and checksums
@@ -90,7 +91,7 @@ produced distinct open/tight/uncertain profiles, compatible distinct 180-second 
 adaptation trace with no console errors. Earlier signed-in/upstream 429 and timeout records remain
 useful recovery evidence, but no longer describe this local route.
 
-## Preserved deployed-predecessor observation — 13 August 2026
+## Preserved evaluator/predecessor observation — 13 August 2026
 
 The evaluator source and final report set are frozen at release commit
 [`7fe9009`](https://github.com/ming3465/MoveRealm/commit/7fe9009728d545798c1b5efd7b367d4f54264eaf).

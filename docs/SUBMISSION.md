@@ -39,23 +39,24 @@ live-person take, is uploaded to YouTube or Google Drive and tested while signed
 The public URL is a static GitHub Pages deployment of the complete guided-demo path. It visibly
 labels guided and deterministic decisions and does not claim to host the live CodeBuddy server
 adapter. Release-application
-[Pages run 31714506917](https://github.com/ming3465/MoveRealm/actions/runs/31714506917) for commit
-[`7fe9009`](https://github.com/ming3465/MoveRealm/commit/7fe9009728d545798c1b5efd7b367d4f54264eaf)
-passed all 100 tests across 13 files, the production build, artifact upload, and deployment. The client
-carries exact release identity `build-31714506917` /
-`7fe9009728d545798c1b5efd7b367d4f54264eaf`, which completed-session evidence exports embed.
+[Pages run 31762210597](https://github.com/ming3465/MoveRealm/actions/runs/31762210597) for commit
+[`9f2710f`](https://github.com/ming3465/MoveRealm/commit/9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90)
+passed 127/127 Vitest, 13/13 Python recovery-agent, and 82/82 safety-probe tests, the production
+build, artifact upload, and deployment. The client carries exact release identity
+`build-31762210597` / `9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90`, which completed-session
+evidence exports embed.
 
 The Pages workflow uses `paths-ignore` for docs, artifacts, `README.md`, and `assets/README.md`.
-This docs-only follow-up therefore does not create a newer application deployment; run 31714506917
+This docs-only follow-up therefore does not create a newer application deployment; run 31762210597
 remains the release application.
 
-The newer local candidate is clean commit `de0b2defc22f524e29bc4ea1019e86c4d31aa915`, tree
+The implementation checkpoint is clean commit `de0b2defc22f524e29bc4ea1019e86c4d31aa915`, tree
 `25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`. It passed `npm run test:all` with **127/127 Vitest
 tests across 16 files**, **13/13 Python recovery-agent tests**, and **82/82 safety-probe tests**; the
 strict production build passed and the dependency audit reported **0 vulnerabilities**. Clean Docker
 image `sha256:f1ac14aab1b2bf42b4a20e0ed2a53f83d74955e047d6d8560b4b76236d87dd0b`
 (343,104,634 bytes) passed health, index, exact commit/build assertions, captured-room basic smoke,
-and zero-upload cleanup. It has **not** yet been pushed or deployed; the public app remains `7fe9009`.
+and zero-upload cleanup. It shipped in the release application above.
 
 The recommended live path is now free and local: CodeBuddy Code 2.136.0 orchestrates Apache-2.0
 Qwen3-VL 4B through loopback Ollama. With fallback forbidden, the exact clean candidate produced
@@ -67,7 +68,7 @@ records are the
 [`UI observation`](../artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json). They do not
 replace the pending real-person pose and usability evidence.
 
-The deployed predecessor retains the anonymous evidence boundary introduced in `2ab9584`: only trials
+The current release retains the anonymous evidence boundary introduced in `2ab9584`: only trials
 1–3 are accepted; an exact
 40-character commit and numeric `build-N` provenance pair must appear together; aggregate counts,
 per-round completion, full adaptation parameters, and plan/adaptation latency totals must be
@@ -124,7 +125,7 @@ deterministic fixture and production-contract gates. It cannot approve, rewrite,
 quest; CodeBuddy remains the only runtime Movement Director and deterministic contracts remain the
 sole automated safety authority. The recorded model/hard-gate disagreement and limitations are in
 [`EVALUATION.md`](EVALUATION.md). Its 8B open/tight reports are predecessor `7fe9009` snapshots; the
-old candidate JSON is not current `cf15709` pass evidence.
+old candidate JSON is not current `de0b2de` pass evidence.
 
 A small standard-library Python agent wraps the same evaluator with an explicit
 `observe → evaluate → recover → verify` loop and the free local Qwen3-VL 4B model. Its recorded run
@@ -196,7 +197,7 @@ items are disclosure and evidence tasks, not claims that the criterion has alrea
 | Official dimension | Weight | MoveRealm evidence to put on screen | Repository evidence | Gap before submit |
 |---|---:|---|---|---|
 | AI innovation — scenario insight and depth of AI utilization | 30% | One approved still becomes a constrained plan; missed targets plus explicit feedback produce a visible next-round change | [`server/codebuddy.ts`](../server/codebuddy.ts), [`server/prompts.ts`](../server/prompts.ts), [`src/components/GameScreen.tsx`](../src/components/GameScreen.tsx), the [live room evidence](../artifacts/README.md), and the advisory/hard-gate disagreement in [`EVALUATION.md`](EVALUATION.md) | Show live CodeBuddy provenance in the video; do not describe fallback or the offline Shadow Judge as live AI |
-| Technical excellence — implementation, AI-tool mastery, completeness, stability | 20% | Show source badge, safety rejection boundary, local pose Worker, low-confidence pause, fallback recovery, and anonymous evidence export | [`src/shared/contracts.ts`](../src/shared/contracts.ts), [`server/app.ts`](../server/app.ts), [`src/pose/pose.worker.ts`](../src/pose/pose.worker.ts), [`src/lib/sessionEvidence.ts`](../src/lib/sessionEvidence.ts), clean local candidate `de0b2de` with 127/127 Vitest + 13/13 recovery-agent + 82/82 probe tests and 0 audit vulnerabilities, plus deployed-predecessor Pages run 31714506917 | Cite [`release-checks.md`](../artifacts/validation/release-checks.md), keep the local/deployed distinction visible, and complete the pending protocol-based real-person measurements |
+| Technical excellence — implementation, AI-tool mastery, completeness, stability | 20% | Show source badge, safety rejection boundary, local pose Worker, low-confidence pause, fallback recovery, and anonymous evidence export | [`src/shared/contracts.ts`](../src/shared/contracts.ts), [`server/app.ts`](../server/app.ts), [`src/pose/pose.worker.ts`](../src/pose/pose.worker.ts), [`src/lib/sessionEvidence.ts`](../src/lib/sessionEvidence.ts), implementation checkpoint `de0b2de` with 127/127 Vitest + 13/13 recovery-agent + 82/82 probe tests and 0 audit vulnerabilities, plus Pages run 31762210597 | Cite [`release-checks.md`](../artifacts/validation/release-checks.md), keep controlled/human evidence boundaries visible, and complete the pending protocol-based real-person measurements |
 | User experience and demo — smoothness, interaction thoughtfulness, friendliness | 25% | Three-minute setup, room confirmation, calibration, visible adaptation trace, pause/resume, result postcard, guided backup | [`docs/DEMO.md`](DEMO.md), [`TRIAL_PROTOCOL.md`](TRIAL_PROTOCOL.md), [`src/App.tsx`](../src/App.tsx), [`src/components/`](../src/components), and the 4:58 camera-free backup | Upload the backup or record a preferred live-person take; all three human trials remain pending |
 | Business value and viability — real problem and commercial rollout potential | 25% | Explain the time/space/motivation problem, target user, short-session value, and licensing hypothesis | Project description above and [`README.md`](../README.md) | Keep commercial statements as hypotheses until user and market evidence exists |
 
@@ -251,19 +252,19 @@ results in [`artifacts/validation/release-checks.md`](../artifacts/validation/re
 |---|---|---|
 | Clean local-candidate automated gate, commit `de0b2de` | **PASS — 127/127 Vitest across 16 files; 13/13 recovery-agent; 82/82 probe tests** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
 | Clean local-candidate strict client/server build | **PASS** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
-| Release-application GitHub Pages deployment, commit `7fe9009`, build `build-31714506917` | **PASS** | [run 31714506917](https://github.com/ming3465/MoveRealm/actions/runs/31714506917), <https://ming3465.github.io/MoveRealm/> |
-| Deployed-predecessor CI tests | **PASS — 100/100 across 13 files** | [Pages run 31714506917](https://github.com/ming3465/MoveRealm/actions/runs/31714506917) |
+| Release-application GitHub Pages deployment, commit `9f2710f`, build `build-31762210597` | **PASS** | [run 31762210597](https://github.com/ming3465/MoveRealm/actions/runs/31762210597), <https://ming3465.github.io/MoveRealm/> |
+| Current CI tests | **PASS — 127/127 Vitest, 13/13 recovery-agent, 82/82 safety-probe tests** | [Pages run 31762210597](https://github.com/ming3465/MoveRealm/actions/runs/31762210597) |
 | Local-candidate dependency audit | **PASS — 0 vulnerabilities** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
 | Exact-source local-candidate Docker image | **PASS — `sha256:f1ac14aab1b2bf42b4a20e0ed2a53f83d74955e047d6d8560b4b76236d87dd0b`, 343,104,634 bytes; health, index, exact identity, basic captured-room smoke, and cleanup passed** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
 | Predecessor `cf15709` guided full browser smoke, audit build `build-20260814` | **PASS — three mechanics; scores 0→145→290→435; guided adaptation 64→48%, 0.90→0.77×, 7→6; 2.6 min / 18% / `N/A`; no POSTs/errors** | [`local-guided-keyboard-session-cf15709.json`](../artifacts/validation/local-guided-keyboard-session-cf15709.json) |
 | Predecessor `cf15709` captured-room full fallback smoke, audit build `build-20260814` | **PASS — camera ready; exact scene/plan/adapt/adapt POSTs; score 435; `Safe fallback`; no errors** | [`local-captured-fallback-keyboard-session-cf15709.json`](../artifacts/validation/local-captured-fallback-keyboard-session-cf15709.json) |
-| Local-candidate push and public deployment | **AUTHORIZED BY USER; PENDING PUSH/CI/PUBLIC VERIFICATION** | public site remains `7fe9009` until deployment completes |
+| Push, CI, and exact public verification | **PASS** | `origin/main`; run 31762210597; exact camera/full smokes |
 | Exact-release public camera basic smoke | **PASS — fake camera ready, score 0→145, API POSTs `[]`, no console errors** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
 | Predecessor Docker identity | **PASS for `2ab9584` only — `moverealm:2ab9584`, image `sha256:a205205819345589179d079656e0afefb38887b8b460a2c00d942dc0a11e47b6`, 343,057,128 bytes** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
 | Predecessor Docker captured-room basic path | **PASS for `2ab9584` only — health true/CodeBuddy false, camera ready, `Safe fallback`, score 0→145, scene/plan POSTs, empty upload directory** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
-| Earlier Docker full fallback adaptation | **PASS — predecessor evidence; not rerun for the deployed `7fe9009` release** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
-| Exact-release public full smoke, commit `7fe9009` / run 31714506917 / build `build-31714506917` | **PASS — scores 0→145→290→435; `Guided demo` adaptation; 2.6 active min / 18% / `N/A` / 3.0-min clock; API POSTs `[]`; no console errors** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
-| Anonymous guided-keyboard evidence export | **PASS — preserved JSON; SHA-256 `5a3da763…` and exact build/commit matched; pose gates `not_evaluated`** | [`public-guided-keyboard-session-7fe9009.json`](../artifacts/validation/public-guided-keyboard-session-7fe9009.json); [`release-checks.md`](../artifacts/validation/release-checks.md) |
+| Earlier Docker full fallback adaptation | **PASS — predecessor evidence** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
+| Exact-release public full smoke, commit `9f2710f` / run 31762210597 / build `build-31762210597` | **PASS — scores 0→145→290→435; `Guided demo` adaptation; 2.6 active min / 18% / `N/A` / 3.0-min clock; API POSTs `[]`; no console errors** | [`release-checks.md`](../artifacts/validation/release-checks.md) |
+| Anonymous guided-keyboard evidence export | **PASS — preserved JSON; SHA-256 `a9a676b…` and exact build/commit matched; pose gates `not_evaluated`** | [`public-guided-keyboard-session-9f2710f.json`](../artifacts/validation/public-guided-keyboard-session-9f2710f.json); [`release-checks.md`](../artifacts/validation/release-checks.md) |
 | Camera/Worker smoke | recorded synthetic-camera evidence on 13 August | [`VALIDATION.md`](VALIDATION.md) |
 | Synthetic fake-camera live CodeBuddy UI | **PASS — health true, scene/adaptation `CodeBuddy live`, bounded adaptation, empty temporary upload directory** | [`VALIDATION.md`](VALIDATION.md); [`artifacts/README.md`](../artifacts/README.md) |
 | Current local CodeBuddy/Qwen3-VL 4B strict matrix | **PASS — fallback forbidden; 3 distinct scenes/plans; exact 180-second totals; live adaptation; empty uploads** | [`codebuddy-local-qwen-matrix-de0b2de.json`](../artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json) |
@@ -304,7 +305,7 @@ Finalize artifacts first, then compute checksums. Any subsequent edit invalidate
 | Synthetic fake-camera CodeBuddy UI captures | Supporting controlled evidence, not real-person evidence | [`assets/submission/screenshots/`](../assets/submission/screenshots/) — 2 consent-free PNGs | see [`artifacts/README.md`](../artifacts/README.md) |
 | Privacy-safe real-person trial protocol | Supporting procedure; all human actions pending | [`docs/TRIAL_PROTOCOL.md`](TRIAL_PROTOCOL.md) | see the [post-freeze manifest](../artifacts/submission-manifest.json) |
 | Local anonymous evidence exporter | Supporting implementation; keyboard export smoke passed | [`src/lib/sessionEvidence.ts`](../src/lib/sessionEvidence.ts) | source-controlled |
-| Current anonymous guided-keyboard export | Supporting exporter evidence; not a human trial | [`public-guided-keyboard-session-7fe9009.json`](../artifacts/validation/public-guided-keyboard-session-7fe9009.json) | `5a3da763a925d02c4152cd305587c3d60e20bb261e354f6372b59fb797ba4620` |
+| Current anonymous guided-keyboard export | Supporting exporter evidence; not a human trial | [`public-guided-keyboard-session-9f2710f.json`](../artifacts/validation/public-guided-keyboard-session-9f2710f.json) | `a9a676b0b16843ef4f883f33ed20738de2b9c204bbabed5ca44ae39a86b7224d` |
 | Predecessor `cf15709` guided full-smoke export; `build-20260814` is a local audit ID | Supporting guided evidence; not a human trial | [`local-guided-keyboard-session-cf15709.json`](../artifacts/validation/local-guided-keyboard-session-cf15709.json) | `aebcf7c43158672e1d4bc486f7f71c7cb56116df3256dcb4592fab1a5deed3aa` |
 | Predecessor `cf15709` captured fallback full-smoke export; `build-20260814` is a local audit ID | Supporting fallback/capture evidence; not a human trial | [`local-captured-fallback-keyboard-session-cf15709.json`](../artifacts/validation/local-captured-fallback-keyboard-session-cf15709.json) | `ebaa8c4cb97ef91e79c72a81f9f356beaeae04bb89c52bf98cf5e60232cc5b8d` |
 | Offline Shadow Judge record | Supporting synthetic advisory evaluation; not runtime, safety certification, official judging, or human evidence | [`docs/EVALUATION.md`](EVALUATION.md) | see the [post-freeze manifest](../artifacts/submission-manifest.json) |
@@ -334,16 +335,17 @@ shasum -a 256 path/to/moverealm-cover.png
   and development tip.
 - [ ] YouTube or Google Drive demo URL opens in a signed-out browser.
 - [x] Public URL is populated and the HTTPS endpoint returns HTTP 200.
-- [x] Release-application Pages run 31714506917 for commit `7fe9009` / build
-  `build-31714506917` passed 100/100 tests across 13 files, the build, and deployment.
+- [x] Release-application Pages run 31762210597 for commit `9f2710f` / build
+  `build-31762210597` passed 127/127 Vitest, 13/13 recovery-agent, and 82/82 safety-probe tests,
+  the build, and deployment.
 - [x] Clean local candidate `de0b2defc22f524e29bc4ea1019e86c4d31aa915` / tree
   `25b1f5b728a0b2baaf0ba39bb5a9087e7906d998` passed 127/127 Vitest, 13/13 recovery-agent,
   82/82 probe tests, build, audit with 0 vulnerabilities, and exact-provenance Docker checks.
 - [x] The predecessor `cf15709` guided and captured-room full smokes passed under local audit build ID
   `build-20260814` (not CI), with exact commit/build exports, privacy fields false, and keyboard pose
   metrics unevaluated.
-- [ ] Push/deploy is authorized; push the current branch, wait for CI, then verify the resulting
-  public build and pushed branch HEAD. Until that completes, the public app remains `7fe9009`.
+- [x] Pushed the current branch, waited for CI, and verified the exact public camera and full-session
+  paths against the embedded commit/build identity.
 - [x] The free local CodeBuddy/Qwen3-VL 4B route passed the strict differentiated room matrix and a
   visible fake-camera adaptation smoke with fallback forbidden.
 - [x] Exact-release full smoke verified the anonymous keyboard export's visible SHA-256,

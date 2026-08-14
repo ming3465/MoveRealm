@@ -20,9 +20,9 @@ CodeBuddy development tip.
 ### Release and evidence
 
 - [x] Confirm release-application
-  [Pages run 31714506917](https://github.com/ming3465/MoveRealm/actions/runs/31714506917) for commit
-  `7fe9009` / build `build-31714506917` passed all 100 tests across 13 files, the production build,
-  and deployment.
+  [Pages run 31762210597](https://github.com/ming3465/MoveRealm/actions/runs/31762210597) for commit
+  `9f2710f` / build `build-31762210597` passed 127/127 Vitest, 13/13 recovery-agent, and 82/82
+  safety-probe tests, the production build, and deployment.
 - [x] Confirm clean local candidate `de0b2defc22f524e29bc4ea1019e86c4d31aa915` / tree
   `25b1f5b728a0b2baaf0ba39bb5a9087e7906d998` passed `npm run test:all`: 127/127 Vitest tests
   across 16 files, 13/13 Python recovery-agent tests, and 82/82 Safety Probe tests; its strict build
@@ -36,9 +36,8 @@ CodeBuddy development tip.
   scene/plan/adapt/adapt POSTs, score 435, `Safe fallback`, adaptation 60→44%, 0.90→0.77×, 7→6,
   no errors. Both exports matched the exact identity and kept personal/media fields false and
   keyboard pose metrics unevaluated.
-- [ ] Push/deploy is authorized. Push the current branch, wait for CI, and verify the resulting
-  public build and pushed branch HEAD. Until then, the public app remains `7fe9009` /
-  `build-31714506917`.
+- [x] Push/deploy completed. `origin/main`, successful CI, and both exact public browser smokes
+  matched the release commit/build.
 - [x] Confirm the free local CodeBuddy/Qwen3-VL 4B route passed both the fallback-forbidden strict
   three-room matrix and the visible fake-camera adaptation smoke. Use the preserved
   [`matrix`](../artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json) and
@@ -49,8 +48,8 @@ CodeBuddy development tip.
   non-human evidence.
 - [x] Confirm the exact-release public full-smoke adaptation step passed with `Guided demo`
   provenance.
-- [x] Keep the earlier Docker evidence labelled **predecessor-only**. No Docker run was performed for
-  `7fe9009`; the predecessor image `moverealm:2ab9584`, ID
+- [x] Keep the older Docker evidence labelled **predecessor-only**. The predecessor image
+  `moverealm:2ab9584`, ID
   `sha256:a205205819345589179d079656e0afefb38887b8b460a2c00d942dc0a11e47b6`
   (343,057,128 bytes), embeds the exact `2ab9584` commit/build identity.
 - [x] Confirm its basic captured-room path passed with health true/CodeBuddy false, camera ready, safe
@@ -58,17 +57,17 @@ CodeBuddy development tip.
   container stopped and its port was freed after stop escalation; do not call exit 137 graceful.
 - [x] Keep the earlier Docker full fallback adaptation labelled predecessor evidence; it was not
   rerun for the current application release.
-- [x] Confirm the separate exact-release public full smoke against commit `7fe9009` / run 31714506917
-  / build `build-31714506917` exited 0: scores 0→145→290→435; `Guided demo` adaptation
+- [x] Confirm the separate exact-release public full smoke against commit `9f2710f` / run 31762210597
+  / build `build-31762210597` exited 0: scores 0→145→290→435; `Guided demo` adaptation
   64→48%, 0.90→0.77×, 7→6; postcard 2.6 active minutes, 18% completion, tracking `N/A`, and
   3.0-minute clock; API POSTs `[]`; no console errors. This browser smoke was separate from CI.
 - [x] Confirm that smoke downloaded anonymous keyboard evidence whose visible SHA-256
-  `5a3da763a925d02c4152cd305587c3d60e20bb261e354f6372b59fb797ba4620` and exact
+  `a9a676b0b16843ef4f883f33ed20738de2b9c204bbabed5ca44ae39a86b7224d` and exact
   build/commit identity matched, and whose real-camera pose gates remained `N/A`/`not_evaluated`.
   The preserved file is
-  [`public-guided-keyboard-session-7fe9009.json`](../artifacts/validation/public-guided-keyboard-session-7fe9009.json);
+  [`public-guided-keyboard-session-9f2710f.json`](../artifacts/validation/public-guided-keyboard-session-9f2710f.json);
   its keyboard timing is not human TTFF evidence.
-- [x] Confirm the deployed predecessor and clean local candidate retain the exporter integrity boundary: trial 1–3 only, paired
+- [x] Confirm the current release retains the exporter integrity boundary: trial 1–3 only, paired
   exact provenance, count/adaptation/latency consistency, and robust sanitized download behavior.
 - [x] Review the [offline Shadow Judge record](EVALUATION.md): deterministic fixture, contract,
   consistency, and movement-feasibility gates remain authoritative and rejected an unsafe plan the
@@ -79,8 +78,9 @@ CodeBuddy development tip.
 - [ ] Keep [VALIDATION.md](VALIDATION.md) open; do not quote pending human/device values as results.
 - [ ] Before any real-person run, follow the consent, privacy, evidence-export, and exact result
   rules in [TRIAL_PROTOCOL.md](TRIAL_PROTOCOL.md). All three human trials remain pending.
-- [ ] Open <https://ming3465.github.io/MoveRealm/> in a signed-out browser and verify the guided flow.
-- [ ] Keep <https://github.com/ming3465/MoveRealm> ready as the source link.
+- [x] The isolated public browser smoke verified the guided flow at
+  <https://ming3465.github.io/MoveRealm/>.
+- [x] Source link: <https://github.com/ming3465/MoveRealm>.
 - [ ] Remember that GitHub Pages is the static guided demo; use the local/production Node adapter for
   any segment presented as live CodeBuddy.
 - [ ] Verify the demo video destination is **[PENDING YOUTUBE OR GOOGLE DRIVE URL]**.
@@ -95,13 +95,13 @@ CodeBuddy development tip.
 
 Still explicitly pending before a final evidence-complete submission: a public YouTube or Google
 Drive URL for the backup or a preferred live-person take, all three user trials, real-person pose
-FPS, real-person visible response latency, real-person time to first accepted movement (TTFF), a
-the authorized candidate push/deployment, and team/contact portal fields. Do not substitute
+FPS, real-person visible response latency, real-person time to first accepted movement (TTFF), and
+team/contact portal fields. Do not substitute
 synthetic-camera or keyboard values.
 
 The Pages workflow ignores docs- and artifacts-only pushes. This documentation follow-up does not
-redeploy the app; release identity remains commit `7fe9009`, run 31714506917, build
-`build-31714506917`.
+redeploy the app; release identity remains commit `9f2710f`, run 31762210597, build
+`build-31762210597`.
 
 ### Live path
 

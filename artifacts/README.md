@@ -11,7 +11,7 @@ Deterministic fixture, contract, consistency, and movement-feasibility gates run
 authoritative. In the recorded uncertain-room case, they rejected an occluded-floor squat even
 though the advisory model scored that plan positively; the reach-only validated fallback passed.
 The 8B open/tight candidate/report files are frozen predecessor `7fe9009` evaluator snapshots. Their
-candidate JSON does not satisfy the newer `cf15709` canonical-presentation gates; do not cite those
+candidate JSON does not satisfy the newer `de0b2de` canonical-presentation gates; do not cite those
 old open/tight results as current-candidate passes.
 
 [`evaluation/python-agent-qwen3-vl-4b.json`](evaluation/python-agent-qwen3-vl-4b.json) is the
@@ -24,7 +24,7 @@ original and the agent selected the labelled fallback. Its SHA-256 is
 `502824677434c6c6d0196d367ecdcfdde1f8aaa84138f1fe976858dce766fcfa`. The original and fallback
 judge latencies were 43.492 and 37.550 seconds respectively.
 
-## Clean local candidate — 14 August 2026
+## Released implementation checkpoint — 14 August 2026
 
 - Exact source commit: `de0b2defc22f524e29bc4ea1019e86c4d31aa915`
 - Exact source tree: `25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`
@@ -42,7 +42,8 @@ judge latencies were 43.492 and 37.550 seconds respectively.
 - Exact-source fake-camera UI smoke: **passed** with visible `CodeBuddy live` scene and adaptation
   provenance, camera ready, exact scene/plan/adapt POSTs, score 0→145, an 8.895-second adaptation,
   and no console errors.
-- Push/deployment: **pending**. The public app remains the deployed `7fe9009` predecessor.
+- Release: shipped in application commit `9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90`, Pages run
+  31762210597, build `build-31762210597`.
 
 Current live evidence is
 [`validation/codebuddy-local-qwen-matrix-de0b2de.json`](validation/codebuddy-local-qwen-matrix-de0b2de.json)
@@ -60,31 +61,32 @@ for [`../agent/evidence/safety-probe.json`](../agent/evidence/safety-probe.json)
 `e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` for
 [`../agent/evidence/safety-probe.md`](../agent/evidence/safety-probe.md).
 
-## Deployed predecessor snapshot — 13 August 2026
+## Current public release — 14 August 2026
 
 - Public guided demo: <https://ming3465.github.io/MoveRealm/>
 - Source repository: <https://github.com/ming3465/MoveRealm>
 - Release-application deployment:
-  [GitHub Pages run 31714506917](https://github.com/ming3465/MoveRealm/actions/runs/31714506917)
+  [GitHub Pages run 31762210597](https://github.com/ming3465/MoveRealm/actions/runs/31762210597)
   for commit
-  [`7fe9009`](https://github.com/ming3465/MoveRealm/commit/7fe9009728d545798c1b5efd7b367d4f54264eaf)
-  completed `npm ci`, **100/100 tests across 13 files**, the production build, artifact upload, and
-  deployment. The deployed client carries build `build-31714506917` and the exact full commit SHA.
-- Deployed-predecessor verification: 13 test files, **100/100 tests passed** locally and in CI.
+  [`9f2710f`](https://github.com/ming3465/MoveRealm/commit/9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90)
+  completed `npm ci`, **127/127 Vitest**, **13/13 Python recovery-agent**, and **82/82 safety-probe
+  tests**, the production build, artifact upload, and deployment. The deployed client carries build
+  `build-31762210597` and the exact full commit SHA.
 - Dependency audit: **0 vulnerabilities**.
 - Exact-release public camera basic smoke: **passed** with Chrome's fake camera,
   `cameraReady=true`, score 0→145, API POSTs `[]`, and no console errors. It is controlled,
   non-human evidence and was run separately from CI.
-- Exact-release public full smoke against commit `7fe9009` / run 31714506917 / build
-  `build-31714506917`: **passed** with `Guided demo` provenance. Round scores were
+- Exact-release public full smoke against commit `9f2710f` / run 31762210597 / build
+  `build-31762210597`: **passed** with `Guided demo` provenance. Round scores were
   0 → 145 → 290 → 435; adaptation
   64 → 48%, 0.90 → 0.77×, and 7 → 6; postcard 2.6 active minutes / 3.0-minute adventure /
   18% completion / tracking `N/A`; API POSTs `[]`; no console errors. The visible and downloaded
   SHA-256 both matched
-  `5a3da763a925d02c4152cd305587c3d60e20bb261e354f6372b59fb797ba4620` for
-  [`validation/public-guided-keyboard-session-7fe9009.json`](validation/public-guided-keyboard-session-7fe9009.json).
-- No Docker run was performed for `7fe9009`. The `moverealm:2ab9584` captured-room basic path and
-  earlier packaged full fallback adaptation remain explicitly predecessor-only evidence.
+  `a9a676b0b16843ef4f883f33ed20738de2b9c204bbabed5ca44ae39a86b7224d` for
+  [`validation/public-guided-keyboard-session-9f2710f.json`](validation/public-guided-keyboard-session-9f2710f.json).
+- The exact implementation-checkpoint Docker image `sha256:f1ac14aa…` passed health, index,
+  captured-room basic fallback, exact identity, and zero-upload cleanup before release. Earlier
+  `2ab9584` packaged/full-session results remain predecessor-only evidence.
 
 The preserved release command and result record belongs in
 [`validation/release-checks.md`](validation/release-checks.md).
@@ -181,8 +183,8 @@ The full guided browser smoke asserts the result card's exact accounting:
 This supports the wording “2.6 active minutes within a 3.0-minute adventure.” It does not support a
 claim of three active minutes or any real-person tracking result.
 
-The deployed-predecessor exact-release guided keyboard record is preserved at
-[`validation/public-guided-keyboard-session-7fe9009.json`](validation/public-guided-keyboard-session-7fe9009.json).
+The current exact-release guided keyboard record is preserved at
+[`validation/public-guided-keyboard-session-9f2710f.json`](validation/public-guided-keyboard-session-9f2710f.json).
 Its pose metrics and real-camera thresholds are explicitly `null` / `not_evaluated`; it validates
 the exporter and release identity but is not a human trial.
 
@@ -210,8 +212,8 @@ MOVEREALM_CAMERA_SMOKE=1 npm run smoke:browser
 MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
 MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
 MOVEREALM_URL=https://ming3465.github.io/MoveRealm/ MOVEREALM_FULL_SMOKE=1 \
-  MOVEREALM_EXPECT_COMMIT=7fe9009728d545798c1b5efd7b367d4f54264eaf \
-  MOVEREALM_EXPECT_BUILD_ID=build-31714506917 npm run smoke:browser
+  MOVEREALM_EXPECT_COMMIT=9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90 \
+  MOVEREALM_EXPECT_BUILD_ID=build-31762210597 npm run smoke:browser
 ```
 
 The camera smoke uses Chrome's fake media stream to check permission and Worker readiness. It does
@@ -239,6 +241,7 @@ MOVEREALM_ROOM_MATRIX=1 \
 
 | File | SHA-256 |
 |---|---|
+| `validation/public-guided-keyboard-session-9f2710f.json` | `a9a676b0b16843ef4f883f33ed20738de2b9c204bbabed5ca44ae39a86b7224d` |
 | `validation/codebuddy-local-qwen-matrix-de0b2de.json` | `75ce775069d32867d2e7dc6d56fa4030d3bd3e0f13409eef9c64217ba807bf35` |
 | `validation/codebuddy-local-ui-adaptation-de0b2de.json` | `a83a93d33ce203eccd750a39ca0985af897cf6aee4c10200c07640929b593cba` |
 | `evaluation/python-agent-qwen3-vl-4b.json` | `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029` |
@@ -262,7 +265,7 @@ Any edit to an artifact invalidates its listed checksum; recompute with `shasum 
 The final documentation and evidence-file hashes are collected after the documentation snapshot in
 [`submission-manifest.json`](submission-manifest.json). Keeping that manifest separate avoids a
 self-referential checksum inside `docs/SUBMISSION.md`. The manifest does not claim that pending
-human, upload, portal, CodeBuddy-availability, or deployment work is complete.
+human, video-upload, or portal work is complete.
 
 ## Consent-free guided screenshots
 
@@ -298,8 +301,9 @@ flow. They are separate from the six guided screenshots and are controlled, non-
 - **Complete controlled agent evidence:** the current local CodeBuddy/Qwen3-VL 4B strict matrix
   generated the full loop and materially differentiated all three rooms; the fake-camera browser
   smoke separately displayed live scene and adaptation provenance.
-- **Pending:** push and deploy the authorized current branch, then verify the resulting public build
-  and pushed branch HEAD.
+- **Complete release evidence:** application commit `9f2710f`, Pages run 31762210597, exact public
+  camera and full-session smokes, pushed `origin/main`, and the preserved anonymous export all
+  passed their identity checks.
 - **Complete local artifact:** 4:58 camera-free backup video and transcript; see below.
 - **Pending:** upload that video, or a preferred live-person recording, to YouTube or Google Drive
   and verify its public URL.
