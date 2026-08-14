@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type {
+  KeyboardEvent as ReactKeyboardEvent,
+  PointerEvent as ReactPointerEvent,
+} from "react";
+import type {
   AdaptationDecision,
   ConfirmedConstraints,
   DirectorMeta,
@@ -51,10 +55,16 @@ interface MutableRoundMetrics {
 
 export type { SessionResult } from "../lib/sessionEvidence";
 
-const KEYBOARD_HELP: Record<QuestRound["movementId"], string> = {
-  reach: "Press ↑ or Space when a firefly glows",
-  squat: "Press ↓ when a seedling needs shelter",
-  side_step: "Press ← or → to redirect the river",
+const ASSIST_HELP: Record<QuestRound["movementId"], string> = {
+  reach: "Tap Reach, or press ↑ or Space, when a firefly glows",
+  squat: "Tap Lower, or press ↓, when a seedling needs shelter",
+  side_step: "Tap Left or Right, or press ← or →, to redirect the river",
+};
+
+const ASSIST_LABEL: Record<QuestRound["movementId"], string> = {
+  reach: "Reach",
+  squat: "Lower",
+  side_step: "Step",
 };
 
 function createMetrics(): MutableRoundMetrics {
@@ -289,6 +299,23 @@ export function GameScreen({
     return () => window.clearTimeout(timer);
   }, [phase, restSecondsLeft]);
 
+  // One dispatch for every assisted input. A phone has no arrow keys, so touch and
+  // keyboard must produce identical telemetry rather than two divergent paths.
+  const triggerAssist = useCallback(
+    (side?: "left" | "right") => {
+      if (!demo || globallyPaused) return;
+      registerMovement({
+        movementId: currentRound.movementId,
+        timestamp: performance.now(),
+        amplitude: 0.82,
+        x: side === "left" ? 0.28 : side === "right" ? 0.72 : 0.5,
+        y: currentRound.movementId === "squat" ? 0.76 : 0.28,
+        ...(side ? { side } : {}),
+      });
+    },
+    [currentRound.movementId, demo, globallyPaused, registerMovement],
+  );
+
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (!demo || globallyPaused || event.repeat) return;
@@ -307,18 +334,28 @@ export function GameScreen({
         (currentRound.movementId === "side_step" && ["ArrowLeft", "ArrowRight"].includes(event.key));
       if (!matches) return;
       event.preventDefault();
-      registerMovement({
-        movementId: currentRound.movementId,
-        timestamp: performance.now(),
-        amplitude: 0.82,
-        x: event.key === "ArrowLeft" ? 0.28 : event.key === "ArrowRight" ? 0.72 : 0.5,
-        y: currentRound.movementId === "squat" ? 0.76 : 0.28,
-        ...(event.key === "ArrowLeft" ? { side: "left" as const } : event.key === "ArrowRight" ? { side: "right" as const } : {}),
-      });
+      triggerAssist(
+        event.key === "ArrowLeft" ? "left" : event.key === "ArrowRight" ? "right" : undefined,
+      );
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [currentRound.movementId, demo, globallyPaused, registerMovement]);
+  }, [currentRound.movementId, demo, globallyPaused, triggerAssist]);
+
+  // Pointer events cover touch, pen, and mouse in one path and fire without the
+  // click delay some mobile browsers still apply. preventDefault keeps focus off
+  // the control so the global key handler is not disabled after a tap.
+  const assistControlProps = (side?: "left" | "right") => ({
+    onPointerDown: (event: ReactPointerEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      triggerAssist(side);
+    },
+    onKeyDown: (event: ReactKeyboardEvent<HTMLButtonElement>) => {
+      if (event.key !== " " && event.key !== "Enter") return;
+      event.preventDefault();
+      triggerAssist(side);
+    },
+  });
 
   const buildTelemetry = (selectedFeedback: DifficultyFeedback): RoundTelemetry => {
     const metrics = metricsRef.current;
@@ -471,9 +508,43 @@ export function GameScreen({
         </div>
 
         <div className="game-director"><DirectorBadge meta={traceMeta ?? planMeta} compact /></div>
+        {demo && !globallyPaused && (
+          <div className="assist-pad" role="group" aria-label="Movement controls">
+            {currentRound.movementId === "side_step" ? (
+              <>
+                <button
+                  className="assist-key"
+                  type="button"
+                  aria-label="Step left"
+                  {...assistControlProps("left")}
+                >
+                  <span aria-hidden="true">←</span>Left
+                </button>
+                <button
+                  className="assist-key"
+                  type="button"
+                  aria-label="Step right"
+                  {...assistControlProps("right")}
+                >
+                  Right<span aria-hidden="true">→</span>
+                </button>
+              </>
+            ) : (
+              <button
+                className="assist-key assist-key--wide"
+                type="button"
+                aria-label={`${ASSIST_LABEL[currentRound.movementId]} now`}
+                {...assistControlProps()}
+              >
+                <span aria-hidden="true">{currentRound.movementId === "squat" ? "↓" : "↑"}</span>
+                {ASSIST_LABEL[currentRound.movementId]}
+              </button>
+            )}
+          </div>
+        )}
         <div className="game-signal">
           <span className={`status-dot ${trackingPaused ? "status-dot--error" : "status-dot--ready"}`} />
-          {demo ? KEYBOARD_HELP[currentRound.movementId] : `${Math.round(pose?.fps ?? 0)} FPS · camera stays local`}
+          {demo ? ASSIST_HELP[currentRound.movementId] : `${Math.round(pose?.fps ?? 0)} FPS · camera stays local`}
         </div>
       </div>
 

@@ -2100,7 +2100,76 @@ button:disabled {
   border: 1px solid rgba(194, 255, 226, 0.12);
   border-radius: 999px;
   backdrop-filter: blur(12px);
-  font-size: 7px;
+  font-size: 11px;
+  max-width: min(52vw, 340px);
+}
+
+/* Assisted movement controls.
+   The guided path has no camera, so without these a phone or tablet cannot play
+   at all: there are no arrow keys to press. They also serve as the visible
+   fallback when pose tracking is unreliable on a laptop. */
+.assist-pad {
+  position: absolute;
+  z-index: 9;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  gap: 12px;
+  pointer-events: auto;
+}
+
+.assist-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 116px;
+  min-height: 56px;
+  padding: 0 22px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #eafff5;
+  background: rgba(9, 42, 31, 0.72);
+  border: 1px solid rgba(126, 255, 200, 0.34);
+  border-radius: 999px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 26px rgba(1, 12, 8, 0.45);
+  cursor: pointer;
+  /* Suppress double-tap zoom and text selection so repeated taps stay responsive. */
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.09s ease, background 0.12s ease, border-color 0.12s ease;
+}
+
+.assist-key--wide {
+  min-width: 168px;
+}
+
+.assist-key span {
+  font-size: 19px;
+  line-height: 1;
+  color: #7effc8;
+}
+
+.assist-key:hover {
+  background: rgba(14, 60, 44, 0.82);
+  border-color: rgba(126, 255, 200, 0.55);
+}
+
+.assist-key:active {
+  transform: scale(0.95);
+  background: rgba(24, 88, 65, 0.92);
+  border-color: rgba(160, 255, 214, 0.75);
+}
+
+.assist-key:focus-visible {
+  outline: 2px solid #9dffd8;
+  outline-offset: 3px;
 }
 
 .tracking-pause,
@@ -2853,10 +2922,33 @@ button:disabled {
     bottom: 12px;
   }
 
+  /* The controls own the bottom edge on a phone; move the hint above them so the
+     two never overlap, and keep both clear of the home indicator. */
   .game-signal {
     right: 12px;
-    bottom: 12px;
-    max-width: 56vw;
+    left: 12px;
+    bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+    max-width: none;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .assist-pad {
+    left: 12px;
+    right: 12px;
+    transform: none;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    gap: 10px;
+  }
+
+  .assist-key,
+  .assist-key--wide {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 62px;
+    padding: 0 12px;
+    font-size: 16px;
   }
 
   .tracking-pause {
