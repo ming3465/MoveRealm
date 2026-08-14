@@ -1,23 +1,23 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-08-14T10:09:19+08:00",
+  "generatedAt": "2026-08-14T10:47:12+08:00",
   "product": "MoveRealm",
   "applicationSource": {
-    "commit": "9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90",
-    "tree": "7815bcec16105bd30d87e7f1036ac8a02fee613a"
+    "commit": "49dadbee7bf106b9434cae5a992d456d3cac1433",
+    "tree": "cb5f6e024784156864c8fc4acf7af7673c3f49d4"
   },
   "implementationCheckpoint": {
-    "commit": "de0b2defc22f524e29bc4ea1019e86c4d31aa915",
-    "tree": "25b1f5b728a0b2baaf0ba39bb5a9087e7906d998"
+    "commit": "49dadbee7bf106b9434cae5a992d456d3cac1433",
+    "tree": "cb5f6e024784156864c8fc4acf7af7673c3f49d4"
   },
   "documentationSnapshot": {
-    "commit": "8fe9022a0a5fd1257679adbc966db25bff640788",
-    "tree": "cfc59e4dcc503548f85edaee31ffc3a127143922"
+    "commit": "4b8cc96123a84fe361bbedc970177833f18e1dca",
+    "tree": "60bb68dd9fb227c050ffd2235a8bfd1ef9917653"
   },
   "publicRelease": {
-    "commit": "9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90",
-    "buildId": "build-31762210597",
-    "pagesRunId": 31762210597,
+    "commit": "49dadbee7bf106b9434cae5a992d456d3cac1433",
+    "buildId": "build-31764155833",
+    "pagesRunId": 31764155833,
     "url": "https://ming3465.github.io/MoveRealm/"
   },
   "artifacts": [
@@ -30,6 +30,11 @@
       "path": "assets/submission/moverealm-guided-backup-transcript.txt",
       "sha256": "3ecedf106de903f9c552a4042a7c1a77e7514338a37d2c2bf3287fc2ffe3c20a",
       "classification": "backup narration transcript"
+    },
+    {
+      "path": "assets/submission/moverealm-guided-backup.vtt",
+      "sha256": "9c27775af1eaab3fb5de5b4da43f3b9cc3efef5130de85a4a2c0b0b6163c9953",
+      "classification": "timed captions for backup narration; upload pending"
     },
     {
       "path": "assets/submission/moverealm-cover-380x216.png",
@@ -78,27 +83,27 @@
     },
     {
       "path": "docs/SUBMISSION.md",
-      "sha256": "95c0c9d1b5630776345e2432036904f83ac05b20a9fffe67ff2eba5316932275",
+      "sha256": "222c1f8544d3d6c33fa193eac1fcb02bf1c4c4322bcfb0bba98aeddbae78e979",
       "classification": "portal copy and submission checklist"
     },
     {
       "path": "docs/TRIAL_PROTOCOL.md",
-      "sha256": "3c5d630fd6ae0f1384485a5a4424904fd3d2b8aa7168a9fda07fbf742f8a26b9",
+      "sha256": "d7bc96ef633c3be70d74284b067400a9e3298e98f52d5fcd1af56dba475c2f31",
       "classification": "consent-first human trial protocol; execution pending"
     },
     {
       "path": "docs/EVALUATION.md",
-      "sha256": "7a822a5e2aa9942f1595d227439ac66fa844bdce7118fc7c2650d0236b791268",
+      "sha256": "cc20be112500f7f541ad7ae3eec85887929884b34b52ce899be800030de0349b",
       "classification": "offline advisory-model evaluation record"
     },
     {
       "path": "docs/VALIDATION.md",
-      "sha256": "593ed76c60a11d094972d41a4bcdb48d14cc29e277e3e6de861eb3bd3cd1c0fc",
+      "sha256": "384351d66a7d47eed2ab3785022d2c3c653d155f287e01d5a161a41cc04c8be5",
       "classification": "validation and pending-action record"
     },
     {
       "path": "artifacts/validation/release-checks.md",
-      "sha256": "965be2d62ee4373e3591252a5f656ed0d8e13b93ee4c1db786281afd3676035c",
+      "sha256": "7344edf4fb01aa0c6ef251ec7e8ff831a28bbae888f816d52dd10b79b7f8ba23",
       "classification": "test, build, audit, Docker, and smoke record"
     },
     {
@@ -108,12 +113,12 @@
     },
     {
       "path": "agent/evidence/safety-probe.json",
-      "sha256": "df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5",
+      "sha256": "099383377d19483a10256ad5a9bef7789be06d02dad2395dfe5a48275e484bdd",
       "classification": "synthetic deterministic contract-probe evidence"
     },
     {
       "path": "agent/evidence/safety-probe.md",
-      "sha256": "e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df",
+      "sha256": "a0b17057adb890a0e0f6b51d8f96959642c1c8d04e440e97611eab909c0dd164",
       "classification": "human-readable synthetic contract-probe evidence"
     },
     {
@@ -147,8 +152,8 @@
       "classification": "current controlled fake-camera CodeBuddy/Qwen3-VL 4B UI adaptation"
     },
     {
-      "path": "artifacts/validation/public-guided-keyboard-session-9f2710f.json",
-      "sha256": "a9a676b0b16843ef4f883f33ed20738de2b9c204bbabed5ca44ae39a86b7224d",
+      "path": "artifacts/validation/public-guided-keyboard-session-49dadbe.json",
+      "sha256": "f003b7eb3015f426125725237c90dccd2128198ba599f069fcaec0f7e3e78c93",
       "classification": "current exact-release guided keyboard export; not human evidence"
     },
     {
@@ -163,8 +168,8 @@
     }
   ],
   "pendingExternalActions": [
-    "Run three consenting real-person M1 Pro webcam trials and record FPS, visible response latency, time to first movement, completion, and privacy observations.",
-    "Upload the 4:58.834 backup video or a preferred live take to YouTube or Google Drive and verify signed-out access.",
+    "Run three consenting real-person M1 Pro webcam trials and record eligibility, minimum sample counts, FPS, visible response latency, time to first movement, completion, movement coverage, live pose-loss pause/resume, CodeBuddy latencies, and privacy observations.",
+    "Upload the 4:58.834 backup video and timed VTT captions, or a preferred live take, to YouTube or Google Drive and verify signed-out playback and caption access.",
     "Enter team members, registered contact email, video URL, and remaining portal fields, then submit."
   ],
   "privacy": {
