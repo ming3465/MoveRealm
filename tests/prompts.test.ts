@@ -31,6 +31,10 @@ describe("Movement Director prompts", () => {
     expect(prompt).toContain("Never return an empty permittedDirections array");
     expect(prompt).toContain("choose open when the centre plus both lateral movement lanes are visibly clear");
     expect(prompt).toContain("Ordinary furniture alone does not make a visible room uncertain");
+    expect(prompt).toContain('Whenever the central standing body lane is visibly usable, include both "vertical" and "center"');
+    expect(prompt).toContain('Use ["center"] alone only when that standing vertical lane itself cannot be');
+    expect(prompt).toContain('open room must include ["vertical", "left", "right", "center"]');
+    expect(prompt).toContain('tight room with a usable central standing lane must include "vertical" and');
   });
 
   it("makes a center-only plan reach-only at the end of the prompt", () => {

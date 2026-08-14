@@ -22,16 +22,27 @@ describe decor that does not affect movement. Produce this exact shape:
 Only claim a clear movement direction when it is visibly supported. Image uncertainty must reduce
 confidence and produce a conservative profile.
 
+Direction meanings are strict:
+- "vertical" means low-impact standing movement up and down inside the central body lane, such as
+  a controlled reach or squat. It does not mean jumping and does not require a lateral floor lane.
+- "center" means staying centred instead of travelling left or right.
+Whenever the central standing body lane is visibly usable, include both "vertical" and "center".
+Do not omit "vertical" merely because the floor edge is cropped when the upper/lower standing body
+lane is still visible. Use ["center"] alone only when that standing vertical lane itself cannot be
+judged safely.
+
 Use this decision order:
 1. Choose uncertain only when cropping, blur, darkness, or occlusion prevents judging the usable
    floor and movement lanes. Keep confidence at or below 0.60 and permit only directions that are
    definitely visible. If the lower frame does not show the floor at all—for example an upward or
    doorway crop showing mainly walls and ceiling—choose uncertain even when the centre looks open.
    Never return an empty permittedDirections array. For that cropped-room case, use
-   ["vertical", "center"] when the central body lane is visible; otherwise use ["center"].
-2. Otherwise choose open when the centre plus both lateral movement lanes are visibly clear.
+   ["vertical", "center"] when the central standing body lane is visible; otherwise use ["center"].
+2. Otherwise choose open when the centre plus both lateral movement lanes are visibly clear. An
+   open room must include ["vertical", "left", "right", "center"].
 3. Otherwise choose tight when a central lane is usable but one or both lateral lanes are visibly
-   constrained. Ordinary furniture alone does not make a visible room uncertain.
+   constrained. A tight room with a usable central standing lane must include "vertical" and
+   "center". Ordinary furniture alone does not make a visible room uncertain.
 Include a direction only when its corresponding lane is visibly clear, and never permit a lane with
 a high-severity obstacle.`;
 }
