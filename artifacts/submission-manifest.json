@@ -1,23 +1,23 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-08-14T10:47:12+08:00",
+  "generatedAt": "2026-08-14T11:28:09+08:00",
   "product": "MoveRealm",
   "applicationSource": {
-    "commit": "49dadbee7bf106b9434cae5a992d456d3cac1433",
-    "tree": "cb5f6e024784156864c8fc4acf7af7673c3f49d4"
+    "commit": "cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62",
+    "tree": "f4fa9f40ed7b2ee15092fba8e3072ed1a91c5a0e"
   },
   "implementationCheckpoint": {
-    "commit": "49dadbee7bf106b9434cae5a992d456d3cac1433",
-    "tree": "cb5f6e024784156864c8fc4acf7af7673c3f49d4"
+    "commit": "cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62",
+    "tree": "f4fa9f40ed7b2ee15092fba8e3072ed1a91c5a0e"
   },
   "documentationSnapshot": {
-    "commit": "4b8cc96123a84fe361bbedc970177833f18e1dca",
-    "tree": "60bb68dd9fb227c050ffd2235a8bfd1ef9917653"
+    "commit": "e4e3c05303adb9c64cd1fc02b9edf40418bd3e37",
+    "tree": "3493db549cfa6955dd237a9a9de71690f8f42702"
   },
   "publicRelease": {
-    "commit": "49dadbee7bf106b9434cae5a992d456d3cac1433",
-    "buildId": "build-31764155833",
-    "pagesRunId": 31764155833,
+    "commit": "cf2ea8bc0cced379a7cf01bc968c5fe09a6b7e62",
+    "buildId": "build-31766511011",
+    "pagesRunId": 31766511011,
     "url": "https://ming3465.github.io/MoveRealm/"
   },
   "artifacts": [
@@ -83,27 +83,27 @@
     },
     {
       "path": "docs/SUBMISSION.md",
-      "sha256": "222c1f8544d3d6c33fa193eac1fcb02bf1c4c4322bcfb0bba98aeddbae78e979",
+      "sha256": "f2445eab1cb40d5be77b11361beab97f8d272668c9bcc3c4b4fe1301b95774e1",
       "classification": "portal copy and submission checklist"
     },
     {
       "path": "docs/TRIAL_PROTOCOL.md",
-      "sha256": "d7bc96ef633c3be70d74284b067400a9e3298e98f52d5fcd1af56dba475c2f31",
+      "sha256": "fc54a2809fdd6f4fdc200b58e5233d7e8fb6fcb9367ee38f242b6e338a7cd49b",
       "classification": "consent-first human trial protocol; execution pending"
     },
     {
       "path": "docs/EVALUATION.md",
-      "sha256": "cc20be112500f7f541ad7ae3eec85887929884b34b52ce899be800030de0349b",
+      "sha256": "bb2e89a05c098ece56cbf213c4d7275b81ee104984b7296761846cb5dadcecc6",
       "classification": "offline advisory-model evaluation record"
     },
     {
       "path": "docs/VALIDATION.md",
-      "sha256": "384351d66a7d47eed2ab3785022d2c3c653d155f287e01d5a161a41cc04c8be5",
+      "sha256": "0ccf585a782bceb83526bc1ebf72dd22b2df78d638def00d09f3da096cc3e2cb",
       "classification": "validation and pending-action record"
     },
     {
       "path": "artifacts/validation/release-checks.md",
-      "sha256": "7344edf4fb01aa0c6ef251ec7e8ff831a28bbae888f816d52dd10b79b7f8ba23",
+      "sha256": "f2f4f76423c74d45abfa2abc6193bb7e8dc22b0aa7593c13ceeebb0ac1d79714",
       "classification": "test, build, audit, Docker, and smoke record"
     },
     {
@@ -142,18 +142,18 @@
       "classification": "exact-source fake-camera fallback smoke; not human evidence"
     },
     {
-      "path": "artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json",
-      "sha256": "75ce775069d32867d2e7dc6d56fa4030d3bd3e0f13409eef9c64217ba807bf35",
+      "path": "artifacts/validation/codebuddy-local-qwen-matrix-5b77105.json",
+      "sha256": "8ac958431bd25c0ec9947a295656a17f083f7df3878cca8abd26f141b79215f6",
       "classification": "current controlled local CodeBuddy/Qwen3-VL 4B strict matrix; synthetic fixtures"
     },
     {
-      "path": "artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json",
-      "sha256": "a83a93d33ce203eccd750a39ca0985af897cf6aee4c10200c07640929b593cba",
-      "classification": "current controlled fake-camera CodeBuddy/Qwen3-VL 4B UI adaptation"
+      "path": "artifacts/validation/codebuddy-local-synthetic-camera-fallback-5b77105.json",
+      "sha256": "248df0f0fd5868b293500bb9e71406766a91f0847c09bd98d3af6100d6792a49",
+      "classification": "current controlled synthetic-camera invalid-room fallback; not live room understanding"
     },
     {
-      "path": "artifacts/validation/public-guided-keyboard-session-49dadbe.json",
-      "sha256": "f003b7eb3015f426125725237c90dccd2128198ba599f069fcaec0f7e3e78c93",
+      "path": "artifacts/validation/public-guided-keyboard-session-cf2ea8b.json",
+      "sha256": "a2de638243c753c57b470be869507342bd2794ec88ab8d1bd7091134d1fc7040",
       "classification": "current exact-release guided keyboard export; not human evidence"
     },
     {
