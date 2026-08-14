@@ -20,16 +20,17 @@ CodeBuddy development tip.
 ### Release and evidence
 
 - [x] Confirm release-application
-  [Pages run 31762210597](https://github.com/ming3465/MoveRealm/actions/runs/31762210597) for commit
-  `9f2710f` / build `build-31762210597` passed 127/127 Vitest, 13/13 recovery-agent, and 82/82
+  [Pages run 31764155833](https://github.com/ming3465/MoveRealm/actions/runs/31764155833) for commit
+  `49dadbe` / build `build-31764155833` passed 128/128 Vitest, 13/13 recovery-agent, and 82/82
   safety-probe tests, the production build, and deployment.
-- [x] Confirm clean local candidate `de0b2defc22f524e29bc4ea1019e86c4d31aa915` / tree
-  `25b1f5b728a0b2baaf0ba39bb5a9087e7906d998` passed `npm run test:all`: 127/127 Vitest tests
+- [x] Confirm clean release candidate `49dadbee7bf106b9434cae5a992d456d3cac1433` / tree
+  `cb5f6e024784156864c8fc4acf7af7673c3f49d4` passed `npm run test:all`: 128/128 Vitest tests
   across 16 files, 13/13 Python recovery-agent tests, and 82/82 Safety Probe tests; its strict build
   and 0-vulnerability audit also passed.
 - [x] Confirm its exact-source Docker image
-  `sha256:f1ac14aab1b2bf42b4a20e0ed2a53f83d74955e047d6d8560b4b76236d87dd0b`
-  (343,104,634 bytes) passed health, index, exact identity, captured-room basic smoke, and cleanup.
+  `sha256:4119e32ef7f0145daa53a6669259fe0cbf81324b682689651cdc97003d3c7c15`
+  (343,108,191 bytes) passed health before/after, exact identity, captured-room basic smoke, exact
+  scene/plan POSTs, and zero-upload cleanup. Its audit-container stop escalated to exit 137.
 - [x] Confirm both predecessor `cf15709` production-mode full browser routes passed under local audit build
   ID `build-20260814`—not a GitHub Actions run. Guided: three mechanics, scores 0→145→290→435,
   adaptation 64→48%, 0.90→0.77×, 7→6, no POSTs/errors. Captured fallback: camera ready, exact
@@ -57,15 +58,16 @@ CodeBuddy development tip.
   container stopped and its port was freed after stop escalation; do not call exit 137 graceful.
 - [x] Keep the earlier Docker full fallback adaptation labelled predecessor evidence; it was not
   rerun for the current application release.
-- [x] Confirm the separate exact-release public full smoke against commit `9f2710f` / run 31762210597
-  / build `build-31762210597` exited 0: scores 0→145→290→435; `Guided demo` adaptation
+- [x] Confirm the exact-release combined camera/full smoke against commit `49dadbe` / run 31764155833
+  / build `build-31764155833` exited 0: camera ready; pause/focus containment; scores
+  0→145→290→435; `Guided demo` adaptation
   64→48%, 0.90→0.77×, 7→6; postcard 2.6 active minutes, 18% completion, tracking `N/A`, and
   3.0-minute clock; API POSTs `[]`; no console errors. This browser smoke was separate from CI.
 - [x] Confirm that smoke downloaded anonymous keyboard evidence whose visible SHA-256
-  `a9a676b0b16843ef4f883f33ed20738de2b9c204bbabed5ca44ae39a86b7224d` and exact
+  `f003b7eb3015f426125725237c90dccd2128198ba599f069fcaec0f7e3e78c93` and exact
   build/commit identity matched, and whose real-camera pose gates remained `N/A`/`not_evaluated`.
   The preserved file is
-  [`public-guided-keyboard-session-9f2710f.json`](../artifacts/validation/public-guided-keyboard-session-9f2710f.json);
+  [`public-guided-keyboard-session-49dadbe.json`](../artifacts/validation/public-guided-keyboard-session-49dadbe.json);
   its keyboard timing is not human TTFF evidence.
 - [x] Confirm the current release retains the exporter integrity boundary: trial 1–3 only, paired
   exact provenance, count/adaptation/latency consistency, and robust sanitized download behavior.
@@ -102,8 +104,8 @@ team/contact portal fields. Do not substitute
 synthetic-camera or keyboard values.
 
 The Pages workflow ignores docs- and artifacts-only pushes. This documentation follow-up does not
-redeploy the app; release identity remains commit `9f2710f`, run 31762210597, build
-`build-31762210597`.
+redeploy the app; release identity remains commit `49dadbe`, run 31764155833, build
+`build-31764155833`.
 
 ### Live path
 

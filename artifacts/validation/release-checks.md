@@ -5,19 +5,19 @@ observations from the real-person and submission work that is still pending.
 
 ## Current release identity — 14 August 2026
 
-- Clean implementation checkpoint: `de0b2defc22f524e29bc4ea1019e86c4d31aa915`
-- Implementation tree: `25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`
+- Clean release checkpoint: `49dadbee7bf106b9434cae5a992d456d3cac1433`
+- Release tree: `cb5f6e024784156864c8fc4acf7af7673c3f49d4`
 - Source state for recorded candidate gates: clean tracked checkout
-- Release application commit: `9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90`
-- Application build ID: `build-31762210597`
-- Pages workflow: [run 31762210597](https://github.com/ming3465/MoveRealm/actions/runs/31762210597),
+- Release application commit: `49dadbee7bf106b9434cae5a992d456d3cac1433`
+- Application build ID: `build-31764155833`
+- Pages workflow: [run 31764155833](https://github.com/ming3465/MoveRealm/actions/runs/31764155833),
   **success**
 - Push/public verification: **PASS** — `origin/main`, HTTP 200, exact public camera smoke, and exact
   public full-session smoke all matched the release identity.
 - Docker image:
-  `sha256:f1ac14aab1b2bf42b4a20e0ed2a53f83d74955e047d6d8560b4b76236d87dd0b`
-  (343,104,634 bytes), built with exact commit `de0b2de` and local audit build
-  `build-2026081402`. This build ID is **not** a GitHub Actions run or public deployment ID.
+  `sha256:4119e32ef7f0145daa53a6669259fe0cbf81324b682689651cdc97003d3c7c15`
+  (343,108,191 bytes), built with exact commit `49dadbe` and local audit build
+  `build-20260814`. This build ID is **not** a GitHub Actions run or public deployment ID.
 
 ## Previous deployed identity — 13 August 2026
 
@@ -35,7 +35,7 @@ observations from the real-person and submission work that is still pending.
 
 The Pages workflow ignores pushes limited to `docs/**`, `artifacts/**`, `README.md`, and
 `assets/README.md`. This documentation-only follow-up therefore does not redeploy the app or create
-a newer release identity. Run 31762210597 remains the exact application deployment unless a
+a newer release identity. Run 31764155833 remains the exact application deployment unless a
 source-bearing path changes or the workflow is manually dispatched.
 
 ## Environment
@@ -49,14 +49,14 @@ source-bearing path changes or the workflow is manually dispatched.
 
 | Check | Command or source | Observed result |
 |---|---|---|
-| Complete automated tests | `npm run test:all` | **PASS** — 127/127 Vitest tests across 16 files; 13/13 Python recovery-agent tests; 82/82 Python safety-probe tests |
+| Complete automated tests | `npm run test:all` | **PASS** — 128/128 Vitest tests across 16 files; 13/13 Python recovery-agent tests; 82/82 Python safety-probe tests |
 | Strict client/server typecheck and production bundle | `npm run build` | **PASS** |
 | Dependency audit | `npm audit --audit-level=low` | **PASS** — 0 vulnerabilities |
-| Submission-document local links | resolve local Markdown targets | **PASS** — 13 Markdown files / 170 local links / 0 missing |
+| Submission-document local links | resolve local Markdown targets | **PASS** — 13 Markdown files / 174 local links / 0 missing |
 | Documentation diff hygiene | `git diff --check` | **PASS** |
-| Exact Docker provenance | inspect packaged client and image metadata | **PASS** — commit `de0b2de…`, build `build-2026081402`, and expected image digest matched |
-| Docker health and index | packaged adapter health endpoint and root document | **PASS** |
-| Docker basic smoke | packaged local candidate | **PASS** |
+| Exact Docker provenance | inspect packaged client and image metadata | **PASS** — commit `49dadbe…`, build `build-20260814`, and expected image digest matched |
+| Docker health | packaged adapter health endpoint before and after smoke | **PASS** — fallback healthy; CodeBuddy false as forced |
+| Docker captured-room basic smoke and cleanup | packaged release, fake camera, forced fallback | **PASS** — safe defaults; score 0→145; exact scene/plan POSTs; zero retained uploads; stop escalated to exit 137 |
 | Predecessor guided full browser smoke | production mode; local audit build `build-20260814`; source `cf15709` | **PASS** — reach/squat/side-step; scores 0→145→290→435; `Guided demo` adaptation 64→48%, 0.90→0.77×, 7→6; postcard 2.6 min / 18% / `N/A`; API POSTs `[]`; no errors |
 | Predecessor captured-room full fallback smoke | production mode; fake camera; local audit build `build-20260814`; source `cf15709` | **PASS** — camera ready; exact scene/plan/adapt/adapt POSTs; all rounds to score 435; `Safe fallback`; adaptation 60→44%, 0.90→0.77×, 7→6; postcard 2.6 min / 18% / `N/A`; no errors |
 | Python recovery artifact | controlled Qwen3-VL 4B run | **PASS** — hard gates rejected the 18/24 original (43.492 s) and selected the eligible 15/24 fallback (37.550 s) |
@@ -68,8 +68,9 @@ The Python artifact SHA-256 is
 `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029`; it records shared
 candidate-context SHA-256 `502824677434c6c6d0196d367ecdcfdde1f8aaa84138f1fe976858dce766fcfa`.
 The Safety Probe report SHA-256 values are
-`df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5` (JSON) and
-`e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` (Markdown).
+`099383377d19483a10256ad5a9bef7789be06d02dad2395dfe5a48275e484bdd` (JSON) and
+`a0b17057adb890a0e0f6b51d8f96959642c1c8d04e440e97611eab909c0dd164` (Markdown). The frozen report
+was produced from clean source commit `4df7cd03114a47e059bc5f03bdb98af3a8f21385`.
 The newest sanitized CodeBuddy observation is
 [`codebuddy-current-vision-instability-2026-08-14.json`](codebuddy-current-vision-instability-2026-08-14.json),
 SHA-256 `6acfa59a47552c0b0c0334c4c9c627949ae4c65aa09d1eeeaa8064864d283fda`.
@@ -106,15 +107,14 @@ to false, and leave keyboard pose metrics `null` with human/device thresholds `n
 
 | Check | Command or source | Observed result |
 |---|---|---|
-| Complete automated tests | `npm run test:all` | **PASS** — 127/127 Vitest, 13/13 Python recovery-agent, 82/82 safety-probe tests in CI and locally |
+| Complete automated tests | `npm run test:all` | **PASS** — 128/128 Vitest, 13/13 Python recovery-agent, 82/82 safety-probe tests in CI and locally |
 | Strict client/server typecheck and production bundle | `npm run build` | **PASS** |
 | Dependency audit | `npm audit --audit-level=low` | **PASS** — 0 vulnerabilities |
-| Local Markdown links | resolve every local Markdown target | **PASS** — 10 files / 108 local links checked |
+| Local Markdown links | resolve every local Markdown target | **PASS** — 13 files / 174 local links / 0 missing |
 | Tracked secret-pattern scan | common cloud token, private-key, API-key, and CodeBuddy-password patterns | **PASS** — no tracked match |
-| CI deployment | Pages run 31762210597 | **PASS** — exact commit and build identity injected into client |
+| CI deployment | Pages run 31764155833 | **PASS** — exact commit and build identity injected into client |
 | Public HTTP check | `curl -fsS https://ming3465.github.io/MoveRealm/` | **PASS** — HTTP 200 |
-| Exact-release public camera basic smoke | public URL, expected commit/build, Chrome fake camera | **PASS** — `cameraReady=true`; score 0→145; API POSTs `[]`; no console errors |
-| Exact-release public full-smoke adaptation step | full browser smoke against expected commit/build | **PASS** — `Guided demo`; range 64→48%, tempo 0.90→0.77×, rate 7→6 |
+| Exact-release public camera/full smoke | public URL, expected commit/build, Chrome fake camera, real configured clock | **PASS** — camera ready; pause/focus containment; all three mechanics; score 435; `Guided demo` adaptation; postcard/export/replay/stop; API POSTs `[]`; no console errors |
 | Predecessor packaged captured-room basic path | `2ab9584` Docker image on port 4176 plus camera/capture/fallback smoke | **PASS** — health true/CodeBuddy false; camera ready; safe defaults; `Safe fallback`; score 0→145 |
 | Predecessor packaged basic request audit | `2ab9584` Docker captured-room smoke with CDP network events | **PASS** — only `/api/scene/analyze` and `/api/quest/plan`; one still upload; no unexpected POST destination |
 | Predecessor packaged upload cleanup | inspect Node temporary still directory after the `2ab9584` capture smoke | **PASS** — empty; container stopped and port freed after stop escalation (exit 137, not a graceful stop) |
@@ -142,7 +142,7 @@ introduced in `2ab9584` for local anonymous evidence:
   temporary anchor, delays object-URL revocation, and reports sanitized success, hash-unavailable, or
   failure status.
 
-The previous release's 100-test suite and the current 127-test Vitest layer cover these integrity
+The previous release's 100-test suite and the current 128-test Vitest layer cover these integrity
 boundaries. They validate exported records; they do not complete any of the pending human trials or
 measure real-person performance.
 
@@ -179,13 +179,14 @@ The full public smoke runs the real configured clock; it does not accelerate rou
 was a separate deployed-site observation, not a browser step in CI. The exact-release command was:
 
 ```bash
-MOVEREALM_URL=https://ming3465.github.io/MoveRealm/ MOVEREALM_FULL_SMOKE=1 \
-  MOVEREALM_EXPECT_COMMIT=9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90 \
-  MOVEREALM_EXPECT_BUILD_ID=build-31762210597 npm run smoke:browser
+MOVEREALM_URL=https://ming3465.github.io/MoveRealm/ MOVEREALM_CAMERA_SMOKE=1 \
+  MOVEREALM_FULL_SMOKE=1 \
+  MOVEREALM_EXPECT_COMMIT=49dadbee7bf106b9434cae5a992d456d3cac1433 \
+  MOVEREALM_EXPECT_BUILD_ID=build-31764155833 npm run smoke:browser
 ```
 
-It exited 0 against commit `9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90`, Pages run 31762210597,
-and build `build-31762210597`, then passed:
+It exited 0 against commit `49dadbee7bf106b9434cae5a992d456d3cac1433`, Pages run 31764155833,
+and build `build-31764155833`, then passed:
 
 - round scores: 0→145, 145→290, 290→435;
 - all three mechanics: reach, squat, side-step;
@@ -194,12 +195,12 @@ and build `build-31762210597`, then passed:
   in keyboard mode;
 - anonymous local evidence file `moverealm-trial-1-session.json` downloaded successfully and its
   privacy-reviewed copy is preserved as
-  [`public-guided-keyboard-session-9f2710f.json`](public-guided-keyboard-session-9f2710f.json);
-- downloaded SHA-256 `a9a676b0b16843ef4f883f33ed20738de2b9c204bbabed5ca44ae39a86b7224d`
+  [`public-guided-keyboard-session-49dadbe.json`](public-guided-keyboard-session-49dadbe.json);
+- downloaded SHA-256 `f003b7eb3015f426125725237c90dccd2128198ba599f069fcaec0f7e3e78c93`
   exactly matched the checksum visible in the UI and the preserved file; it identifies this one
   observation, while later runs can differ because the JSON contains observed timing fields;
-- export identity exactly matched commit `9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90` and build
-  `build-31762210597`;
+- export identity exactly matched commit `49dadbee7bf106b9434cae5a992d456d3cac1433` and build
+  `build-31764155833`;
 - the export recorded keyboard tracking, `null`/`N/A` tracking FPS, inference, and visible-response
   values, with FPS, inference, visible-latency, and TTFF thresholds `not_evaluated`;
 - all three rounds and both adaptation decisions were present in the export;

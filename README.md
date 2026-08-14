@@ -17,35 +17,36 @@ visibly labelled deterministic decisions. The live CodeBuddy Movement Director r
 production Node adapter described below; the public demo does not impersonate that integration.
 
 The release-application Pages deployment
-[run 31762210597](https://github.com/ming3465/MoveRealm/actions/runs/31762210597) for commit
-[`9f2710f`](https://github.com/ming3465/MoveRealm/commit/9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90)
-passed the complete 127-test Vitest, 13-test Python recovery-agent, and 82-test safety-probe gate,
+[run 31764155833](https://github.com/ming3465/MoveRealm/actions/runs/31764155833) for commit
+[`49dadbe`](https://github.com/ming3465/MoveRealm/commit/49dadbee7bf106b9434cae5a992d456d3cac1433)
+passed the complete 128-test Vitest, 13-test Python recovery-agent, and 82-test safety-probe gate,
 the production build, artifact upload, and deployment. The deployed client identifies itself as
-build `build-31762210597` at full commit
-`9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90`. Six consent-free guided screenshots and two controlled
+build `build-31764155833` at full commit
+`49dadbee7bf106b9434cae5a992d456d3cac1433`. Six consent-free guided screenshots and two controlled
 synthetic fake-camera CodeBuddy UI captures are available under
 [`assets/submission/screenshots/`](assets/submission/screenshots/).
 
 The Pages workflow ignores changes limited to `docs/**`, `artifacts/**`, `README.md`, and
 `assets/README.md`. Documentation-only release follow-ups therefore do not redeploy the application;
-run 31762210597 remains the exact application release until source-bearing paths change or the
+run 31764155833 remains the exact application release until source-bearing paths change or the
 workflow is manually dispatched.
 
 ## Released implementation checkpoint — 14 August 2026
 
-The core implementation and local-agent evidence were frozen at clean commit
-`de0b2defc22f524e29bc4ea1019e86c4d31aa915`, tree
-`25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`, then shipped in release commit `9f2710f` above.
+The released implementation and refreshed contract evidence were frozen at clean commit
+`49dadbee7bf106b9434cae5a992d456d3cac1433`, tree
+`cb5f6e024784156864c8fc4acf7af7673c3f49d4`, which is the release commit above.
 
-The exact clean candidate passed `npm run test:all`: **127/127 Vitest tests across 16 files**, **13/13
+The exact clean candidate passed `npm run test:all`: **128/128 Vitest tests across 16 files**, **13/13
 Python recovery-agent tests**, and **82/82 Python safety-probe tests**. The strict production build
 passed and `npm audit --audit-level=low` reported **0 vulnerabilities**. The exact-source Docker image
-`sha256:f1ac14aab1b2bf42b4a20e0ed2a53f83d74955e047d6d8560b4b76236d87dd0b`
-(343,104,634 bytes) passed health, index, captured-room basic smoke, exact commit/build assertions,
-and zero-upload cleanup.
+`sha256:4119e32ef7f0145daa53a6669259fe0cbf81324b682689651cdc97003d3c7c15`
+(343,108,191 bytes) passed health before and after the captured-room basic smoke, exact
+commit/build assertions, the scene/plan request audit, and zero-upload cleanup. Its temporary audit
+container stopped after escalation with exit 137, so that stop is not described as graceful.
 
 The free local runtime path uses CodeBuddy Code 2.136.0 to orchestrate Apache-2.0 Qwen3-VL 4B
-through loopback Ollama 0.23.1. With fallback forbidden, the exact clean candidate produced distinct
+through loopback Ollama 0.23.1. With fallback forbidden, the preserved `de0b2de` checkpoint produced distinct
 open, tight, and uncertain scene profiles and distinct safe 180-second plans; its live adaptation
 changed range `0.62→0.46`, tempo `0.90→0.77`, and target rate `8→7`. A separate fake-camera browser
 smoke visibly showed `CodeBuddy live`, made exactly scene/plan/adapt POSTs, scored 0→145, and rendered
@@ -140,7 +141,7 @@ deterministic path. A production Node deployment serves both the Vite bundle and
 ## Verification
 
 ```bash
-npm run test:all     # local candidate: 127 Vitest + 13 recovery-agent + 82 probe tests
+npm run test:all     # release candidate: 128 Vitest + 13 recovery-agent + 82 probe tests
 npm run build        # strict client/server typecheck and production bundle
 npm audit --audit-level=low  # local candidate: 0 vulnerabilities
 ```
@@ -155,25 +156,25 @@ MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
 MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
 ```
 
-The current `9f2710f` public camera basic smoke was a separate deployed-site observation, not a CI
+The current `49dadbe` public camera/full smoke was a separate deployed-site observation, not a CI
 job. With Chrome's fake camera it reported `cameraReady: true`, scored 0 → 145, recorded API POSTs
 `[]`, and produced no console errors. It is camera-startup and basic-flow evidence, not a real-person
 FPS, latency, TTFF, or usability measurement.
 
-The exact-release public full smoke also passed against `9f2710f` / run 31762210597 / build
-`build-31762210597`: scores advanced 0 → 145 → 290 → 435; `Guided demo` adaptation showed
+The same exact-release public run completed against `49dadbe` / run 31764155833 / build
+`build-31764155833`: scores advanced 0 → 145 → 290 → 435; `Guided demo` adaptation showed
 range 64 → 48%, tempo 0.90 → 0.77×, and target rate 7 → 6; and the postcard reported 2.6 active
 minutes, 18% completion, and tracking `N/A`. The request audit recorded API POSTs `[]`, and no
 console errors appeared. The preserved anonymous keyboard JSON matched SHA-256
-`a9a676b0b16843ef4f883f33ed20738de2b9c204bbabed5ca44ae39a86b7224d` and the exact
+`f003b7eb3015f426125725237c90dccd2128198ba599f069fcaec0f7e3e78c93` and the exact
 build/commit identity. Its keyboard timing and `N/A`/`not_evaluated` pose fields are exporter
 evidence, not human TTFF or pose evidence. See
 [`artifacts/validation/release-checks.md`](artifacts/validation/release-checks.md) for the command and
 result record and
-[`public-guided-keyboard-session-9f2710f.json`](artifacts/validation/public-guided-keyboard-session-9f2710f.json)
+[`public-guided-keyboard-session-49dadbe.json`](artifacts/validation/public-guided-keyboard-session-49dadbe.json)
 for the privacy-reviewed export.
 
-The exact implementation-checkpoint Docker image `sha256:f1ac14aa…` passed the captured-room basic
+The exact release Docker image `sha256:4119e32e…` passed the captured-room basic
 path before release. Older `2ab9584` packaged/full-session results remain predecessor evidence and
 must not be cited as current-release execution.
 
@@ -213,7 +214,7 @@ reach-only fallback passed. The judge never approves, rewrites, blocks, or execu
 scores are not accuracy, safety, official-judge, human-trial, or runtime evidence. See
 [`docs/EVALUATION.md`](docs/EVALUATION.md) for the fixed setup, observations, and limitations.
 The 8B open/tight reports are predecessor `7fe9009` snapshots; their candidate JSON is not a
-`de0b2de` current-gate pass.
+current-gate pass.
 
 The dependency-free [`python_agent/`](python_agent/) wrapper turns that evaluator into a small
 `observe → evaluate → recover → verify` agent. It defaults to the free local 3.3 GB Qwen3-VL 4B
@@ -254,15 +255,16 @@ npm run probe -- --mode live      # audit a running adapter
 npm run probe:tests               # 82 tests, standard library only
 ```
 
-Against clean commit `cf157093ff3dab7b3598387d68973f82a3e364c2`, it ran 332 candidates over 6 adaptive
+Against clean source commit `4df7cd03114a47e059bc5f03bdb98af3a8f21385`, tree
+`f3e56cbe041b143837fbbbeb1d87c7d00d771ced`, it ran 332 candidates over 6 adaptive
 rounds and terminated on its own when nothing new appeared: 302 unsafe candidates defended and 30
 compliant candidates honored,
 **0 breaches and 0 over-rejections**, with all 20 compliant baselines accepted. Bisection measured
 seven envelope frontiers, each agreeing with the documented threshold — the narrow-room side-step
 cap, for example, was observed accepted up to 0.6156 and refused from 0.6203 against a documented
 0.62. The contract report contains 0 inconclusive probes and has SHA-256
-`df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5` (JSON) and
-`e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` (Markdown). The stub gates in
+`099383377d19483a10256ad5a9bef7789be06d02dad2395dfe5a48275e484bdd` (JSON) and
+`a0b17057adb890a0e0f6b51d8f96959642c1c8d04e440e97611eab909c0dd164` (Markdown). The stub gates in
 its 82-test suite prove a breach *would* be reported. This is contract-behaviour evidence over synthetic rooms:
 not a human trial, pose or latency measurement, security audit, or certification. The tool never
 approves, rewrites, blocks, or executes a quest, and reads no participant data.

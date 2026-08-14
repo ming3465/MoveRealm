@@ -14,35 +14,35 @@ dash (`—`) means **not measured**; it is not a zero and must never be replaced
 
 ## Current release verification — 14 August 2026
 
-Exact source: commit `de0b2defc22f524e29bc4ea1019e86c4d31aa915`, tree
-`25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`. The strict matrix record was produced from a clean
-tracked checkout. That implementation checkpoint shipped in release commit
-`9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90`, Pages run 31762210597, and build
-`build-31762210597`.
+Exact released source: commit `49dadbee7bf106b9434cae5a992d456d3cac1433`, tree
+`cb5f6e024784156864c8fc4acf7af7673c3f49d4`. The preserved local 4B strict matrix was produced
+earlier from clean checkpoint `de0b2de`; its scope remains explicitly controlled. The current
+application shipped in Pages run 31764155833 and build `build-31764155833`.
 
 | Check | Observed | Evidence status |
 |---|---|---|
-| Complete automated test gate | `npm run test:all`: **127/127 Vitest tests across 16 files**, **13/13 Python recovery-agent tests**, **82/82 safety-probe tests** | recorded automated local-candidate evidence |
+| Complete automated test gate | `npm run test:all`: **128/128 Vitest tests across 16 files**, **13/13 Python recovery-agent tests**, **82/82 safety-probe tests** | recorded automated release evidence |
 | Production build | strict client/server checks and Vite build passed | recorded automated local-candidate evidence |
 | npm dependency audit | **0 vulnerabilities** | recorded automated local-candidate evidence |
-| Exact-source Docker identity | `sha256:f1ac14aab1b2bf42b4a20e0ed2a53f83d74955e047d6d8560b4b76236d87dd0b` (343,104,634 bytes); build `build-2026081402`; embedded commit matched | recorded packaged local-candidate evidence |
-| Exact-source Docker health, index, captured-room basic smoke, and cleanup | all passed; camera ready, score 0→145, exact scene/plan POSTs, zero retained uploads | recorded packaged synthetic-camera evidence |
+| Exact-source Docker identity | `sha256:4119e32ef7f0145daa53a6669259fe0cbf81324b682689651cdc97003d3c7c15` (343,108,191 bytes); local audit build `build-20260814`; embedded `49dadbe` commit matched | recorded packaged release evidence |
+| Exact-source Docker health, captured-room basic smoke, and cleanup | health passed before/after; camera ready, score 0→145, exact scene/plan POSTs, zero retained uploads; audit container stop escalated to exit 137 | recorded packaged synthetic-camera evidence; stop was not graceful |
 | Predecessor `cf15709` guided full browser smoke | production mode; local audit ID `build-20260814`; three mechanics; scores 0→145→290→435; adaptation 64→48%, 0.90→0.77×, 7→6; 2.6 min / 18% / `N/A`; no POSTs/errors | recorded automated predecessor-candidate evidence; audit ID is not a CI run |
 | Predecessor `cf15709` captured-room full fallback smoke | production mode; camera ready; exact scene/plan/adapt/adapt POSTs; scores to 435; `Safe fallback`; adaptation 60→44%, 0.90→0.77×, 7→6; 2.6 min / 18% / `N/A`; no errors | recorded synthetic-camera predecessor-candidate evidence; audit ID is not a CI run |
 | Python Qwen3-VL 4B recovery | unsafe original 18/24 in 43.492 s; eligible fallback 15/24 in 37.550 s; hard gates selected fallback | recorded controlled synthetic evidence |
 | Safety Probe | 332 candidates: 302 defended, 30 honored, 0 breaches, 0 over-rejections, 0 inconclusive; 20/20 controls and 7/7 frontiers | recorded controlled synthetic evidence |
 | Free local CodeBuddy/Qwen3-VL 4B strict loop | **PASS**: fallback forbidden; 3 distinct room profiles and 3 distinct safe 180-second plans; live adaptation reduced range/tempo/rate; uploads empty | recorded controlled synthetic agent evidence |
 | Free local CodeBuddy browser adaptation | **PASS**: fake camera ready; visible `CodeBuddy live`; exact scene/plan/adapt POSTs; score 0→145; adaptation 52→40%, 1.05→0.92×, 9→8 in 8.895 s; no console errors | recorded controlled UI evidence |
-| Current Pages deployment | **PASS**: full test gate, build, artifact upload, and deployment; exact commit/build injected | recorded in run 31762210597 |
-| Current public camera basic smoke | **PASS**: exact identity, fake camera ready, score 0→145, API POSTs `[]`, no errors | recorded automated release evidence |
-| Current public full smoke/export | **PASS**: all three rounds, adaptation, postcard, exact identity/checksum, API POSTs `[]`, no errors | recorded automated release evidence |
+| Current Pages deployment | **PASS**: full test gate, build, artifact upload, and deployment; exact commit/build injected | recorded in run 31764155833 |
+| Current public camera + full smoke | **PASS**: exact identity, fake camera ready, pause/focus containment, all three rounds, adaptation, postcard, replay/stop, API POSTs `[]`, no errors | recorded automated release evidence |
+| Current public anonymous export | **PASS**: byte-identical visible/downloaded checksum; exact `49dadbe` / `build-31764155833`; keyboard pose gates remained `not_evaluated` | recorded automated release evidence |
 
 The Python recovery artifact SHA-256 is
 `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029`; both evaluations share
 candidate-context SHA-256 `502824677434c6c6d0196d367ecdcfdde1f8aaa84138f1fe976858dce766fcfa`.
 The Safety Probe report SHA-256 values are
-`df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5` (JSON) and
-`e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` (Markdown).
+`099383377d19483a10256ad5a9bef7789be06d02dad2395dfe5a48275e484bdd` (JSON) and
+`a0b17057adb890a0e0f6b51d8f96959642c1c8d04e440e97611eab909c0dd164` (Markdown). It records clean
+source commit `4df7cd03114a47e059bc5f03bdb98af3a8f21385`, immediately before its evidence-only refresh.
 
 `build-20260814` is a local audit build identifier, not a GitHub Actions run. The guided export is
 [`local-guided-keyboard-session-cf15709.json`](../artifacts/validation/local-guided-keyboard-session-cf15709.json),
@@ -92,7 +92,7 @@ and result record belongs in
 
 The Pages workflow excludes docs-only changes under `docs/**`, `artifacts/**`, `README.md`, and
 `assets/README.md` from its push trigger. This documentation follow-up does not imply a newer
-application deployment; the current application release identity remains run 31762210597.
+application deployment; the current application release identity remains run 31764155833.
 
 The current release retains the evidence-integrity checks introduced in `2ab9584` around the local
 exporter:
@@ -119,25 +119,26 @@ Chrome's fake stream does not contain a trackable person, so this evidence does 
 real-person pose FPS, camera-to-visual response latency, movement accuracy, time to first movement,
 or usability.
 
-The deployed `9f2710f` public application passed an exact-release camera basic smoke as a separate
-deployed-site observation, not a CI browser job. Chrome's fake camera reached `cameraReady: true`,
-the first score advanced 0 → 145, the request audit recorded API POSTs `[]`, and no console errors
-occurred. Because the stream was synthetic, this does not close any real-person camera gate.
+The deployed `49dadbe` public application passed an exact-release combined camera/full smoke as a
+separate deployed-site observation, not a CI browser job. Chrome's fake camera reached
+`cameraReady: true`, the first score advanced 0 → 145, pause kept its timer fixed and contained
+keyboard focus, the request audit recorded API POSTs `[]`, and no console errors occurred. Because
+the stream was synthetic, this does not close any real-person camera gate.
 
-The exact implementation-checkpoint Docker image `sha256:f1ac14aa…` has the separate current-source
+The exact release Docker image `sha256:4119e32e…` has the separate current-source
 basic captured-room/fallback evidence recorded above. The older `2ab9584` package/full-session
 scopes remain predecessor-only evidence.
 
 The exact-release full browser smoke also passed against commit
-`9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90`, Pages run 31762210597, and build
-`build-31762210597`. Scores advanced 0 → 145 → 290 → 435. The visible `Guided demo`
+`49dadbee7bf106b9434cae5a992d456d3cac1433`, Pages run 31764155833, and build
+`build-31764155833`. Scores advanced 0 → 145 → 290 → 435. The visible `Guided demo`
 adaptation changed range 64 → 48%, tempo 0.90 → 0.77×, and target rate 7 → 6. The postcard
 displayed 2.6 active minutes, 18% completion, and tracking `N/A`; the request audit recorded API
 POSTs `[]`; and no console errors occurred.
 
 That smoke downloaded anonymous keyboard evidence. The privacy-reviewed copy is preserved as
-[`public-guided-keyboard-session-9f2710f.json`](../artifacts/validation/public-guided-keyboard-session-9f2710f.json).
-Its SHA-256 `a9a676b0b16843ef4f883f33ed20738de2b9c204bbabed5ca44ae39a86b7224d`
+[`public-guided-keyboard-session-49dadbe.json`](../artifacts/validation/public-guided-keyboard-session-49dadbe.json).
+Its SHA-256 `f003b7eb3015f426125725237c90dccd2128198ba599f069fcaec0f7e3e78c93`
 matched the preserved file, and its product identity exactly matched the deployed release commit and
 build. The export records three rounds, two adaptations, 156 completed active seconds within the
 planned 180-second adventure, and keyboard tracking. Tracking FPS, inference, and visible-response
@@ -171,11 +172,11 @@ MOVEREALM_CAMERA_SMOKE=1 npm run smoke:browser
 MOVEREALM_CAMERA_SMOKE=1 MOVEREALM_CAPTURE_SMOKE=1 npm run smoke:browser
 MOVEREALM_ADAPT_SMOKE=1 npm run smoke:browser
 MOVEREALM_URL=https://ming3465.github.io/MoveRealm/ MOVEREALM_CAMERA_SMOKE=1 \
-  MOVEREALM_EXPECT_COMMIT=9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90 \
-  MOVEREALM_EXPECT_BUILD_ID=build-31762210597 npm run smoke:browser
+  MOVEREALM_EXPECT_COMMIT=49dadbee7bf106b9434cae5a992d456d3cac1433 \
+  MOVEREALM_EXPECT_BUILD_ID=build-31764155833 npm run smoke:browser
 MOVEREALM_URL=https://ming3465.github.io/MoveRealm/ MOVEREALM_FULL_SMOKE=1 \
-  MOVEREALM_EXPECT_COMMIT=9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90 \
-  MOVEREALM_EXPECT_BUILD_ID=build-31762210597 npm run smoke:browser
+  MOVEREALM_EXPECT_COMMIT=49dadbee7bf106b9434cae5a992d456d3cac1433 \
+  MOVEREALM_EXPECT_BUILD_ID=build-31764155833 npm run smoke:browser
 ```
 
 These commands document how to reproduce each path. Cite the preserved command and result entries in

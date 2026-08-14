@@ -35,7 +35,8 @@ runtime screenshot; use labelled product screenshots in the demo for implementat
 - `submission/screenshots/01` through `06` are controlled guided-demo browser captures.
 - `submission/screenshots/07` and `08` are controlled fake-camera live-CodeBuddy browser captures.
 - `submission/moverealm-guided-backup.mp4` is a reproducible camera-free backup video assembled from
-  those consent-free visuals with macOS synthetic narration. Its transcript is stored beside it.
+  those consent-free visuals with macOS synthetic narration. Its transcript and timed WebVTT
+  captions are stored beside it.
 
 The backup video explicitly labels its synthetic narration and keyboard controls and makes no human
 pose-performance claim. Build it with `npm run video:backup`.

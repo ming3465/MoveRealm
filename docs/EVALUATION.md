@@ -71,14 +71,19 @@ The harness never downloads a model itself. `--strict-judge` fails when Ollama i
 the model response is invalid. Without it, hard gates still run and the judge is honestly
 `not_run`.
 
-## Released local-director checkpoint — 14 August 2026
+## Released application and local-director evidence — 14 August 2026
 
-The clean local source candidate is commit `de0b2defc22f524e29bc4ea1019e86c4d31aa915`, tree
-`25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`. It passed 127/127 Vitest tests across 16 files,
+The clean released application is commit `49dadbee7bf106b9434cae5a992d456d3cac1433`, tree
+`cb5f6e024784156864c8fc4acf7af7673c3f49d4`. It passed 128/128 Vitest tests across 16 files,
 13/13 Python recovery-agent tests, 82/82 safety-probe tests, the strict production build, and a
-0-vulnerability dependency audit. It shipped in release commit
-[`9f2710f`](https://github.com/ming3465/MoveRealm/commit/9f2710f5bc5e2f75d872f0a7aa528f2b44e5ef90),
-Pages run 31762210597, build `build-31762210597`.
+0-vulnerability dependency audit. It shipped in
+[Pages run 31764155833](https://github.com/ming3465/MoveRealm/actions/runs/31764155833), build
+`build-31764155833`.
+
+The preserved fallback-forbidden local CodeBuddy/Qwen3-VL observations themselves were captured
+at clean checkpoint `de0b2defc22f524e29bc4ea1019e86c4d31aa915`, tree
+`25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`. Later release work changed evidence thresholds,
+accessibility, captions, and documentation rather than rerunning the expensive local model matrix.
 
 The predecessor `cf15709` candidate's two production-mode full browser smokes passed using local
 audit build identifier `build-20260814`—not a GitHub Actions run. Their exact behavior and checksums
@@ -120,7 +125,7 @@ The final records are
 These 8B reports and their source candidate bundles are frozen predecessor `7fe9009` evaluator
 snapshots. In particular, the predecessor open/tight candidates do not satisfy the newer `de0b2de`
 canonical-presentation and required-variety gates and must not be described as passing the current
-evaluator. Current runtime proof comes from the 127-test Vitest layer and the two local 4B artifacts
+evaluator. Current runtime proof comes from the 128-test Vitest layer and the two local 4B artifacts
 linked above; the predecessor 8B model reports remain historical evaluator evidence only.
 
 As a separate ephemeral compatibility check, `cf15709` reconstructed open, tight, and uncertain
@@ -172,13 +177,14 @@ npm run agent:python -- \
 
 ## Adversarial safety probe
 
-The separate Python Safety Probe attacked the real production contract bridge at the same clean
-commit and tree. It terminated after six adaptive rounds with 332 candidates: 302 unsafe candidates
+The separate Python Safety Probe attacked the real production contract bridge at clean source
+commit `4df7cd03114a47e059bc5f03bdb98af3a8f21385`, tree
+`f3e56cbe041b143837fbbbeb1d87c7d00d771ced`. It terminated after six adaptive rounds with 332 candidates: 302 unsafe candidates
 defended, 30 compliant candidates honored, **0 breaches**, **0 over-rejections**, and **0
 inconclusive probes**. All 20 compliant controls passed, and all seven measured frontiers matched
 their documented thresholds. Its frozen SHA-256 values are
-`df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5` for the JSON report and
-`e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` for the Markdown report.
+`099383377d19483a10256ad5a9bef7789be06d02dad2395dfe5a48275e484bdd` for the JSON report and
+`a0b17057adb890a0e0f6b51d8f96959642c1c8d04e440e97611eab909c0dd164` for the Markdown report.
 The probe's 82/82 tests passed. This is synthetic contract-behaviour evidence, not a security audit,
 certification, runtime model evaluation, participant result, or pose/latency measurement.
 
