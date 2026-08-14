@@ -1890,6 +1890,11 @@ button:disabled {
   background: #04100c;
 }
 
+.game-content {
+  position: absolute;
+  inset: 0;
+}
+
 .game-camera,
 .neon-game,
 .game-vignette {

@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const output = resolve(root, "assets/submission/moverealm-guided-backup.mp4");
 const transcriptOutput = resolve(root, "assets/submission/moverealm-guided-backup-transcript.txt");
+const captionsOutput = resolve(root, "assets/submission/moverealm-guided-backup.vtt");
 const temporary = mkdtempSync(join(tmpdir(), "moverealm-video-"));
 
 const slides = [
@@ -81,14 +82,44 @@ function probeDuration(path) {
   );
 }
 
+function vttTimestamp(seconds) {
+  const milliseconds = Math.max(0, Math.round(seconds * 1_000));
+  const hours = Math.floor(milliseconds / 3_600_000);
+  const minutes = Math.floor((milliseconds % 3_600_000) / 60_000);
+  const remainingSeconds = Math.floor((milliseconds % 60_000) / 1_000);
+  const remainder = milliseconds % 1_000;
+  return [hours, minutes, remainingSeconds]
+    .map((value) => String(value).padStart(2, "0"))
+    .join(":") + `.${String(remainder).padStart(3, "0")}`;
+}
+
+function sentenceCues(narration, startSeconds, narrationSeconds) {
+  const sentences = narration.match(/[^.!?]+[.!?]+(?:[”’']|$)?/g)?.map((sentence) => sentence.trim())
+    ?? [narration];
+  const weights = sentences.map((sentence) => sentence.split(/\s+/).filter(Boolean).length);
+  const totalWeight = weights.reduce((sum, value) => sum + value, 0);
+  let cursor = startSeconds;
+  return sentences.map((sentence, index) => {
+    const duration = narrationSeconds * (weights[index] / totalWeight);
+    const cue = { start: cursor, end: cursor + duration, text: sentence };
+    cursor = cue.end;
+    return cue;
+  });
+}
+
 try {
   const segmentPaths = [];
+  const captionCues = [];
+  let timelineSeconds = 0;
   for (const [index, slide] of slides.entries()) {
     const name = String(index + 1).padStart(2, "0");
     const audio = join(temporary, `${name}.aiff`);
     const segment = join(temporary, `${name}.mp4`);
     run("say", ["-v", "Samantha", "-r", "165", "-o", audio, slide.narration]);
-    const duration = probeDuration(audio) + 0.7;
+    const narrationDuration = probeDuration(audio);
+    const duration = narrationDuration + 0.7;
+    captionCues.push(...sentenceCues(slide.narration, timelineSeconds, narrationDuration));
+    timelineSeconds += duration;
     run("ffmpeg", [
       "-loglevel", "error",
       "-y",
@@ -137,6 +168,19 @@ try {
       ...slides.flatMap((slide, index) => [`${index + 1}. ${slide.narration}`, ""]),
     ].join("\n"),
   );
+  writeFileSync(
+    captionsOutput,
+    [
+      "WEBVTT",
+      "",
+      ...captionCues.flatMap((cue, index) => [
+        String(index + 1),
+        `${vttTimestamp(cue.start)} --> ${vttTimestamp(cue.end)}`,
+        cue.text,
+        "",
+      ]),
+    ].join("\n"),
+  );
 
   const duration = probeDuration(output);
   if (duration < 180 || duration > 300) {
@@ -144,6 +188,7 @@ try {
     throw new Error(`Video duration ${duration.toFixed(2)}s is outside the required 3–5 minute range.`);
   }
   console.log(`Created ${output}`);
+  console.log(`Created ${captionsOutput}`);
   console.log(`Duration ${duration.toFixed(2)} seconds`);
 } finally {
   rmSync(temporary, { recursive: true, force: true });

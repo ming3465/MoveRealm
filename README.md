@@ -273,8 +273,10 @@ approves, rewrites, blocks, or executes a quest, and reads no participant data.
 [`assets/submission/moverealm-guided-backup.mp4`](assets/submission/moverealm-guided-backup.mp4).
 The current artifact is 4:58, 1440×810 H.264/AAC with synthetic narration, guided keyboard controls,
 controlled CodeBuddy provenance captures, an architecture explanation, build reflection, and a
-development tip. A YouTube or Google Drive upload is still required by the official portal; this
-local artifact is not itself an accepted video URL.
+development tip. A timed WebVTT caption sidecar is ready at
+[`assets/submission/moverealm-guided-backup.vtt`](assets/submission/moverealm-guided-backup.vtt).
+A YouTube or Google Drive upload is still required by the official portal; these local artifacts are
+not themselves an accepted video URL.
 
 ## Main source map
 

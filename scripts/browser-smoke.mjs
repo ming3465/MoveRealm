@@ -363,6 +363,9 @@ try {
   if (scoreAfterPauseActivation !== scoreBeforePauseActivation) {
     throw new Error(`Space on Pause leaked into gameplay (${scoreBeforePauseActivation} -> ${scoreAfterPauseActivation}).`);
   }
+  await pressKey("Tab", "Tab", 9);
+  const pauseFocusContained = await evaluate('document.querySelector(".pause-overlay")?.contains(document.activeElement)');
+  if (!pauseFocusContained) throw new Error("Pause dialog did not contain keyboard focus.");
   await activateButtonByKeyboard("Resume", { scope: ".pause-overlay", exact: true });
   await waitFor('!document.querySelector(".pause-overlay")');
 

@@ -87,6 +87,8 @@ CodeBuddy development tip.
 - [x] Keep the 4:58.834 camera-free backup at
   `assets/submission/moverealm-guided-backup.mp4`; it includes the required overview, agent
   features, build reflection, development tip, and explicit synthetic/keyboard disclosure.
+- [x] Keep the timed caption sidecar at `assets/submission/moverealm-guided-backup.vtt`; it covers
+  the complete synthetic narration and is ready to upload with the video.
 - [x] Prepare the 16:9 cover image at `assets/submission/moverealm-cover-380x216.png`.
 - [x] Confirm six consent-free guided screenshots exist at `assets/submission/screenshots/*.png`.
 - [x] Confirm two additional synthetic fake-camera CodeBuddy UI captures show health connectivity,
@@ -276,7 +278,9 @@ Use one of these lines immediately when its condition occurs.
 - [x] No pending measurement is spoken as an observed value.
 - [x] No secret, personal notification, participant image without consent, or private CodeBuddy
   history is visible.
-- [ ] Captions match the spoken disclosures and do not overstate live-agent behavior.
+- [x] Local WebVTT captions match the spoken disclosures and do not overstate live-agent behavior.
+- [ ] Upload the WebVTT track, enable captions, and spot-check the opening, agent trace, and ending
+  while signed out.
 - [ ] Upload privacy is set so judges can open the link without requesting access.
 - [ ] Test the video and public app URLs in a signed-out browser.
 - [x] Compute the final video checksum and update [SUBMISSION.md](SUBMISSION.md).

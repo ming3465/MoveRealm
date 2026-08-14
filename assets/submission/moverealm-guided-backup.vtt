@@ -1,0 +1,225 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:03.802
+For time-poor adults, MoveRealm makes any room a movement adventure.
+
+2
+00:00:03.802 --> 00:00:08.364
+This is a camera-free backup demo with synthetic narration and keyboard controls.
+
+3
+00:00:08.364 --> 00:00:11.786
+No person appears, and no pose-performance result is claimed.
+
+4
+00:00:11.786 --> 00:00:17.869
+The live agent evidence shown later uses a synthetic camera and is labelled as controlled evidence.
+
+5
+00:00:18.569 --> 00:00:24.193
+The product is for a time-poor adult who wants light, low-impact movement without equipment or setup friction.
+
+6
+00:00:24.193 --> 00:00:28.163
+It is not medical or rehabilitation guidance; stop if you feel unwell.
+
+7
+00:00:28.163 --> 00:00:31.471
+The user chooses an energy level and a three-minute session.
+
+8
+00:00:31.471 --> 00:00:33.125
+No jumping is locked on.
+
+9
+00:00:33.125 --> 00:00:40.733
+They can scan their room for the full experience, or enter this resilient guided path when a camera or network service is unavailable.
+
+10
+00:00:41.433 --> 00:00:45.688
+In the live path, the user explicitly captures one room still.
+
+11
+00:00:45.688 --> 00:00:50.716
+The local Node adapter sends that still to CodeBuddy, the runtime Movement Director.
+
+12
+00:00:50.716 --> 00:00:58.838
+Here a synthetic camera contains no usable room, so CodeBuddy correctly returns an uncertain profile with only the centre lane permitted.
+
+13
+00:00:58.838 --> 00:01:04.253
+The visible thirty-four point eight second badge is agent source latency, not movement-response latency.
+
+14
+00:01:04.253 --> 00:01:06.960
+The temporary still is deleted after analysis.
+
+15
+00:01:07.660 --> 00:01:11.449
+The agent never gets the final word on physical safety.
+
+16
+00:01:11.449 --> 00:01:18.269
+The user must confirm that the floor is clear, and can narrow or remove side steps before planning.
+
+17
+00:01:18.269 --> 00:01:21.679
+The continue action stays disabled until that explicit confirmation.
+
+18
+00:01:21.679 --> 00:01:28.499
+Unknown movements, jumping, plans outside the requested duration, and movements that conflict with these confirmed directions are rejected.
+
+19
+00:01:29.199 --> 00:01:36.334
+A real camera run then calibrates framing with a T pose, an outward step, and a verified return to centre.
+
+20
+00:01:36.334 --> 00:01:38.474
+MediaPipe runs in a browser worker.
+
+21
+00:01:38.474 --> 00:01:43.469
+If confidence drops or the person leaves view, the game pauses instead of guessing.
+
+22
+00:01:43.469 --> 00:01:50.604
+This backup uses the clearly labelled keyboard control option, so tracking frames per second and movement latency remain not applicable.
+
+23
+00:01:51.304 --> 00:01:54.082
+The room becomes one polished Neon Rainforest.
+
+24
+00:01:54.082 --> 00:01:56.464
+Reaches collect fireflies and grow branches.
+
+25
+00:01:56.464 --> 00:01:58.449
+Squats shelter seedlings from rain.
+
+26
+00:01:58.449 --> 00:02:01.227
+Permitted side steps redirect a glowing river.
+
+27
+00:02:01.227 --> 00:02:07.578
+Each target has one cancellable lifecycle timer, and each movement must meet the displayed range envelope.
+
+28
+00:02:07.578 --> 00:02:10.753
+In a real run, pose events stay on-device.
+
+29
+00:02:10.753 --> 00:02:16.707
+In this guided run, the keyboard is a transparent judging control, not fabricated pose telemetry.
+
+30
+00:02:17.407 --> 00:02:19.720
+After round one, the loop closes.
+
+31
+00:02:19.720 --> 00:02:26.275
+Completion, observed movement range, tracking confidence when available, and the user's explicit difficulty answer become constrained telemetry.
+
+32
+00:02:26.275 --> 00:02:33.600
+In this controlled live CodeBuddy example, only one of seven targets was reached and the user chose too hard.
+
+33
+00:02:33.600 --> 00:02:42.854
+The Movement Director reduced range from sixty to forty-five percent, tempo from point nine to point seven, and target rate from seven to five.
+
+34
+00:02:42.854 --> 00:02:48.251
+The validator permits parameter tuning, but never lets the agent replace the known movement.
+
+35
+00:02:48.951 --> 00:02:53.437
+The public guided build demonstrates the same product language with deterministic provenance.
+
+36
+00:02:53.437 --> 00:02:56.428
+It visibly says Guided demo, not CodeBuddy live.
+
+37
+00:02:56.428 --> 00:03:02.035
+Wide targets were missed, so the next envelope, tempo, and rate all change on screen.
+
+38
+00:03:02.035 --> 00:03:11.754
+If the agent times out or returns malformed data, the production adapter uses this safe validated fallback rather than blocking the adventure or hiding the source.
+
+39
+00:03:12.454 --> 00:03:16.839
+The experience ends with a garden postcard, completion, and honest runtime evidence.
+
+40
+00:03:16.839 --> 00:03:20.858
+Three fifty-two second movement rounds equal two point six active minutes.
+
+41
+00:03:20.858 --> 00:03:25.608
+Two twelve second rests bring the complete adventure clock to exactly three minutes.
+
+42
+00:03:25.608 --> 00:03:29.993
+Keyboard tracking is shown as N A, not thirty frames per second.
+
+43
+00:03:29.993 --> 00:03:34.012
+The proof row also states that live video was never uploaded.
+
+44
+00:03:34.712 --> 00:03:36.806
+Here is the technical loop.
+
+45
+00:03:36.806 --> 00:03:40.995
+One approved still crosses the browser boundary for scene analysis.
+
+46
+00:03:40.995 --> 00:03:47.277
+CodeBuddy proposes a scene, a three-round quest, and later adaptations through an asynchronous Node adapter.
+
+47
+00:03:47.277 --> 00:03:54.397
+Zod contracts enforce the room directions, exact duration, no jumping, three known movements, and conservative fallback behavior.
+
+48
+00:03:54.397 --> 00:03:57.329
+Separately, live frames remain inside the browser.
+
+49
+00:03:57.329 --> 00:04:04.868
+A MediaPipe worker produces thirty-three landmarks, the movement state machines emit validated events, and Phaser renders immediate feedback.
+
+50
+00:04:04.868 --> 00:04:13.664
+Telemetry returns only after a round, and another safety boundary validates the changed parameters before the next world state is applied.
+
+51
+00:04:13.664 --> 00:04:19.946
+The build approach was vertical-slice first: reliable input and one complete round before agent integration.
+
+52
+00:04:19.946 --> 00:04:28.323
+A practical CodeBuddy tip is to request strict JSON schemas and one repair prompt, then validate again outside the model.
+
+53
+00:04:29.023 --> 00:04:38.706
+The defensible idea is the closed loop: understand the actual room, constrain the plan, turn movement into play, observe the result, and visibly adapt.
+
+54
+00:04:38.706 --> 00:04:45.968
+The public guided demo and source repository are ready, along with controlled open, tight, and uncertain room evidence.
+
+55
+00:04:45.968 --> 00:04:54.440
+Real-person frame rate, visible response latency, time to first movement, and three user trials are still marked pending rather than estimated.
+
+56
+00:04:54.440 --> 00:04:58.072
+MoveRealm: turn any room into an adaptive movement adventure.

@@ -229,8 +229,33 @@ export function GameScreen({
       );
       (firstControl ?? overlay)?.focus();
     });
+    const keepFocusInsideOverlay = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return;
+      const overlay = overlayRef.current;
+      if (!overlay) return;
+      const controls = Array.from(overlay.querySelectorAll<HTMLElement>(
+        "button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex='-1'])",
+      )).filter((control) => !control.hidden && control.getAttribute("aria-hidden") !== "true");
+      if (controls.length === 0) {
+        event.preventDefault();
+        overlay.focus();
+        return;
+      }
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      const focused = document.activeElement;
+      if (event.shiftKey && (focused === first || !overlay.contains(focused))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (focused === last || !overlay.contains(focused))) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", keepFocusInsideOverlay, true);
     return () => {
       window.cancelAnimationFrame(frame);
+      document.removeEventListener("keydown", keepFocusInsideOverlay, true);
       if (previouslyFocused?.isConnected) previouslyFocused.focus();
     };
   }, [manualPaused, overlayVisible, phase, trackingPaused]);
@@ -415,39 +440,41 @@ export function GameScreen({
 
   return (
     <main className="game-screen">
-      <CameraStage stream={stream} pose={pose} demo={demo} attachVideo={attachVideo} className="game-camera" />
-      <NeonGame
-        ref={gameRef}
-        round={currentRound}
-        permittedDirections={constraints.permittedDirections}
-        assisted={demo}
-        onTargetPresented={() => { metricsRef.current.presented += 1; }}
-        onTargetCompleted={() => undefined}
-      />
-      <div className="game-vignette" />
+      <div className="game-content" inert={overlayVisible} aria-hidden={overlayVisible || undefined}>
+        <CameraStage stream={stream} pose={pose} demo={demo} attachVideo={attachVideo} className="game-camera" />
+        <NeonGame
+          ref={gameRef}
+          round={currentRound}
+          permittedDirections={constraints.permittedDirections}
+          assisted={demo}
+          onTargetPresented={() => { metricsRef.current.presented += 1; }}
+          onTargetCompleted={() => undefined}
+        />
+        <div className="game-vignette" />
 
-      <header className="game-header">
-        <Brand compact />
-        <div className="game-progress">
-          <div><span>Round {roundIndex + 1} of {rounds.length}</span><span>{Math.ceil(secondsLeft)}s</span></div>
-          <div className="game-progress__bar"><span style={{ width: `${progress * 100}%` }} /></div>
+        <header className="game-header">
+          <Brand compact />
+          <div className="game-progress">
+            <div><span>Round {roundIndex + 1} of {rounds.length}</span><span>{Math.ceil(secondsLeft)}s</span></div>
+            <div className="game-progress__bar"><span style={{ width: `${progress * 100}%` }} /></div>
+          </div>
+          <div className="game-actions">
+            <div className="game-score" aria-live="polite"><small>Garden glow</small><strong>{score.toLocaleString()}</strong></div>
+            <button className="game-icon-button" type="button" onClick={() => setManualPaused((value) => !value)} aria-label={manualPaused ? "Resume adventure" : "Pause adventure"}>{manualPaused ? "▶" : "Ⅱ"}</button>
+            <button className="game-icon-button" type="button" onClick={onExit} aria-label="Stop adventure">×</button>
+          </div>
+        </header>
+
+        <div className="round-instruction" role="status" aria-live="polite">
+          <span className={`movement-glyph movement-glyph--${currentRound.movementId}`} />
+          <div><small>{formatMovementName(currentRound.movementId)}</small><strong>{currentRound.prompt}</strong></div>
         </div>
-        <div className="game-actions">
-          <div className="game-score" aria-live="polite"><small>Garden glow</small><strong>{score.toLocaleString()}</strong></div>
-          <button className="game-icon-button" type="button" onClick={() => setManualPaused((value) => !value)} aria-label={manualPaused ? "Resume adventure" : "Pause adventure"}>{manualPaused ? "▶" : "Ⅱ"}</button>
-          <button className="game-icon-button" type="button" onClick={onExit} aria-label="Stop adventure">×</button>
+
+        <div className="game-director"><DirectorBadge meta={traceMeta ?? planMeta} compact /></div>
+        <div className="game-signal">
+          <span className={`status-dot ${trackingPaused ? "status-dot--error" : "status-dot--ready"}`} />
+          {demo ? KEYBOARD_HELP[currentRound.movementId] : `${Math.round(pose?.fps ?? 0)} FPS · camera stays local`}
         </div>
-      </header>
-
-      <div className="round-instruction" role="status" aria-live="polite">
-        <span className={`movement-glyph movement-glyph--${currentRound.movementId}`} />
-        <div><small>{formatMovementName(currentRound.movementId)}</small><strong>{currentRound.prompt}</strong></div>
-      </div>
-
-      <div className="game-director"><DirectorBadge meta={traceMeta ?? planMeta} compact /></div>
-      <div className="game-signal">
-        <span className={`status-dot ${trackingPaused ? "status-dot--error" : "status-dot--ready"}`} />
-        {demo ? KEYBOARD_HELP[currentRound.movementId] : `${Math.round(pose?.fps ?? 0)} FPS · camera stays local`}
       </div>
 
       {trackingPaused && phase === "playing" && (

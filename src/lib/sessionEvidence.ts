@@ -17,6 +17,8 @@ import {
 type SpaceClass = SceneProfile["spaceClass"];
 
 export const SESSION_EVIDENCE_SCHEMA_VERSION = "1.0.0" as const;
+export const MIN_TRACKING_METRIC_SAMPLES = 120;
+export const MIN_VISIBLE_RESPONSE_SAMPLES = 3;
 
 /** Shared aggregate result shape; UI code can import this without creating a UI-to-lib cycle. */
 export interface SessionResult {
@@ -263,8 +265,13 @@ function threshold(
   comparator: ThresholdEvidence["comparator"],
   target: number,
   preferredQuantile?: "p05" | "p95",
+  minimumSampleCount = 1,
 ): ThresholdEvidence {
-  if (!summary) {
+  if (
+    !summary ||
+    summary.sampleCount < minimumSampleCount ||
+    (preferredQuantile != null && summary[preferredQuantile] == null)
+  ) {
     return {
       status: "not_evaluated",
       comparator,
@@ -553,16 +560,34 @@ export function buildSessionEvidence(input: BuildSessionEvidenceInput): SessionE
       },
       trackingFps: {
         summary: trackingFpsSummary,
-        threshold: threshold(trackingFpsSummary, "at_least", 20, "p05"),
+        threshold: threshold(
+          trackingFpsSummary,
+          "at_least",
+          20,
+          "p05",
+          MIN_TRACKING_METRIC_SAMPLES,
+        ),
       },
       inferenceMs: {
         summary: inferenceSummary,
         // 50 ms is the per-frame processing budget corresponding to 20 FPS.
-        threshold: threshold(inferenceSummary, "at_most", 50, "p95"),
+        threshold: threshold(
+          inferenceSummary,
+          "at_most",
+          50,
+          "p95",
+          MIN_TRACKING_METRIC_SAMPLES,
+        ),
       },
       visibleResponseLatencyMs: {
         summary: responseLatencySummary,
-        threshold: threshold(responseLatencySummary, "under", 100, "p95"),
+        threshold: threshold(
+          responseLatencySummary,
+          "under",
+          100,
+          "p95",
+          MIN_VISIBLE_RESPONSE_SAMPLES,
+        ),
       },
     },
     director: {

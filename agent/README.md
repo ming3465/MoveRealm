@@ -24,7 +24,7 @@ drives the real Zod gates through `tsx`.
 Exit codes: `0` clean, `1` findings or live-check failures, `2` the gate was unreachable.
 
 ```bash
-npm run probe:tests                           # 78 tests, standard library only
+npm run probe:tests                           # 82 tests, standard library only
 ```
 
 ## How it works
@@ -88,7 +88,7 @@ The run stops when consecutive rounds produce nothing new, not after a fixed cou
 Catalogue probes prove a rule fires. The measurement phase bisects *where* it fires, which is
 something you cannot read off the source without running it:
 
-| Boundary | Documented | Observed (commit `a14c7e5`) |
+| Boundary | Documented | Observed (frozen contracts run `cf15709`) |
 |---|---:|---|
 | Narrow-room side-step envelope | 0.62 | accepted ≤ 0.6156, refused ≥ 0.6203 |
 | Reach without a vertical lane | 0.62 | accepted ≤ 0.6156, refused ≥ 0.6203 |
@@ -109,9 +109,9 @@ Ollama is absent or the model is not installed, the run continues and the report
 Model-proposed paths are address-repaired before use (a leading `plan` wrapper is dropped and string
 round indices are coerced), because small models reliably get the shape right and the spelling
 wrong. Repairing the *address* is safe; the proposed *value* still has to survive both the oracle and
-the production gate. Observed with `qwen3-vl:8b-instruct-q4_K_M` on commit `a14c7e5`: five extra
-candidates in round 1 and two in round 2, all of them refused by the gate. The model contributes to
-early rounds only, since each call costs a full model load (about 2.5 minutes for a three-round run).
+the production gate. Model-planner observations are development diagnostics unless their own
+privacy-reviewed report is preserved. The model contributes to early rounds only, since each call
+costs a full model load.
 
 ## Live mode
 
@@ -125,18 +125,18 @@ live mode asks two different questions:
 
 Question 2 covers the deterministic fallback today and live CodeBuddy output when it is connected.
 
-## Recorded observation — 14 August 2026
+## Frozen contracts-only observation — 14 August 2026
 
-Against commit `a14c7e5` with `MOVEREALM_FORCE_FALLBACK=1`:
+Against clean commit `cf157093ff3dab7b3598387d68973f82a3e364c2`, tree
+`404fdc889cabc0212a6fd2197102eff7da5abde6`:
 
 - **Contracts mode:** 332 candidates over 6 rounds, terminated `no_new_probes`. 302 defended,
   30 honored, **0 breaches, 0 over-rejections, 0 inconclusive**. All 20 controls accepted. All seven
   measured frontiers agreed with the documented thresholds.
-- **Live mode:** 42/42 checks passed across all five rooms, including every returned fallback plan
-  totalling exactly 180 seconds and carrying visible director provenance.
-
-The full record is [`evidence/safety-probe.json`](evidence/safety-probe.json) and
+The contracts-only record is [`evidence/safety-probe.json`](evidence/safety-probe.json) and
 [`evidence/safety-probe.md`](evidence/safety-probe.md).
+No live-mode result is stored in those files; run `--mode live` against the intended adapter and
+preserve a separate report before citing a live probe count.
 
 This is contract-behaviour evidence over synthetic rooms. It is **not** a human trial, a pose or
 latency measurement, a security audit, a certification, or an assessment of CodeBuddy's output
@@ -156,4 +156,4 @@ not that no unsafe quest exists.
 | `moverealm_probe/boundary.py` | frontier bisection |
 | `moverealm_probe/live.py` | running-adapter audit |
 | `moverealm_probe/report.py` | privacy-safe JSON and Markdown evidence |
-| `tests/` | 78 tests, including stub gates that prove a breach *would* be reported |
+| `tests/` | 82 tests, including stub gates that prove a breach *would* be reported |

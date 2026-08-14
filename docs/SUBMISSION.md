@@ -33,8 +33,10 @@ The short blurb is eight words, below the handbook's hard limit of ten words.
 A compliant-duration camera-free backup file is complete at
 [`assets/submission/moverealm-guided-backup.mp4`](../assets/submission/moverealm-guided-backup.mp4).
 It is 4:58.834 and visibly discloses synthetic narration, guided keyboard controls, and the absence
-of human pose measurements. The portal field remains pending until this file, or a preferred
-live-person take, is uploaded to YouTube or Google Drive and tested while signed out.
+of human pose measurements. Its timed caption sidecar is
+[`moverealm-guided-backup.vtt`](../assets/submission/moverealm-guided-backup.vtt). The portal field
+remains pending until this file, or a preferred live-person take, is uploaded to YouTube or Google
+Drive, captions are enabled, and both are tested while signed out.
 
 The public URL is a static GitHub Pages deployment of the complete guided-demo path. It visibly
 labels guided and deterministic decisions and does not claim to host the live CodeBuddy server
@@ -295,6 +297,7 @@ Finalize artifacts first, then compute checksums. Any subsequent edit invalidate
 | 3–5 minute camera-free backup video | Required local artifact; upload still pending | [`assets/submission/moverealm-guided-backup.mp4`](../assets/submission/moverealm-guided-backup.mp4) | `dd4d2ef14e7eed8217f45a520a056e895d098a74755d5e09c0ba9fcbe3951951` |
 | Demo video URL | Required portal field | **[PENDING YOUTUBE OR GOOGLE DRIVE URL]** | n/a |
 | Backup narration transcript | Supporting accessibility/disclosure artifact | [`assets/submission/moverealm-guided-backup-transcript.txt`](../assets/submission/moverealm-guided-backup-transcript.txt) | `3ecedf106de903f9c552a4042a7c1a77e7514338a37d2c2bf3287fc2ffe3c20a` |
+| Timed backup captions | Supporting accessibility/disclosure artifact; upload alongside video | [`assets/submission/moverealm-guided-backup.vtt`](../assets/submission/moverealm-guided-backup.vtt) | `9c27775af1eaab3fb5de5b4da43f3b9cc3efef5130de85a4a2c0b0b6163c9953` |
 | 16:9 cover image, 380×216 px | Required | [`assets/submission/moverealm-cover-380x216.png`](../assets/submission/moverealm-cover-380x216.png) | `38637377111cffc7dce5c45ab3e9c0c3591fc55ce692f9af811940880b1dcf2c` |
 | Project description export | Required portal copy | [`docs/SUBMISSION.md`](SUBMISSION.md) | see the [post-freeze manifest](../artifacts/submission-manifest.json) |
 | Controlled CodeBuddy live-use proof | Supporting scoring evidence | [`assets/submission/screenshots/07-live-codebuddy-scene.png`](../assets/submission/screenshots/07-live-codebuddy-scene.png), [`08-live-codebuddy-adaptation.png`](../assets/submission/screenshots/08-live-codebuddy-adaptation.png), and [`artifacts/validation/`](../artifacts/validation/) | see [`artifacts/README.md`](../artifacts/README.md) |
@@ -333,7 +336,9 @@ shasum -a 256 path/to/moverealm-cover.png
   defined or measured impact without converting targets into results.
 - [x] Local backup video is 4:58.834 and contains the required overview, features, build reflection,
   and development tip.
+- [x] Timed WebVTT captions cover the complete spoken narration and end before the 4:58.834 video.
 - [ ] YouTube or Google Drive demo URL opens in a signed-out browser.
+- [ ] Uploaded captions are enabled and spot-checked while signed out.
 - [x] Public URL is populated and the HTTPS endpoint returns HTTP 200.
 - [x] Release-application Pages run 31762210597 for commit `9f2710f` / build
   `build-31762210597` passed 127/127 Vitest, 13/13 recovery-agent, and 82/82 safety-probe tests,

@@ -257,6 +257,37 @@ describe("privacy-safe session evidence", () => {
     );
   });
 
+  it("does not certify pose metrics with too few counted samples", () => {
+    const result = resultFor("pose");
+    result.poseMetricSummaries = {
+      trackingFps: { mean: 25, sampleCount: 119, min: 20, max: 30, p05: 21, p95: 29 },
+      inferenceMs: { mean: 30, sampleCount: 119, min: 20, max: 45, p05: 22, p95: 42 },
+      visibleResponseLatencyMs: {
+        mean: 70,
+        sampleCount: 2,
+        min: 60,
+        max: 80,
+        p05: 60,
+        p95: 80,
+      },
+    };
+
+    const evidence = buildSessionEvidence({
+      trialId: "trial-3",
+      roomSpaceClass: "open",
+      result,
+      sceneDirector: meta("codebuddy", 1_000),
+    });
+
+    expect(evidence.measurementEvidence.trackingFps.summary?.sampleCount).toBe(119);
+    expect(evidence.measurementEvidence.trackingFps.threshold.status).toBe("not_evaluated");
+    expect(evidence.measurementEvidence.inferenceMs.threshold.status).toBe("not_evaluated");
+    expect(evidence.measurementEvidence.visibleResponseLatencyMs.summary?.sampleCount).toBe(2);
+    expect(evidence.measurementEvidence.visibleResponseLatencyMs.threshold.status).toBe(
+      "not_evaluated",
+    );
+  });
+
   it("does not export names, media, landmarks, upload paths, or free-form agent text", () => {
     const evidence = buildSessionEvidence({
       trialId: "trial-3",

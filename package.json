@@ -18,6 +18,7 @@
     "agent:python": "python3 -m python_agent.moverealm_agent",
     "probe": "python3 agent/run_probe.py",
     "probe:tests": "cd agent && python3 -m unittest discover -s tests -t .",
+    "trial:check-uploads": "node scripts/check-room-still-cleanup.mjs",
     "video:backup": "node scripts/build-backup-video.mjs",
     "codebuddy": "codebuddy --serve --port 8080 --session-id moverealm",
     "director:local:setup": "ollama create moverealm-director:4b -f ollama/MoveRealm.Modelfile",
