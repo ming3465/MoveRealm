@@ -23,29 +23,26 @@ CodeBuddy development tip.
   [Pages run 31714506917](https://github.com/ming3465/MoveRealm/actions/runs/31714506917) for commit
   `7fe9009` / build `build-31714506917` passed all 100 tests across 13 files, the production build,
   and deployment.
-- [x] Confirm clean local candidate `cf157093ff3dab7b3598387d68973f82a3e364c2` / tree
-  `404fdc889cabc0212a6fd2197102eff7da5abde6` passed `npm run test:all`: 120/120 Vitest tests
-  across 15 files, 13/13 Python recovery-agent tests, and 82/82 Safety Probe tests; its strict build
+- [x] Confirm clean local candidate `de0b2defc22f524e29bc4ea1019e86c4d31aa915` / tree
+  `25b1f5b728a0b2baaf0ba39bb5a9087e7906d998` passed `npm run test:all`: 127/127 Vitest tests
+  across 16 files, 13/13 Python recovery-agent tests, and 82/82 Safety Probe tests; its strict build
   and 0-vulnerability audit also passed.
-- [x] Confirm its clean Docker image
-  `sha256:724a0e56188dc18e4d7419556a72084d5e0c9398674510a50c3c8177d80aaa57`
-  (343,092,337 bytes) embedded the exact candidate provenance and passed health, index, and basic
-  packaged smoke checks.
-- [x] Confirm both clean-source, production-mode full browser routes passed under local audit build
+- [x] Confirm its exact-source Docker image
+  `sha256:f1ac14aab1b2bf42b4a20e0ed2a53f83d74955e047d6d8560b4b76236d87dd0b`
+  (343,104,634 bytes) passed health, index, exact identity, captured-room basic smoke, and cleanup.
+- [x] Confirm both predecessor `cf15709` production-mode full browser routes passed under local audit build
   ID `build-20260814`—not a GitHub Actions run. Guided: three mechanics, scores 0→145→290→435,
   adaptation 64→48%, 0.90→0.77×, 7→6, no POSTs/errors. Captured fallback: camera ready, exact
   scene/plan/adapt/adapt POSTs, score 435, `Safe fallback`, adaptation 60→44%, 0.90→0.77×, 7→6,
   no errors. Both exports matched the exact identity and kept personal/media fields false and
   keyboard pose metrics unevaluated.
-- [ ] Push/deploy the current local branch only with explicit authorization. Its application source
-  checkpoint is `cf15709`; verify the resulting public build and pushed branch HEAD. Until then, the
-  public app remains `7fe9009` / build `build-31714506917`.
-- [ ] Retry the current CodeBuddy strict check and require two conditions in the same stable run:
-  generated scene/plan/adaptation provenance and materially different open/tight/uncertain profiles.
-  The latest observation is mixed: one strict tight-room loop passed, the next matrix collapsed all
-  rooms to one profile, and later browser/fixture retries fell back at 45 seconds. Do not call it a
-  live-agent pass; see
-  [`codebuddy-current-vision-instability-2026-08-14.json`](../artifacts/validation/codebuddy-current-vision-instability-2026-08-14.json).
+- [ ] Push/deploy is authorized. Push the current branch, wait for CI, and verify the resulting
+  public build and pushed branch HEAD. Until then, the public app remains `7fe9009` /
+  `build-31714506917`.
+- [x] Confirm the free local CodeBuddy/Qwen3-VL 4B route passed both the fallback-forbidden strict
+  three-room matrix and the visible fake-camera adaptation smoke. Use the preserved
+  [`matrix`](../artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json) and
+  [`UI record`](../artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json).
 - [x] Confirm `npm audit --audit-level=low` reports 0 vulnerabilities.
 - [x] Confirm the exact-release public camera basic smoke passed with Chrome's fake camera:
   `cameraReady=true`, score 0→145, API POSTs `[]`, and no console errors. This is controlled,
@@ -99,8 +96,8 @@ CodeBuddy development tip.
 Still explicitly pending before a final evidence-complete submission: a public YouTube or Google
 Drive URL for the backup or a preferred live-person take, all three user trials, real-person pose
 FPS, real-person visible response latency, real-person time to first accepted movement (TTFF), a
-successful current CodeBuddy generation, the authorized candidate push/deployment, and team/contact
-portal fields. Do not substitute synthetic-camera or keyboard values.
+the authorized candidate push/deployment, and team/contact portal fields. Do not substitute
+synthetic-camera or keyboard values.
 
 The Pages workflow ignores docs- and artifacts-only pushes. This documentation follow-up does not
 redeploy the app; release identity remains commit `7fe9009`, run 31714506917, build
@@ -108,7 +105,9 @@ redeploy the app; release identity remains commit `7fe9009`, run 31714506917, bu
 
 ### Live path
 
-- [ ] Start CodeBuddy with `npm run codebuddy` in a persistent terminal.
+- [ ] Start Ollama, run `npm run director:local:setup` once, then start CodeBuddy with
+  `npm run codebuddy:local` in a persistent terminal (or use `npm run codebuddy` for a signed-in
+  upstream model).
 - [ ] Set `CODEBUDDY_PASSWORD` server-side if authentication is enabled; never show `.env` or the
   terminal line containing a secret.
 - [ ] Start MoveRealm, open `/api/health`, and capture `codeBuddyConnected: true` without exposing

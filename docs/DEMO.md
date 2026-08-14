@@ -2,7 +2,10 @@
 
 ## Before recording
 
-1. Start CodeBuddy with `npm run codebuddy`, set `CODEBUDDY_PASSWORD`, then start MoveRealm.
+1. Start Ollama, pull `qwen3-vl:4b-instruct-q4_K_M`, run `npm run director:local:setup`, then
+   start the password-protected local Movement Director with `npm run codebuddy:local`. Put the
+   printed password in local `.env` as `CODEBUDDY_PASSWORD`, then start MoveRealm. `npm run
+   codebuddy` remains available for a signed-in upstream CodeBuddy session.
 2. Open `/api/health` and confirm `codeBuddyConnected: true`.
 3. Clear a deliberately constrained camera lane with one visible chair or desk edge.
 4. Rehearse the guided demo as a backup. Keep the local build and one static deployment open.

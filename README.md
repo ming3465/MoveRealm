@@ -33,34 +33,29 @@ workflow is manually dispatched.
 ## Local release candidate — 14 August 2026
 
 The newer source candidate is clean commit
-`cf157093ff3dab7b3598387d68973f82a3e364c2`, tree
-`404fdc889cabc0212a6fd2197102eff7da5abde6`. It has **not** been pushed or deployed; the public URL
+`de0b2defc22f524e29bc4ea1019e86c4d31aa915`, tree
+`25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`. It has **not** been pushed or deployed; the public URL
 still serves the `7fe9009` predecessor above.
 
-The exact clean candidate passed `npm run test:all`: **120/120 Vitest tests across 15 files**, **13/13
+The exact clean candidate passed `npm run test:all`: **127/127 Vitest tests across 16 files**, **13/13
 Python recovery-agent tests**, and **82/82 Python safety-probe tests**. The strict production build
-passed and `npm audit --audit-level=low` reported **0 vulnerabilities**. Its clean Docker image is
-`sha256:724a0e56188dc18e4d7419556a72084d5e0c9398674510a50c3c8177d80aaa57`
-(343,092,337 bytes); embedded commit/tree provenance, health, index, and the basic packaged smoke all
-passed.
+passed and `npm audit --audit-level=low` reported **0 vulnerabilities**. The exact-source Docker image
+`sha256:f1ac14aab1b2bf42b4a20e0ed2a53f83d74955e047d6d8560b4b76236d87dd0b`
+(343,104,634 bytes) passed health, index, captured-room basic smoke, exact commit/build assertions,
+and zero-upload cleanup.
 
-Two clean-source, production-mode local browser smokes also passed with `build-20260814`, which is a
-**local audit build identifier, not a GitHub Actions run**. The guided full route completed reach,
-squat, and side-step rounds with scores 0→145→290→435 and its expected visible adaptation. The
-captured-room full route reached camera readiness, made exactly scene/plan/adapt/adapt POSTs, then
-completed all three rounds through the labelled `Safe fallback`. Both postcards reported 2.6 active
-minutes, 18% completion, and tracking `N/A`; both exports matched the exact candidate commit/build,
-retained no personal/media fields, and kept keyboard pose metrics `null`. See the two local candidate
-records in [`artifacts/validation/`](artifacts/validation/).
+The free local runtime path uses CodeBuddy Code 2.136.0 to orchestrate Apache-2.0 Qwen3-VL 4B
+through loopback Ollama 0.23.1. With fallback forbidden, the exact clean candidate produced distinct
+open, tight, and uncertain scene profiles and distinct safe 180-second plans; its live adaptation
+changed range `0.62→0.46`, tempo `0.90→0.77`, and target rate `8→7`. A separate fake-camera browser
+smoke visibly showed `CodeBuddy live`, made exactly scene/plan/adapt POSTs, scored 0→145, and rendered
+an 8.895-second adaptation with no console errors. See the sanitized
+[`strict matrix`](artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json) and
+[`UI observation`](artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json). These controlled
+runs are agent-loop evidence, not real-person pose, latency, TTFF, or usability evidence.
 
-The current CodeBuddy path is **partially working but not stable enough for a live-demo claim**. After
-an earlier HTTP 429, one strict tight-fixture run completed genuine CodeBuddy scene, 180-second plan,
-and adaptation calls. The immediately following strict matrix collapsed all three visibly different
-rooms to the same conservative profile; later browser and fixture retries hit the 45-second boundary
-and visibly returned `Safe fallback`. Explicit vision-model diagnostics also timed out. Retry before
-recording and require both generated CodeBuddy provenance and three-room differentiation. See the
-sanitized [`current observation`](artifacts/validation/codebuddy-current-vision-instability-2026-08-14.json)
-and the earlier [`429 record`](artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json).
+Earlier signed-in CodeBuddy 429/time-out records remain preserved as recovery evidence; they no
+longer describe the recommended local 4B route.
 
 ## Run it
 
@@ -84,7 +79,18 @@ npm start
 
 ## Connect the live CodeBuddy Movement Director
 
-Start CodeBuddy in a separate persistent terminal session using its official HTTP service:
+For the free local vision route, install Ollama, then run these commands in separate terminals. The
+setup downloads Qwen3-VL 4B once (about 3.3 GB) and creates a deterministic local alias; no model is
+downloaded at application runtime.
+
+```bash
+ollama serve
+ollama pull qwen3-vl:4b-instruct-q4_K_M
+npm run director:local:setup
+npm run codebuddy:local
+```
+
+Alternatively, start a signed-in CodeBuddy model with its official HTTP service:
 
 ```bash
 npm run codebuddy
@@ -99,9 +105,11 @@ cp .env.example .env
 npm run dev
 ```
 
-The adapter calls the asynchronous `/api/v1/runs` endpoint and reads the run’s SSE stream. It retries
-one schema-invalid result, then serves a deterministic plan with a visible **Safe fallback** badge.
-The app never proxies CodeBuddy’s filesystem, terminal, or process endpoints.
+The local command binds only to loopback, keeps HTTP password authentication enabled, permits only
+CodeBuddy's `Read` tool for the explicitly attached room still, and caps the agent at two turns.
+The adapter calls asynchronous `/api/v1/runs`, reads the SSE stream, retries one schema-invalid
+result, then serves a deterministic plan with a visible **Safe fallback** badge. The app never
+proxies CodeBuddy’s filesystem, terminal, or process endpoints.
 
 ## What is enforced
 
@@ -132,7 +140,7 @@ deterministic path. A production Node deployment serves both the Vite bundle and
 ## Verification
 
 ```bash
-npm run test:all     # local candidate: 120 Vitest + 13 recovery-agent + 82 probe tests
+npm run test:all     # local candidate: 127 Vitest + 13 recovery-agent + 82 probe tests
 npm run build        # strict client/server typecheck and production bundle
 npm audit --audit-level=low  # local candidate: 0 vulnerabilities
 ```
@@ -205,7 +213,7 @@ reach-only fallback passed. The judge never approves, rewrites, blocks, or execu
 scores are not accuracy, safety, official-judge, human-trial, or runtime evidence. See
 [`docs/EVALUATION.md`](docs/EVALUATION.md) for the fixed setup, observations, and limitations.
 The 8B open/tight reports are predecessor `7fe9009` snapshots; their candidate JSON is not a
-`cf15709` current-gate pass.
+`de0b2de` current-gate pass.
 
 The dependency-free [`python_agent/`](python_agent/) wrapper turns that evaluator into a small
 `observe → evaluate → recover → verify` agent. It defaults to the free local 3.3 GB Qwen3-VL 4B
@@ -272,6 +280,7 @@ local artifact is not itself an accepted video URL.
 
 - `src/shared/contracts.ts` — Zod wire schemas and deterministic safety checks
 - `server/codebuddy.ts` — authenticated async runs, SSE parsing, structured-output extraction
+- `.codebuddy/models.json` + `ollama/MoveRealm.Modelfile` — reproducible free local vision director
 - `server/app.ts` — the three product endpoints, retry, fallback, and still deletion
 - `src/pose/pose.worker.ts` — MediaPipe inference off the UI thread
 - `src/pose/movementDetectors.ts` — calibration, tracking gate, and movement state machines

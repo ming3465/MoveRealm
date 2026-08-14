@@ -14,23 +14,24 @@ dash (`—`) means **not measured**; it is not a zero and must never be replaced
 
 ## Clean local candidate verification — 14 August 2026
 
-Exact source: commit `cf157093ff3dab7b3598387d68973f82a3e364c2`, tree
-`404fdc889cabc0212a6fd2197102eff7da5abde6`. The verification records were produced from a clean
+Exact source: commit `de0b2defc22f524e29bc4ea1019e86c4d31aa915`, tree
+`25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`. The strict matrix record was produced from a clean
 tracked checkout. This candidate has not been pushed or deployed; the public site remains the
 `7fe9009` deployed predecessor.
 
 | Check | Observed | Evidence status |
 |---|---|---|
-| Complete automated test gate | `npm run test:all`: **120/120 Vitest tests across 15 files**, **13/13 Python recovery-agent tests**, **82/82 safety-probe tests** | recorded automated local-candidate evidence |
+| Complete automated test gate | `npm run test:all`: **127/127 Vitest tests across 16 files**, **13/13 Python recovery-agent tests**, **82/82 safety-probe tests** | recorded automated local-candidate evidence |
 | Production build | strict client/server checks and Vite build passed | recorded automated local-candidate evidence |
 | npm dependency audit | **0 vulnerabilities** | recorded automated local-candidate evidence |
-| Clean Docker identity | `sha256:724a0e56188dc18e4d7419556a72084d5e0c9398674510a50c3c8177d80aaa57` (343,092,337 bytes); embedded commit/tree provenance matched | recorded packaged local-candidate evidence |
-| Clean Docker health, index, and basic smoke | all passed | recorded packaged local-candidate evidence |
-| Guided full browser smoke | production mode; local audit ID `build-20260814`; three mechanics; scores 0→145→290→435; adaptation 64→48%, 0.90→0.77×, 7→6; 2.6 min / 18% / `N/A`; no POSTs/errors | recorded automated local-candidate evidence; audit ID is not a CI run |
-| Captured-room full fallback smoke | production mode; camera ready; exact scene/plan/adapt/adapt POSTs; scores to 435; `Safe fallback`; adaptation 60→44%, 0.90→0.77×, 7→6; 2.6 min / 18% / `N/A`; no errors | recorded synthetic-camera local-candidate evidence; audit ID is not a CI run |
+| Exact-source Docker identity | `sha256:f1ac14aab1b2bf42b4a20e0ed2a53f83d74955e047d6d8560b4b76236d87dd0b` (343,104,634 bytes); build `build-2026081402`; embedded commit matched | recorded packaged local-candidate evidence |
+| Exact-source Docker health, index, captured-room basic smoke, and cleanup | all passed; camera ready, score 0→145, exact scene/plan POSTs, zero retained uploads | recorded packaged synthetic-camera evidence |
+| Predecessor `cf15709` guided full browser smoke | production mode; local audit ID `build-20260814`; three mechanics; scores 0→145→290→435; adaptation 64→48%, 0.90→0.77×, 7→6; 2.6 min / 18% / `N/A`; no POSTs/errors | recorded automated predecessor-candidate evidence; audit ID is not a CI run |
+| Predecessor `cf15709` captured-room full fallback smoke | production mode; camera ready; exact scene/plan/adapt/adapt POSTs; scores to 435; `Safe fallback`; adaptation 60→44%, 0.90→0.77×, 7→6; 2.6 min / 18% / `N/A`; no errors | recorded synthetic-camera predecessor-candidate evidence; audit ID is not a CI run |
 | Python Qwen3-VL 4B recovery | unsafe original 18/24 in 43.492 s; eligible fallback 15/24 in 37.550 s; hard gates selected fallback | recorded controlled synthetic evidence |
 | Safety Probe | 332 candidates: 302 defended, 30 honored, 0 breaches, 0 over-rejections, 0 inconclusive; 20/20 controls and 7/7 frontiers | recorded controlled synthetic evidence |
-| Current CodeBuddy strict loop | **MIXED / NOT A LIVE PASS**: one strict tight-room CodeBuddy scene → plan → adapt loop succeeded; the next strict matrix collapsed all 3 rooms to one scene signature; later browser/fixture retries fell back at 45 s; explicit vision models timed out | recorded loop/recovery/instability evidence |
+| Free local CodeBuddy/Qwen3-VL 4B strict loop | **PASS**: fallback forbidden; 3 distinct room profiles and 3 distinct safe 180-second plans; live adaptation reduced range/tempo/rate; uploads empty | recorded controlled synthetic agent evidence |
+| Free local CodeBuddy browser adaptation | **PASS**: fake camera ready; visible `CodeBuddy live`; exact scene/plan/adapt POSTs; score 0→145; adaptation 52→40%, 1.05→0.92×, 9→8 in 8.895 s; no console errors | recorded controlled UI evidence |
 
 The Python recovery artifact SHA-256 is
 `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029`; both evaluations share
@@ -48,12 +49,13 @@ SHA-256 `ebaa8c4cb97ef91e79c72a81f9f356beaeae04bb89c52bf98cf5e60232cc5b8d`. Both
 candidate commit and audit build, set personal/media privacy fields false, and leave pose FPS,
 inference, visible latency, and TTFF thresholds `not_evaluated` because controls were keyboard-based.
 
-The current CodeBuddy result still means no local-candidate live-agent pass may be claimed. The
-structured loop generated one valid tight-room scene, 180-second plan, and grounded adaptation, but
-was not repeatable: the next matrix failed room differentiation and later retries fell back safely.
-Retry before recording or explicitly use the `Safe fallback` disclosure. The newest privacy-safe
-record is [`codebuddy-current-vision-instability-2026-08-14.json`](../artifacts/validation/codebuddy-current-vision-instability-2026-08-14.json),
-SHA-256 `6acfa59a47552c0b0c0334c4c9c627949ae4c65aa09d1eeeaa8064864d283fda`.
+The current local 4B route supports a controlled live-agent claim, within its recorded scope. Its
+privacy-safe records are
+[`codebuddy-local-qwen-matrix-de0b2de.json`](../artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json),
+SHA-256 `75ce775069d32867d2e7dc6d56fa4030d3bd3e0f13409eef9c64217ba807bf35`, and
+[`codebuddy-local-ui-adaptation-de0b2de.json`](../artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json),
+SHA-256 `a83a93d33ce203eccd750a39ca0985af897cf6aee4c10200c07640929b593cba`.
+Earlier upstream 429/time-out evidence remains preserved and still proves labelled recovery.
 
 ## Deployed predecessor verification — 13 August 2026
 
@@ -254,10 +256,9 @@ media, webcam stream, landmarks, identity, or health inference. See
 definitions, recorded scores, and limitations.
 
 The 8B open/tight reports are frozen predecessor `7fe9009` evaluator snapshots. Their predecessor
-candidate JSON does not pass the newer `cf15709` canonical-presentation gates, so these scores are
-not current-candidate pass evidence. Current candidate evidence is limited to the new tests/probe,
-Python uncertain-room recovery, and full browser smokes recorded above; the current live three-room
-matrix was attempted and failed its differentiation gate.
+candidate JSON does not pass the newer `de0b2de` canonical-presentation and required-variety gates,
+so those scores are not current-candidate pass evidence. Current runtime evidence is the passing
+local 4B strict matrix and browser adaptation record linked above.
 
 ## Pending real-person and submission evidence
 
@@ -272,7 +273,7 @@ from the finished submission artifact where specified.
 | Three-user qualitative trial | three completed observations | — | **pending all 3 user trials** |
 | Camera-free backup video file | 3–5 minutes; overview, features, reflection, tip | 4:58.834; H.264/AAC; 1440×810 | **recorded local artifact** |
 | Accepted video URL | accessible YouTube or Google Drive link | — | **pending upload and signed-out check** |
-| Local-candidate push and deployment | publish the current local branch, whose application source is checkpoint `cf157093ff3dab7b3598387d68973f82a3e364c2`, and verify the resulting public build plus pushed branch HEAD | — | **pending explicit authorization and deployment** |
+| Local-candidate push and deployment | publish the current local branch, whose application source is checkpoint `de0b2defc22f524e29bc4ea1019e86c4d31aa915`, and verify the resulting public build plus pushed branch HEAD | — | **authorized by user; pending push and deployment verification** |
 | Team members and registered contact | completed portal fields | — | **pending user input** |
 
 Follow the repeatable, consent-first procedure in

@@ -26,28 +26,32 @@ judge latencies were 43.492 and 37.550 seconds respectively.
 
 ## Clean local candidate — 14 August 2026
 
-- Exact source commit: `cf157093ff3dab7b3598387d68973f82a3e364c2`
-- Exact source tree: `404fdc889cabc0212a6fd2197102eff7da5abde6`
-- `npm run test:all`: **120/120 Vitest tests across 15 files**, **13/13 Python recovery-agent tests**,
+- Exact source commit: `de0b2defc22f524e29bc4ea1019e86c4d31aa915`
+- Exact source tree: `25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`
+- `npm run test:all`: **127/127 Vitest tests across 16 files**, **13/13 Python recovery-agent tests**,
   and **82/82 safety-probe tests**.
 - Strict production build: **passed**.
 - Dependency audit: **0 vulnerabilities**.
-- Clean Docker image:
-  `sha256:724a0e56188dc18e4d7419556a72084d5e0c9398674510a50c3c8177d80aaa57`
-  (343,092,337 bytes); embedded commit/tree provenance, health, index, and basic smoke all passed.
-- Production-mode guided full smoke: **passed** under local audit build ID `build-20260814` (not a
-  GitHub Actions run), with reach/squat/side-step, scores 0→145→290→435, adaptation 64→48% /
-  0.90→0.77× / 7→6, postcard 2.6 min / 18% / `N/A`, no API POSTs, and no errors.
-- Production-mode captured-room full fallback smoke: **passed** under the same local audit ID, with
-  camera ready, exact scene/plan/adapt/adapt POSTs, score 435, `Safe fallback`, adaptation 60→44% /
-  0.90→0.77× / 7→6, the same postcard totals, and no errors.
-- Both local exports matched the exact commit/build, set personal/media fields false, and kept
-  keyboard pose metrics `null` / thresholds `not_evaluated`.
+- Exact-source Docker image:
+  `sha256:f1ac14aab1b2bf42b4a20e0ed2a53f83d74955e047d6d8560b4b76236d87dd0b`
+  (343,104,634 bytes); health, index, exact `build-2026081402`/commit assertions, captured-room basic
+  fallback smoke, and zero-upload cleanup passed.
+- Free local CodeBuddy/Qwen3-VL 4B strict matrix: **passed** with fallback forbidden. Open, tight,
+  and uncertain rooms produced materially different profiles and safe 180-second plans; the live
+  adaptation reduced range 0.62→0.46, tempo 0.90→0.77, and target rate 8→7.
+- Exact-source fake-camera UI smoke: **passed** with visible `CodeBuddy live` scene and adaptation
+  provenance, camera ready, exact scene/plan/adapt POSTs, score 0→145, an 8.895-second adaptation,
+  and no console errors.
 - Push/deployment: **pending**. The public app remains the deployed `7fe9009` predecessor.
-- Current CodeBuddy check: **mixed and unstable**, not a live pass. One strict tight-room request
-  completed CodeBuddy scene, plan, and adaptation calls; the next strict matrix collapsed all three
-  rooms to one conservative profile, and later browser/fixture retries returned the labelled
-  fallback at 45 seconds. Explicit vision-model probes also timed out.
+
+Current live evidence is
+[`validation/codebuddy-local-qwen-matrix-de0b2de.json`](validation/codebuddy-local-qwen-matrix-de0b2de.json)
+(SHA-256 `75ce775069d32867d2e7dc6d56fa4030d3bd3e0f13409eef9c64217ba807bf35`)
+and
+[`validation/codebuddy-local-ui-adaptation-de0b2de.json`](validation/codebuddy-local-ui-adaptation-de0b2de.json)
+(SHA-256 `a83a93d33ce203eccd750a39ca0985af897cf6aee4c10200c07640929b593cba`).
+They contain structured synthetic-fixture or controlled fake-camera results only—no image bytes,
+raw model output, credentials, participant data, or real-person pose measurements.
 
 The Safety Probe's clean contract run covered 332 candidates: 302 defended, 30 honored, 0 breaches,
 0 over-rejections, and 0 inconclusive probes, with 20/20 controls and seven matching frontiers. Its
@@ -91,14 +95,21 @@ deterministic path and must not be described as live CodeBuddy.
 
 ## Sanitized live-agent evidence
 
-The newest mixed result is
+The current recommended runtime evidence is the local CodeBuddy/Qwen3-VL 4B
+[`strict matrix`](validation/codebuddy-local-qwen-matrix-de0b2de.json) plus the controlled
+[`browser adaptation smoke`](validation/codebuddy-local-ui-adaptation-de0b2de.json). The matrix
+records clean source/tree provenance, exact model-manifest hashes, three differentiated room/plan
+pairs, live adaptation, and an empty upload directory. The browser record separately proves the
+visible `CodeBuddy live` UI path. Both remain synthetic/controlled evidence, not human trials.
+
+The newest signed-in/upstream mixed result is
 [`validation/codebuddy-current-vision-instability-2026-08-14.json`](validation/codebuddy-current-vision-instability-2026-08-14.json),
 SHA-256 `6acfa59a47552c0b0c0334c4c9c627949ae4c65aa09d1eeeaa8064864d283fda`.
 It records a genuine strict tight-room scene → plan → adapt pass, followed by a failed three-room
 differentiation gate, a strict browser fallback at 45 seconds, and bounded explicit vision-model
 timeouts. No credential, prompt, raw response, local path, image, or participant data is retained.
-It proves that the structured loop can run and that recovery is safe; it does **not** prove a stable
-current live demo or materially different current scene profiles.
+It proves that the upstream structured loop can run and that recovery is safe; it does **not**
+describe the now-passing local 4B route.
 
 The earlier availability record is
 [`validation/codebuddy-upstream-blocker-2026-08-14.json`](validation/codebuddy-upstream-blocker-2026-08-14.json),
@@ -214,8 +225,13 @@ Require generated `codebuddy` provenance before calling it live; health alone is
 not overwrite the release JSON files without reviewing their provenance and sanitization.
 
 ```bash
+ollama serve
+ollama pull qwen3-vl:4b-instruct-q4_K_M
+npm run director:local:setup
+npm run codebuddy:local
+
 MOVEREALM_ROOM_MATRIX=1 \
-  MOVEREALM_AGENT_EVIDENCE=artifacts/validation/live-agent-room-matrix-2ab9584.json \
+  MOVEREALM_AGENT_EVIDENCE=/tmp/moverealm-local-room-matrix.json \
   npm run smoke:agent
 ```
 
@@ -223,6 +239,8 @@ MOVEREALM_ROOM_MATRIX=1 \
 
 | File | SHA-256 |
 |---|---|
+| `validation/codebuddy-local-qwen-matrix-de0b2de.json` | `75ce775069d32867d2e7dc6d56fa4030d3bd3e0f13409eef9c64217ba807bf35` |
+| `validation/codebuddy-local-ui-adaptation-de0b2de.json` | `a83a93d33ce203eccd750a39ca0985af897cf6aee4c10200c07640929b593cba` |
 | `evaluation/python-agent-qwen3-vl-4b.json` | `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029` |
 | `../agent/evidence/safety-probe.json` | `df2eebab3db2a4ea5b50ea4ecfbd17e633a66ffe8bf7e6d5374592a6be34a8e5` |
 | `../agent/evidence/safety-probe.md` | `e484a6efb3c972d82c604048a0fae46d722fd6e076b3302c2d5134505cb428df` |
@@ -277,11 +295,11 @@ flow. They are separate from the six guided screenshots and are controlled, non-
 - **Pending:** real-person visible camera-to-game latency.
 - **Pending:** real-person time to first accepted movement (TTFF).
 - **Pending:** all three qualitative user trials.
-- **Pending:** a stable current CodeBuddy strict live check that both generates the full loop and
-  materially differentiates all three rooms; the latest observation is mixed and not a live pass.
-- **Pending:** authorization to push and deploy the current local branch (application source
-  checkpoint `cf15709` plus its frozen evidence/docs), then verify the resulting public build and
-  pushed branch HEAD.
+- **Complete controlled agent evidence:** the current local CodeBuddy/Qwen3-VL 4B strict matrix
+  generated the full loop and materially differentiated all three rooms; the fake-camera browser
+  smoke separately displayed live scene and adaptation provenance.
+- **Pending:** push and deploy the authorized current branch, then verify the resulting public build
+  and pushed branch HEAD.
 - **Complete local artifact:** 4:58 camera-free backup video and transcript; see below.
 - **Pending:** upload that video, or a preferred live-person recording, to YouTube or Google Drive
   and verify its public URL.

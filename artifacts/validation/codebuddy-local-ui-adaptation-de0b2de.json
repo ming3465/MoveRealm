@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1.0.0",
+  "kind": "local-browser-codebuddy-adaptation-smoke",
+  "recordedAt": "2026-08-14T01:43:48Z",
+  "applicationSourceCommit": "de0b2defc22f524e29bc4ea1019e86c4d31aa915",
+  "applicationSourceTree": "25b1f5b728a0b2baaf0ba39bb5a9087e7906d998",
+  "worktreeDirty": true,
+  "worktreeStatusScope": "One untracked validation artifact; tracked source matched the recorded commit.",
+  "runtime": {
+    "orchestrator": "CodeBuddy Code 2.136.0",
+    "provider": "Ollama 0.23.1 loopback",
+    "model": "moverealm-director:4b",
+    "modelManifestSha256": "5e041b6a9a2057628a7e5ba3de78e130ef3e7800163d85bcc0db3385d186fc75",
+    "fallbackAllowed": false
+  },
+  "result": {
+    "ok": true,
+    "cameraReady": true,
+    "confirmationBadge": "CodeBuddy live",
+    "sceneLatencyMs": 17785,
+    "scoreBefore": 0,
+    "scoreAfter": 145,
+    "apiPostRequests": [
+      "/api/scene/analyze",
+      "/api/quest/plan",
+      "/api/quest/adapt"
+    ],
+    "adaptation": {
+      "source": "CodeBuddy live",
+      "latencyMs": 8895,
+      "reason": "1/8 targets; keyboard range 82%; you chose Too hard. Next: closer, slower, fewer targets.",
+      "before": {
+        "rangePercent": 52,
+        "tempo": 1.05,
+        "targetRate": 9
+      },
+      "after": {
+        "rangePercent": 40,
+        "tempo": 0.92,
+        "targetRate": 8
+      }
+    },
+    "consoleErrors": []
+  },
+  "scope": {
+    "cameraInput": "Chromium synthetic fake-camera stream",
+    "trackingMode": "keyboard after camera capture",
+    "humanTrial": false,
+    "realPosePerformanceEvidence": false,
+    "rawImagesPreserved": false,
+    "rawModelOutputPreserved": false
+  }
+}

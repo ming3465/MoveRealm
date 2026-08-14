@@ -5,16 +5,15 @@ observations from the real-person and submission work that is still pending.
 
 ## Clean local candidate identity — 14 August 2026
 
-- Source commit: `cf157093ff3dab7b3598387d68973f82a3e364c2`
-- Source tree: `404fdc889cabc0212a6fd2197102eff7da5abde6`
+- Source commit: `de0b2defc22f524e29bc4ea1019e86c4d31aa915`
+- Source tree: `25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`
 - Source state for recorded candidate gates: clean tracked checkout
-- Push/deployment: **not performed**; explicit authorization and new public verification remain
-  pending.
+- Push/deployment: **authorized by the user, not yet performed**; new CI and exact public
+  verification remain pending.
 - Docker image:
-  `sha256:724a0e56188dc18e4d7419556a72084d5e0c9398674510a50c3c8177d80aaa57`
-  (343,092,337 bytes), built with the exact candidate commit/tree provenance.
-- Local browser audit build ID: `build-20260814`. This is an evidence-compatible local identifier,
-  **not** a GitHub Actions run or public deployment ID.
+  `sha256:f1ac14aab1b2bf42b4a20e0ed2a53f83d74955e047d6d8560b4b76236d87dd0b`
+  (343,104,634 bytes), built with exact commit `de0b2de` and local audit build
+  `build-2026081402`. This build ID is **not** a GitHub Actions run or public deployment ID.
 
 ## Deployed predecessor identity — 13 August 2026
 
@@ -46,19 +45,20 @@ source-bearing path changes or the workflow is manually dispatched.
 
 | Check | Command or source | Observed result |
 |---|---|---|
-| Complete automated tests | `npm run test:all` | **PASS** — 120/120 Vitest tests across 15 files; 13/13 Python recovery-agent tests; 82/82 Python safety-probe tests |
+| Complete automated tests | `npm run test:all` | **PASS** — 127/127 Vitest tests across 16 files; 13/13 Python recovery-agent tests; 82/82 Python safety-probe tests |
 | Strict client/server typecheck and production bundle | `npm run build` | **PASS** |
 | Dependency audit | `npm audit --audit-level=low` | **PASS** — 0 vulnerabilities |
-| Submission-document local links | resolve local Markdown targets in the 7 reconciled files | **PASS** — 130/130 links resolved |
+| Submission-document local links | resolve local Markdown targets | **PASS** — 13 Markdown files / 170 local links / 0 missing |
 | Documentation diff hygiene | `git diff --check` | **PASS** |
-| Exact Docker provenance | inspect packaged client and image metadata | **PASS** — commit `cf157093…`, tree `404fdc8…`, and expected image digest matched |
+| Exact Docker provenance | inspect packaged client and image metadata | **PASS** — commit `de0b2de…`, build `build-2026081402`, and expected image digest matched |
 | Docker health and index | packaged adapter health endpoint and root document | **PASS** |
 | Docker basic smoke | packaged local candidate | **PASS** |
-| Guided full browser smoke | production mode; local audit build `build-20260814` | **PASS** — reach/squat/side-step; scores 0→145→290→435; `Guided demo` adaptation 64→48%, 0.90→0.77×, 7→6; postcard 2.6 min / 18% / `N/A`; API POSTs `[]`; no errors |
-| Captured-room full fallback smoke | production mode; fake camera; local audit build `build-20260814` | **PASS** — camera ready; exact scene/plan/adapt/adapt POSTs; all rounds to score 435; `Safe fallback`; adaptation 60→44%, 0.90→0.77×, 7→6; postcard 2.6 min / 18% / `N/A`; no errors |
+| Predecessor guided full browser smoke | production mode; local audit build `build-20260814`; source `cf15709` | **PASS** — reach/squat/side-step; scores 0→145→290→435; `Guided demo` adaptation 64→48%, 0.90→0.77×, 7→6; postcard 2.6 min / 18% / `N/A`; API POSTs `[]`; no errors |
+| Predecessor captured-room full fallback smoke | production mode; fake camera; local audit build `build-20260814`; source `cf15709` | **PASS** — camera ready; exact scene/plan/adapt/adapt POSTs; all rounds to score 435; `Safe fallback`; adaptation 60→44%, 0.90→0.77×, 7→6; postcard 2.6 min / 18% / `N/A`; no errors |
 | Python recovery artifact | controlled Qwen3-VL 4B run | **PASS** — hard gates rejected the 18/24 original (43.492 s) and selected the eligible 15/24 fallback (37.550 s) |
 | Adversarial Safety Probe | clean contract mode | **PASS** — 332 probes: 302 defended, 30 honored, 0 breaches, 0 over-rejections, 0 inconclusive; 20 controls; 7 frontiers |
-| Current strict CodeBuddy check | isolated localhost service plus bounded adapter/browser requests | **MIXED / NOT A LIVE PASS** — one tight-room scene → plan → adapt loop passed with CodeBuddy provenance; the next strict matrix collapsed all 3 rooms to one signature; later browser/fixture retries fell back at 45 s; explicit vision models timed out |
+| Free local CodeBuddy/Qwen3-VL 4B strict matrix | isolated localhost service; fallback forbidden | **PASS** — open/tight/uncertain produced three materially different safe 180-second plans; adaptation reduced range/tempo/rate; uploads empty |
+| Free local CodeBuddy browser adaptation | fake camera plus production UI | **PASS** — visible `CodeBuddy live` scene/adaptation, exact scene/plan/adapt POSTs, camera ready, score 0→145, no errors |
 
 The Python artifact SHA-256 is
 `b41ebb3f61d652b60d68b4c8e9c01f0b91e43af52fb311dbbf9bd1dd9fa9d029`; it records shared
@@ -76,6 +76,16 @@ responses, paths, images, credentials, or participant data. The earlier sanitize
 availability observation occurred before the source was frozen and while the worktree was dirty;
 the application source was subsequently frozen as `cf15709`. It is not clean-source live-pass
 evidence.
+
+The current local-model evidence is
+[`codebuddy-local-qwen-matrix-de0b2de.json`](codebuddy-local-qwen-matrix-de0b2de.json), SHA-256
+`75ce775069d32867d2e7dc6d56fa4030d3bd3e0f13409eef9c64217ba807bf35`, and
+[`codebuddy-local-ui-adaptation-de0b2de.json`](codebuddy-local-ui-adaptation-de0b2de.json), SHA-256
+`a83a93d33ce203eccd750a39ca0985af897cf6aee4c10200c07640929b593cba`. The first records clean
+source/tree provenance, exact local model-manifest digests, three distinct safe plans, a grounded
+adaptation, and zero retained uploads. The second records the visible controlled UI path. Neither
+contains room image bytes, raw model output, credentials, participant data, or real-person pose
+measurements.
 
 The two privacy-reviewed local browser exports are:
 
@@ -127,7 +137,7 @@ introduced in `2ab9584` for local anonymous evidence:
   temporary anchor, delays object-URL revocation, and reports sanitized success, hash-unavailable, or
   failure status.
 
-The predecessor's 100-test suite and the candidate's 120-test Vitest layer cover these integrity
+The predecessor's 100-test suite and the candidate's 127-test Vitest layer cover these integrity
 boundaries. They validate exported records; they do not complete any of the pending human trials or
 measure real-person performance.
 
@@ -148,10 +158,10 @@ The synthetic record contains no participant media, webcam stream, landmarks, id
 inference. See [`docs/EVALUATION.md`](../../docs/EVALUATION.md).
 
 Those 8B open/tight reports are frozen predecessor `7fe9009` evaluator snapshots. Their candidate
-JSON does not pass the newer `cf15709` canonical-presentation gates and is not current-candidate pass
+JSON does not pass the newer canonical-presentation gates and is not current-candidate pass
 evidence. The clean candidate is supported by the current tests/probe, Python uncertain-room
-recovery, and full browser smokes above; the attempted current live matrix failed its differentiation
-gate and is not a pass.
+recovery, plus the current local 4B strict matrix and browser adaptation records above. The earlier
+signed-in/upstream mixed observation remains recovery evidence only.
 
 An ephemeral current-source compatibility check reconstructed open/tight/uncertain candidates from
 the preserved matrix into `/tmp` and ran `npm run eval -- --judge none`; all three deterministic
@@ -256,12 +266,8 @@ rate 7→5 while keeping the next squat. Its inputs were explicitly synthetic ke
 - real-person time to first accepted movement target below 45 seconds;
 - browser network inspection during a real-person camera session;
 - three consenting user trials;
-- a stable strict current-candidate CodeBuddy run that both generates scene/plan/adaptation output
-  and materially differentiates all three rooms; one loop passed, but the matrix and later retries
-  did not;
-- authorization to push and deploy the current local branch, whose application source is frozen at
-  `cf157093ff3dab7b3598387d68973f82a3e364c2`, followed by exact verification of the resulting
-  public build and pushed branch HEAD;
+- push and deploy the authorized current branch, then verify the resulting public build and pushed
+  branch HEAD;
 - accepted YouTube or Google Drive upload URL for the completed 4:58.834 local backup (or a
   preferred live-person recording);
 - participant consent for any retained real-person media;

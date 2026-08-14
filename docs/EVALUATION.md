@@ -5,6 +5,22 @@ local, offline evaluation harness for frozen synthetic room fixtures and structu
 It never approves, rewrites, blocks, or executes a quest. Production Zod contracts remain the sole
 runtime automated safety authority.
 
+## Free local runtime director
+
+The runtime Movement Director can now use CodeBuddy Code 2.136.0 with the Apache-2.0
+`qwen3-vl:4b-instruct-q4_K_M` model through loopback Ollama 0.23.1. This is separate from the
+post-hoc Shadow Judge below: CodeBuddy remains the runtime orchestrator, uses `Read` only for the
+explicit room-still attachment, and the production contracts still reject unsafe or malformed
+scene, plan, and adaptation output.
+
+Exact clean source `de0b2defc22f524e29bc4ea1019e86c4d31aa915` passed the fallback-forbidden
+three-room matrix and a controlled fake-camera browser adaptation smoke. The preserved matrix is
+[`codebuddy-local-qwen-matrix-de0b2de.json`](../artifacts/validation/codebuddy-local-qwen-matrix-de0b2de.json);
+the visible UI observation is
+[`codebuddy-local-ui-adaptation-de0b2de.json`](../artifacts/validation/codebuddy-local-ui-adaptation-de0b2de.json).
+They are synthetic/controlled agent-loop evidence, not real-person pose, latency, TTFF, or usability
+evidence.
+
 ## Model and scope
 
 The reference evaluator is `qwen3-vl:8b-instruct-q4_K_M` through local Ollama. The model weights
@@ -57,27 +73,22 @@ the model response is invalid. Without it, hard gates still run and the judge is
 
 ## Local candidate status — 14 August 2026
 
-The clean local source candidate is commit `cf157093ff3dab7b3598387d68973f82a3e364c2`, tree
-`404fdc889cabc0212a6fd2197102eff7da5abde6`. It passed 120/120 Vitest tests across 15 files,
+The clean local source candidate is commit `de0b2defc22f524e29bc4ea1019e86c4d31aa915`, tree
+`25b1f5b728a0b2baaf0ba39bb5a9087e7906d998`. It passed 127/127 Vitest tests across 16 files,
 13/13 Python recovery-agent tests, 82/82 safety-probe tests, the strict production build, and a
 0-vulnerability dependency audit. This candidate has not been pushed or deployed; the public site
 remains the `7fe9009` release described below.
 
-Its two production-mode full browser smokes also passed using local audit build identifier
-`build-20260814`—not a GitHub Actions run. The guided and captured-room fallback exports both embed
-the exact candidate commit/build, exclude personal/media fields, and leave keyboard pose metrics
-unevaluated. Their exact behavior and checksums are recorded in
+The predecessor `cf15709` candidate's two production-mode full browser smokes passed using local
+audit build identifier `build-20260814`—not a GitHub Actions run. Their exact behavior and checksums
+remain recorded in
 [`release-checks.md`](../artifacts/validation/release-checks.md).
 
-The current live CodeBuddy check is **mixed and unstable**. An earlier sanitized observation recorded
-HTTP 429 before generation. A later strict tight-room request completed genuine CodeBuddy scene,
-180-second plan, and adaptation calls, but the next strict three-room matrix collapsed every fixture
-to the same conservative scene signature. Later browser/fixture retries returned labelled fallback
-at the 45-second boundary, while four explicitly selected vision models timed out. This is useful
-loop-and-recovery evidence, but not a stable current live or three-room pass. The newest sanitized
-record is [`codebuddy-current-vision-instability-2026-08-14.json`](../artifacts/validation/codebuddy-current-vision-instability-2026-08-14.json);
-the earlier phase is retained in
-[`codebuddy-upstream-blocker-2026-08-14.json`](../artifacts/validation/codebuddy-upstream-blocker-2026-08-14.json).
+The recommended free local CodeBuddy check is now **passing**. With fallback forbidden, the 4B model
+produced distinct open/tight/uncertain profiles, compatible distinct 180-second plans, and a live
+`too_hard` adaptation. A separate fake-camera browser run reached the visible `CodeBuddy live`
+adaptation trace with no console errors. Earlier signed-in/upstream 429 and timeout records remain
+useful recovery evidence, but no longer describe this local route.
 
 ## Preserved deployed-predecessor observation — 13 August 2026
 
@@ -106,11 +117,10 @@ The final records are
 [`uncertain-room-corrected.json`](../artifacts/evaluation/reports/uncertain-room-corrected.json).
 
 These 8B reports and their source candidate bundles are frozen predecessor `7fe9009` evaluator
-snapshots. In particular, the predecessor open/tight candidates do not satisfy the newer `cf15709`
-canonical-presentation gates and must not be described as passing the current evaluator. Current
-candidate proof comes from the 120-test Vitest layer, Safety Probe, Python uncertain-room recovery,
-and two full browser smokes above. A fresh current open/tight/uncertain live matrix was attempted but
-failed the differentiation gate, so the predecessor model reports remain historical evidence only.
+snapshots. In particular, the predecessor open/tight candidates do not satisfy the newer `de0b2de`
+canonical-presentation and required-variety gates and must not be described as passing the current
+evaluator. Current runtime proof comes from the 127-test Vitest layer and the two local 4B artifacts
+linked above; the predecessor 8B model reports remain historical evaluator evidence only.
 
 As a separate ephemeral compatibility check, `cf15709` reconstructed open, tight, and uncertain
 candidates from the preserved live matrix into a temporary directory, then ran the current evaluator
