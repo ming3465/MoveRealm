@@ -372,7 +372,12 @@ try {
     await waitFor('!!document.querySelector(".round-dialog")', 60_000);
     await activateButtonByKeyboard("Too hard", { scope: ".round-dialog", exact: true });
     await activateButtonByKeyboard("Let the world adapt", { scope: ".round-dialog" });
-    await waitFor('!!document.querySelector(".round-dialog--trace")', 15_000);
+    // A live CodeBuddy response may consume one 45 s attempt plus one repair;
+    // fallback/demo adaptations should remain fast and keep the tighter bound.
+    await waitFor(
+      '!!document.querySelector(".round-dialog--trace")',
+      expectCodeBuddy ? 100_000 : 15_000,
+    );
     adaptation = await evaluate(`({
       reason: document.querySelector(".round-dialog--trace h2")?.textContent.trim(),
       parameters: [...document.querySelectorAll(".trace-parameters strong")].map((item) => item.textContent.trim()),

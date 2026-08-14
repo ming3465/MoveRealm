@@ -1,0 +1,22 @@
+{
+  "models": [
+    {
+      "id": "moverealm-director:4b",
+      "name": "MoveRealm Director 4B",
+      "description": "Local Apache-2.0 Qwen3-VL runtime director",
+      "vendor": "Ollama",
+      "url": "http://127.0.0.1:11434/v1/chat/completions",
+      "apiKey": "${MOVEREALM_OLLAMA_API_KEY}",
+      "temperature": 0,
+      "supportsImages": true,
+      "supportsToolCall": true,
+      "supportsReasoning": false,
+      "maxInputTokens": 32768,
+      "maxOutputTokens": 2048,
+      "tags": [
+        "custom"
+      ],
+      "trustLevel": "custom"
+    }
+  ]
+}

@@ -19,7 +19,9 @@
     "probe": "python3 agent/run_probe.py",
     "probe:tests": "cd agent && python3 -m unittest discover -s tests -t .",
     "video:backup": "node scripts/build-backup-video.mjs",
-    "codebuddy": "codebuddy --serve --port 8080 --session-id moverealm"
+    "codebuddy": "codebuddy --serve --port 8080 --session-id moverealm",
+    "director:local:setup": "ollama create moverealm-director:4b -f ollama/MoveRealm.Modelfile",
+    "codebuddy:local": "MOVEREALM_OLLAMA_API_KEY=ollama CODEBUDDY_DISABLE_AUTO_MEMORY=1 codebuddy --serve --host 127.0.0.1 --port 8080 --tools Read --max-turns 2 --no-session-persistence --setting-sources '' --system-prompt 'You are the MoveRealm Movement Director. Return exactly one JSON object matching the user schema. Use Read only when the user message contains an explicit attachment list and only on that listed image path. Never read any other file. When there is no attachment list, never call a tool. Never return markdown or commentary.' --session-id moverealm --model custom-local:moverealm-director:4b"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "1.0.1",

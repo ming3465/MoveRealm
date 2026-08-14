@@ -36,6 +36,21 @@ describe("quest safety contract", () => {
       }),
     ).toThrow(/blocks the permitted left lane/i);
   });
+
+  it("requires open and uncertain labels to match their conservative direction envelope", () => {
+    expect(() =>
+      validateSceneSafety({
+        ...DEMO_SCENES.open,
+        permittedDirections: ["center"],
+      }),
+    ).toThrow(/open room must visibly support/i);
+    expect(() =>
+      validateSceneSafety({
+        ...DEMO_SCENES.uncertain,
+        confidence: 0.61,
+      }),
+    ).toThrow(/confidence above 0\.60/i);
+  });
   it("builds a valid three-minute conservative plan", () => {
     const plan = createFallbackPlan(request);
     expect(validatePlanSafety(plan, request)).toEqual(plan);
@@ -76,6 +91,19 @@ describe("quest safety contract", () => {
     const unsafe = structuredClone(createFallbackPlan(request));
     unsafe.rounds[0].durationSeconds = 70;
     expect(() => validatePlanSafety(unsafe, request)).toThrow(/total/i);
+  });
+
+  it("requires every movement supported by the confirmed lanes", () => {
+    const repetitive = structuredClone(createFallbackPlan(request));
+    repetitive.rounds = repetitive.rounds.map((round) => ({
+      ...round,
+      movementId: "reach",
+      mechanic: "collect_fireflies",
+      prompt: "Reach softly to wake the fireflies",
+      accent: "mint",
+    }));
+
+    expect(() => validatePlanSafety(repetitive, request)).toThrow(/required validated movement/i);
   });
 
   it("rejects duplicate or out-of-order round IDs", () => {

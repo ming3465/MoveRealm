@@ -162,7 +162,7 @@ export function createFallbackPlan(request: PlanRequest): QuestPlan {
 }
 
 function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
+  return Math.round(Math.min(max, Math.max(min, value)) * 100) / 100;
 }
 
 function maximumRangeScale(request: AdaptRequest): number {

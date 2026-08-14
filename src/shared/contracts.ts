@@ -274,6 +274,17 @@ export interface DirectorResponse<T> {
 
 export function validateSceneSafety(input: unknown): SceneProfile {
   const profile = SceneProfileSchema.parse(input);
+  if (
+    profile.spaceClass === "open" &&
+    !["left", "right", "center"].every((direction) =>
+      profile.permittedDirections.includes(direction as Direction),
+    )
+  ) {
+    throw new Error("An open room must visibly support the center and both lateral lanes.");
+  }
+  if (profile.spaceClass === "uncertain" && profile.confidence > 0.6) {
+    throw new Error("An uncertain room may not claim confidence above 0.60.");
+  }
   const blockedDirections = new Set(
     profile.obstacles
       .filter((obstacle) => obstacle.severity === "high")
@@ -298,6 +309,25 @@ export function validatePlanSafety(input: unknown, request: PlanRequest): QuestP
 
   if (!request.constraints.floorClear) {
     throw new Error("A quest cannot start until the user confirms the floor is clear.");
+  }
+
+  const requiredMovements = [
+    "reach",
+    ...(request.scene.spaceClass !== "uncertain" &&
+    request.constraints.permittedDirections.includes("vertical")
+      ? ["squat"]
+      : []),
+    ...(request.scene.spaceClass !== "uncertain" &&
+    request.constraints.sideStepRange !== "none" &&
+    hasLateralDirection
+      ? ["side_step"]
+      : []),
+  ];
+  const missingMovement = requiredMovements.find(
+    (movementId) => !plan.rounds.some((round) => round.movementId === movementId),
+  );
+  if (missingMovement) {
+    throw new Error(`The plan omits required validated movement ${missingMovement}.`);
   }
 
   if (
